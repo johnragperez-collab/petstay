@@ -3,179 +3,234 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PetStay - Supabase Pet Boarding Portal</title>
+    <title>PetStay - Modern Veterinary & Boarding Management</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons -->
+    <!-- FontAwesome Pro Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
+    <!-- Google Fonts: Plus Jakarta Sans -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        navy: '#1F3A5F',
-                        skyblue: '#5D9BD3',
-                        gold: '#E8B15A'
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#2563eb',
+                            600: '#1d4ed8',
+                            900: '#0f172a',
+                        },
+                        clinic: {
+                            teal: '#0d9488',
+                            gold: '#f59e0b',
+                            rose: '#f43f5e',
+                            navy: '#0f172a'
+                        }
                     },
-                    fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] }
+                    fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
+                    boxShadow: {
+                        'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.07)',
+                        'card': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+                        'glow': '0 0 20px -5px rgba(37, 99, 235, 0.35)'
+                    }
                 }
             }
         }
     </script>
     <style>
         .custom-scrollbar::-webkit-scrollbar { width: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        .mobile-shell { max-width: 420px; height: 850px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 99px; }
+        .mobile-shell { max-width: 430px; height: 880px; }
+        .glass-header { background: rgba(15, 23, 42, 0.92); backdrop-filter: blur(12px); }
+        .glass-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(8px); }
+        .btn-gradient { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); }
+        .btn-primary { background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); }
+        .btn-gold { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
+
+        /* Animation Keyframes */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes modalPop {
+            from { opacity: 0; transform: scale(0.92) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .animate-modal-pop {
+            animation: modalPop 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .interactive-btn {
+            transition: all 0.15s ease-in-out;
+        }
+        .interactive-btn:active {
+            transform: scale(0.95);
+        }
     </style>
 </head>
-<body class="bg-slate-950 font-sans text-slate-800 antialiased min-h-screen flex items-center justify-center p-0 sm:p-4">
+<body class="bg-slate-950 font-sans text-slate-800 antialiased min-h-screen flex items-center justify-center p-0 sm:p-6">
 
-    <!-- Mobile Shell Frame -->
-    <div class="mobile-shell w-full bg-slate-900 sm:rounded-[44px] shadow-2xl border-0 sm:border-8 sm:border-slate-800 overflow-hidden relative flex flex-col justify-between h-full sm:h-[850px]">
+    <!-- Mobile Frame Shell -->
+    <div class="mobile-shell w-full bg-slate-900 sm:rounded-[48px] shadow-2xl border-0 sm:border-[10px] sm:border-slate-800 overflow-hidden relative flex flex-col justify-between h-full sm:h-[880px]">
 
-        <!-- Camera Notch -->
-        <div class="hidden sm:flex absolute top-0 left-1/2 -translate-x-1/2 w-32 h-5 bg-slate-800 rounded-b-xl z-50 items-center justify-center space-x-2">
-            <div class="w-2 h-2 rounded-full bg-slate-950"></div>
-            <div class="w-8 h-1 rounded-full bg-slate-950"></div>
+        <!-- Top Dynamic Island Notch -->
+        <div class="hidden sm:flex absolute top-0 left-1/2 -translate-x-1/2 w-36 h-6 bg-slate-800 rounded-b-2xl z-50 items-center justify-center space-x-3">
+            <div class="w-2.5 h-2.5 rounded-full bg-slate-950 border border-slate-700/50"></div>
+            <div class="w-10 h-1.5 rounded-full bg-slate-950 border border-slate-700/50"></div>
         </div>
 
-        <!-- App Header Bar -->
-        <header class="bg-navy text-white sticky top-0 z-30 px-4 py-3 flex items-center justify-between shadow-md border-b border-slate-700">
-            <div class="flex items-center space-x-2">
-                <div class="bg-gold p-1.5 rounded-xl text-navy font-black text-sm flex items-center justify-center w-8 h-8">
-                    <i class="fa-solid fa-paw"></i>
+        <!-- Glassmorphism App Header -->
+        <header class="glass-header text-white sticky top-0 z-40 px-5 py-4 flex items-center justify-between border-b border-slate-800/80 shadow-lg">
+            <div class="flex items-center space-x-3">
+                <div class="bg-gradient-to-tr from-amber-500 to-amber-300 p-2 rounded-2xl text-slate-950 font-black text-sm flex items-center justify-center w-9 h-9 shadow-glow transition transform hover:rotate-6">
+                    <i class="fa-solid fa-paw text-base"></i>
                 </div>
                 <div>
-                    <span class="font-extrabold text-base tracking-tight text-white block leading-none">Pet<span class="text-gold">Stay</span></span>
-                    <span class="text-[9px] text-sky-200 block mt-0.5">Boarding Portal</span>
+                    <div class="flex items-center space-x-1.5">
+                        <span class="font-black text-lg tracking-tight text-white leading-none">Pet<span class="text-amber-400">Stay</span></span>
+                        <span class="text-[9px] bg-slate-800 text-sky-400 border border-sky-500/30 px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wider">VET CLINIC</span>
+                    </div>
+                    <span class="text-[10px] text-slate-400 block font-medium mt-0.5">Medical & Boarding Portal</span>
                 </div>
             </div>
 
             <div class="flex items-center space-x-2">
-                <div id="navUserBadge" class="hidden flex items-center space-x-1.5 bg-slate-800/80 px-2.5 py-1 rounded-full text-[11px] font-medium border border-slate-700">
+                <div id="navUserBadge" class="hidden flex items-center space-x-2 bg-slate-800/90 px-3 py-1.5 rounded-full text-[11px] font-semibold border border-slate-700/60 shadow-inner">
                     <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
                     <span id="navUsername" class="text-slate-200">User</span>
                 </div>
-                <button id="navLogoutBtn" onclick="openLogoutModal()" class="hidden bg-rose-600/20 hover:bg-rose-600/30 text-rose-300 text-xs font-semibold p-2 rounded-lg border border-rose-500/30 transition">
-                    <i class="fa-solid fa-right-from-bracket"></i>
+                <button id="navLogoutBtn" onclick="openLogoutModal()" class="interactive-btn hidden bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 text-xs font-bold p-2.5 rounded-xl border border-rose-500/20 transition-all duration-200">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
                 </button>
             </div>
         </header>
 
-        <!-- Main Body Viewport -->
-        <main class="flex-grow overflow-y-auto custom-scrollbar p-4 flex flex-col justify-start relative z-10 bg-slate-100">
+        <!-- Main Content Area -->
+        <main class="flex-grow overflow-y-auto custom-scrollbar p-4 flex flex-col justify-start relative z-10 bg-slate-50">
 
             <!-- Global Alert Container -->
-            <div id="appAlert" class="hidden mb-3 p-3 rounded-xl shadow-md text-xs font-semibold flex items-center justify-between transition-all">
-                <div class="flex items-center space-x-2">
+            <div id="appAlert" class="hidden mb-4 p-3.5 rounded-2xl shadow-card text-xs font-bold flex items-center justify-between transition-all duration-300 animate-fade-in">
+                <div class="flex items-center space-x-2.5">
                     <i id="appAlertIcon" class="fa-solid text-sm"></i>
                     <span id="appAlertMsg"></span>
                 </div>
-                <button type="button" onclick="dismissAlert()" class="opacity-70 hover:opacity-100 ml-2"><i class="fa-solid fa-xmark"></i></button>
+                <button type="button" onclick="dismissAlert()" class="interactive-btn opacity-60 hover:opacity-100 transition"><i class="fa-solid fa-xmark"></i></button>
             </div>
 
             <!-- AUTHENTICATION SECTION -->
-            <section id="authSection" class="w-full space-y-4 my-auto">
-                <div class="bg-white rounded-3xl shadow-xl border border-slate-200 overflow-hidden">
-                    <div class="bg-navy p-6 text-center text-white border-b border-gold/30">
-                        <h2 id="authTitle" class="text-2xl font-black tracking-tight text-white">Welcome Back</h2>
-                        <p id="authSubtitle" class="text-xs text-sky-200 mt-1">Sign in to manage pet boarding reservations</p>
+            <section id="authSection" class="w-full space-y-4 my-auto animate-fade-in">
+                <div class="bg-white rounded-[32px] shadow-glass border border-slate-200/80 overflow-hidden">
+                    <div class="bg-slate-900 p-6 text-center text-white border-b border-slate-800 relative overflow-hidden">
+                        <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-amber-500/10 rounded-full blur-xl"></div>
+                        <h2 id="authTitle" class="text-2xl font-black tracking-tight text-white relative z-10">Welcome Back</h2>
+                        <p id="authSubtitle" class="text-xs text-slate-400 mt-1 relative z-10">Sign in to manage veterinary & boarding logs</p>
                     </div>
 
-                    <div class="p-5">
+                    <div class="p-6">
                         <!-- LOGIN FORM -->
-                        <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-3" novalidate>
+                        <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-4" novalidate>
                             <div>
-                                <label class="block text-[10px] font-bold text-navy uppercase mb-1">Username or Email</label>
-                                <input type="text" id="loginUsername" class="block w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium outline-none focus:border-skyblue" placeholder="Username or Email">
+                                <label class="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-1.5">Username or Email</label>
+                                <div class="relative">
+                                    <span class="absolute left-3.5 top-3 text-slate-400 text-xs"><i class="fa-solid fa-user"></i></span>
+                                    <input type="text" id="loginUsername" class="block w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 outline-none focus:border-blue-500 focus:bg-white transition" placeholder="e.g. johndoe">
+                                </div>
                             </div>
                             <div>
-                                <label class="block text-[10px] font-bold text-navy uppercase mb-1">Password</label>
+                                <label class="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-1.5">Password</label>
                                 <div class="relative">
-                                    <input type="password" id="loginPassword" class="block w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium outline-none focus:border-skyblue" placeholder="••••••••">
-                                    <button type="button" onclick="togglePassword('loginPassword', this)" class="absolute right-3 top-2.5 text-slate-400 text-xs"><i class="fa-solid fa-eye"></i></button>
+                                    <span class="absolute left-3.5 top-3 text-slate-400 text-xs"><i class="fa-solid fa-lock"></i></span>
+                                    <input type="password" id="loginPassword" class="block w-full pl-9 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 outline-none focus:border-blue-500 focus:bg-white transition" placeholder="••••••••">
+                                    <button type="button" onclick="togglePassword('loginPassword', this)" class="interactive-btn absolute right-3 top-2.5 text-slate-400 hover:text-slate-600 text-xs p-1"><i class="fa-solid fa-eye"></i></button>
                                 </div>
                             </div>
 
-                            <div class="flex justify-between items-center text-[11px]">
-                                <button type="button" onclick="switchAuthMode('otp_request')" class="text-skyblue font-bold hover:underline">Forgot / Request OTP?</button>
+                            <div class="flex justify-end text-[11px]">
+                                <button type="button" onclick="switchAuthMode('otp_request')" class="interactive-btn text-blue-600 font-bold hover:underline">Forgot / Request OTP?</button>
                             </div>
 
-                            <button type="submit" id="loginSubmitBtn" class="w-full bg-navy hover:bg-slate-800 text-white font-bold py-2.5 px-4 rounded-xl shadow flex items-center justify-center space-x-2">
-                                <span>Sign In</span>
+                            <button type="submit" id="loginSubmitBtn" class="interactive-btn w-full btn-gradient hover:opacity-95 text-white font-extrabold py-3 px-4 rounded-xl shadow-md transition flex items-center justify-center space-x-2">
+                                <span>Sign In to Portal</span>
+                                <i class="fa-solid fa-arrow-right text-xs"></i>
                             </button>
                         </form>
 
                         <!-- REGISTER FORM -->
-                        <form id="registerForm" onsubmit="handleRegister(event)" class="hidden space-y-2.5" novalidate>
+                        <form id="registerForm" onsubmit="handleRegister(event)" class="hidden space-y-3" novalidate>
                             <div>
-                                <label class="block text-[10px] font-bold text-navy uppercase">Full Name</label>
-                                <input type="text" id="regFullName" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-xl text-xs outline-none" placeholder="Juan Dela Cruz">
+                                <label class="block text-[10px] font-bold text-slate-600 uppercase">Full Name</label>
+                                <input type="text" id="regFullName" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none focus:border-blue-500" placeholder="Juan Dela Cruz">
                             </div>
                             <div>
-                                <label class="block text-[10px] font-bold text-navy uppercase">Email</label>
-                                <input type="email" id="regEmail" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-xl text-xs outline-none" placeholder="juan@example.com">
+                                <label class="block text-[10px] font-bold text-slate-600 uppercase">Email</label>
+                                <input type="email" id="regEmail" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none focus:border-blue-500" placeholder="juan@example.com">
                             </div>
                             <div>
-                                <label class="block text-[10px] font-bold text-navy uppercase">Username</label>
-                                <input type="text" id="regUsername" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-xl text-xs outline-none" placeholder="Username">
+                                <label class="block text-[10px] font-bold text-slate-600 uppercase">Username</label>
+                                <input type="text" id="regUsername" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none focus:border-blue-500" placeholder="Username">
                             </div>
                             <div>
-                                <label class="block text-[10px] font-bold text-navy uppercase">Role</label>
-                                <select id="regRole" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-xl text-xs outline-none">
+                                <label class="block text-[10px] font-bold text-slate-600 uppercase">Portal Role</label>
+                                <select id="regRole" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-blue-500">
                                     <option value="owner">Pet Owner (Customer)</option>
-                                    <option value="employee">Boarding Staff (Employee)</option>
-                                    <option value="admin">Administrator</option>
+                                    <option value="employee">Clinic Staff (Employee)</option>
+                                    <option value="admin">Clinic Administrator</option>
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-[10px] font-bold text-navy uppercase">Password (Min 8 chars, A-Z, a-z, 0-9, symbol)</label>
+                                <label class="block text-[10px] font-bold text-slate-600 uppercase">Password (Min 8 chars, A-Z, 0-9, symbol)</label>
                                 <div class="relative">
-                                    <input type="password" id="regPassword" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-xl text-xs outline-none" placeholder="••••••••">
-                                    <button type="button" onclick="togglePassword('regPassword', this)" class="absolute right-3 top-2 text-slate-400 text-xs"><i class="fa-solid fa-eye"></i></button>
+                                    <input type="password" id="regPassword" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none focus:border-blue-500" placeholder="••••••••">
+                                    <button type="button" onclick="togglePassword('regPassword', this)" class="interactive-btn absolute right-3 top-2.5 text-slate-400 text-xs"><i class="fa-solid fa-eye"></i></button>
                                 </div>
                             </div>
                             <div>
-                                <label class="block text-[10px] font-bold text-navy uppercase">Confirm Password</label>
-                                <input type="password" id="regConfirmPassword" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-xl text-xs outline-none" placeholder="••••••••">
+                                <label class="block text-[10px] font-bold text-slate-600 uppercase">Confirm Password</label>
+                                <input type="password" id="regConfirmPassword" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none focus:border-blue-500" placeholder="••••••••">
                             </div>
-                            <button type="submit" class="w-full bg-gold hover:bg-amber-500 text-navy font-extrabold py-2 px-4 rounded-xl shadow">
+                            <button type="submit" class="interactive-btn w-full btn-gold text-slate-950 font-black py-2.5 px-4 rounded-xl shadow-md transition">
                                 Create Account
                             </button>
                         </form>
 
                         <!-- OTP RECOVERY FORM -->
                         <form id="otpForm" onsubmit="handleOtpSubmit(event)" class="hidden space-y-3">
-                            <p class="text-xs text-slate-600">Enter your registered username or email address to generate a 6-digit Recovery OTP into your database record.</p>
+                            <p class="text-xs text-slate-500 leading-relaxed">Enter your registered username or email address to generate a 6-digit Recovery OTP into your database record.</p>
                             <div>
-                                <label class="block text-[10px] font-bold text-navy uppercase">Username or Email</label>
-                                <input type="text" id="otpUsername" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs outline-none" placeholder="Username or Email">
+                                <label class="block text-[10px] font-bold text-slate-600 uppercase">Username or Email</label>
+                                <input type="text" id="otpUsername" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none" placeholder="Username or Email">
                             </div>
                             <div id="otpInputGroup" class="hidden space-y-2">
-                                <label class="block text-[10px] font-bold text-navy uppercase">6-Digit OTP Code</label>
-                                <input type="text" id="otpCode" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs outline-none tracking-widest text-center font-bold" placeholder="123456">
-                                <label class="block text-[10px] font-bold text-navy uppercase">New Password</label>
-                                <input type="password" id="otpNewPassword" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs outline-none" placeholder="New Password123!">
+                                <label class="block text-[10px] font-bold text-slate-600 uppercase">6-Digit OTP Code</label>
+                                <input type="text" id="otpCode" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none tracking-widest text-center font-black" placeholder="123456">
+                                <label class="block text-[10px] font-bold text-slate-600 uppercase">New Password</label>
+                                <input type="password" id="otpNewPassword" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none" placeholder="New Password123!">
                             </div>
-                            <button type="submit" id="otpBtn" class="w-full bg-navy text-white font-bold py-2 rounded-xl text-xs">Request OTP Code</button>
+                            <button type="submit" id="otpBtn" class="interactive-btn w-full btn-gradient text-white font-bold py-2.5 rounded-xl text-xs shadow-md">Request OTP Code</button>
                         </form>
 
-                        <div class="mt-3 pt-3 border-t border-slate-200 text-center">
-                            <p id="toggleAuthText" class="text-xs text-slate-600">
+                        <div class="mt-4 pt-4 border-t border-slate-100 text-center">
+                            <p id="toggleAuthText" class="text-xs text-slate-500 font-medium">
                                 Don't have an account? 
-                                <button type="button" onclick="switchAuthMode('register')" class="text-skyblue font-bold hover:underline ml-1">Register here</button>
+                                <button type="button" onclick="switchAuthMode('register')" class="interactive-btn text-blue-600 font-bold hover:underline ml-1">Register here</button>
                             </p>
                         </div>
 
                         <!-- QUICK DEMO BUTTONS -->
-                        <div class="mt-3 p-2.5 bg-slate-900 rounded-xl text-[10px] space-y-1">
-                            <div class="text-gold font-bold"><i class="fa-solid fa-key mr-1"></i> Quick Demo Accounts (Pass: <code>Password123!</code>):</div>
-                            <div class="grid grid-cols-3 gap-1">
-                                <button onclick="fillDemo('johndoe')" class="bg-slate-800 text-slate-200 p-1 rounded hover:bg-slate-700">1. Owner</button>
-                                <button onclick="fillDemo('staff')" class="bg-slate-800 text-slate-200 p-1 rounded hover:bg-slate-700">2. Employee</button>
-                                <button onclick="fillDemo('admin')" class="bg-slate-800 text-slate-200 p-1 rounded hover:bg-slate-700">3. Admin</button>
+                        <div class="mt-4 p-3 bg-slate-900 rounded-2xl text-[10px] space-y-1.5 shadow-card">
+                            <div class="text-amber-400 font-extrabold flex items-center justify-between">
+                                <span><i class="fa-solid fa-key mr-1"></i> Demo Access Accounts:</span>
+                                <span class="text-[9px] text-slate-400 font-normal">Pass: <code>Password123!</code></span>
+                            </div>
+                            <div class="grid grid-cols-3 gap-1.5">
+                                <button onclick="fillDemo('johndoe')" class="interactive-btn bg-slate-800 hover:bg-slate-700 text-slate-200 py-1.5 px-2 rounded-lg font-bold border border-slate-700 transition text-center">1. Owner</button>
+                                <button onclick="fillDemo('staff')" class="interactive-btn bg-slate-800 hover:bg-slate-700 text-slate-200 py-1.5 px-2 rounded-lg font-bold border border-slate-700 transition text-center">2. Staff</button>
+                                <button onclick="fillDemo('admin')" class="interactive-btn bg-slate-800 hover:bg-slate-700 text-slate-200 py-1.5 px-2 rounded-lg font-bold border border-slate-700 transition text-center">3. Admin</button>
                             </div>
                         </div>
 
@@ -183,84 +238,87 @@
                 </div>
             </section>
 
-            <!-- TRANSACTION DASHBOARD SECTION -->
-            <section id="dashboardSection" class="hidden space-y-3 w-full">
-                <div class="bg-navy rounded-2xl p-4 text-white shadow border border-gold/30">
-                    <div class="flex items-center justify-between mb-1">
-                        <span id="dashRoleBadge" class="bg-gold/20 text-gold border border-gold/30 text-[10px] font-bold uppercase px-2 py-0.5 rounded-full">Role</span>
-                        <span class="text-[10px] text-sky-200"><i class="fa-solid fa-circle text-emerald-400 text-[8px] mr-1"></i> Connected to Supabase</span>
+            <!-- DASHBOARD SECTION -->
+            <section id="dashboardSection" class="hidden space-y-4 w-full">
+                <!-- User Profile Banner Card -->
+                <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 rounded-3xl p-4 text-white shadow-xl border border-slate-800 relative overflow-hidden animate-fade-in">
+                    <div class="absolute -right-4 -bottom-4 w-28 h-28 bg-blue-500/10 rounded-full blur-2xl"></div>
+                    <div class="flex items-center justify-between mb-2">
+                        <span id="dashRoleBadge" class="bg-amber-500/20 text-amber-300 border border-amber-400/30 text-[9px] font-black uppercase px-2.5 py-0.5 rounded-full tracking-wider">ROLE</span>
+                        <span class="text-[10px] text-emerald-400 font-semibold flex items-center"><i class="fa-solid fa-circle text-[6px] mr-1.5 animate-pulse"></i> Supabase Live</span>
                     </div>
-                    <h1 class="text-lg font-black">Welcome, <span id="dashUserFullName" class="text-gold">User</span>!</h1>
+                    <h1 class="text-lg font-black tracking-tight">Welcome, <span id="dashUserFullName" class="text-amber-400">User</span></h1>
+                    <p class="text-[10px] text-slate-400 mt-0.5">Pet Boarding & Clinical Management Workspace</p>
                 </div>
 
-                <div id="dynamicDashboardContent" class="space-y-3">
-                    <!-- Dashboard modules dynamic content -->
+                <div id="dynamicDashboardContent" class="space-y-4">
+                    <!-- Dynamic Dashboard Components with Fade-in Animation -->
                 </div>
             </section>
 
         </main>
 
-        <!-- Bottom Tab Nav -->
-        <nav id="bottomNav" class="hidden bg-white border-t border-slate-200 px-2 py-2 flex justify-around text-[10px] font-bold text-slate-600 z-30">
-            <button onclick="switchTab('home')" class="nav-tab active flex flex-col items-center text-navy"><i class="fa-solid fa-house text-sm"></i><span>Home</span></button>
-            <button onclick="switchTab('pets')" class="nav-tab flex flex-col items-center"><i class="fa-solid fa-paw text-sm"></i><span>Pets</span></button>
-            <button onclick="switchTab('reservations')" class="nav-tab flex flex-col items-center"><i class="fa-solid fa-calendar-check text-sm"></i><span>Reservations</span></button>
-            <button id="navApprovalsTab" onclick="switchTab('approvals')" class="nav-tab hidden flex flex-col items-center text-amber-600"><i class="fa-solid fa-clipboard-check text-sm"></i><span>Admin Approvals</span></button>
-            <button id="navLogsTab" onclick="switchTab('logs')" class="nav-tab hidden flex flex-col items-center text-rose-600"><i class="fa-solid fa-clock-rotate-left text-sm"></i><span>Log Trail</span></button>
+        <!-- Navigation Bar -->
+        <nav id="bottomNav" class="hidden bg-white/95 backdrop-blur-md border-t border-slate-200 px-3 py-2.5 flex justify-around text-[10px] font-bold text-slate-500 z-40 shadow-lg">
+            <button onclick="switchTab('home')" class="nav-tab interactive-btn active flex flex-col items-center text-blue-600 transition"><i class="fa-solid fa-house-medical text-base mb-0.5"></i><span>Home</span></button>
+            <button onclick="switchTab('pets')" class="nav-tab interactive-btn flex flex-col items-center hover:text-slate-800 transition"><i class="fa-solid fa-paw text-base mb-0.5"></i><span>Pets</span></button>
+            <button onclick="switchTab('reservations')" class="nav-tab interactive-btn flex flex-col items-center hover:text-slate-800 transition"><i class="fa-solid fa-calendar-check text-base mb-0.5"></i><span>Bookings</span></button>
+            <button id="navApprovalsTab" onclick="switchTab('approvals')" class="nav-tab interactive-btn hidden flex flex-col items-center text-amber-600 hover:text-amber-700 transition"><i class="fa-solid fa-clipboard-check text-base mb-0.5"></i><span>Approvals</span></button>
+            <button id="navLogsTab" onclick="switchTab('logs')" class="nav-tab interactive-btn hidden flex flex-col items-center text-rose-600 hover:text-rose-700 transition"><i class="fa-solid fa-clock-rotate-left text-base mb-0.5"></i><span>Audit Log</span></button>
         </nav>
 
-        <!-- IN-APP MODAL: SHIFT SWAP REQUEST (Staff -> Admin Approval) -->
+        <!-- IN-APP MODAL: SHIFT SWAP REQUEST -->
         <div id="shiftModal" class="hidden fixed inset-0 z-50 pointer-events-none">
             <div class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm"></div>
             <div class="flex min-h-full items-center justify-center p-4 relative z-10">
-                <div class="bg-white rounded-2xl p-5 w-full max-w-xs text-left shadow-2xl space-y-3">
-                    <div class="flex justify-between items-center border-b pb-2">
-                        <h3 class="text-sm font-extrabold text-navy"><i class="fa-solid fa-calendar-day text-gold mr-1"></i> Request Shift Swap</h3>
-                        <button type="button" onclick="closeShiftModal()" class="text-slate-400 text-xs"><i class="fa-solid fa-xmark"></i></button>
+                <div class="bg-white rounded-3xl p-5 w-full max-w-xs text-left shadow-2xl space-y-3.5 border border-slate-100 animate-modal-pop">
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                        <h3 class="text-sm font-black text-slate-900"><i class="fa-solid fa-calendar-day text-amber-500 mr-1.5"></i> Request Shift Swap</h3>
+                        <button type="button" onclick="closeShiftModal()" class="interactive-btn text-slate-400 hover:text-slate-600 text-xs"><i class="fa-solid fa-xmark"></i></button>
                     </div>
-                    <form onsubmit="handleShiftSubmit(event)" class="space-y-2.5">
+                    <form onsubmit="handleShiftSubmit(event)" class="space-y-3">
                         <div>
-                            <label class="block text-[10px] font-bold text-navy uppercase">Requested Shift Type</label>
-                            <select id="modalShiftType" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-xl text-xs outline-none">
+                            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Requested Shift</label>
+                            <select id="modalShiftType" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-blue-500">
                                 <option value="Morning Shift (7:00 AM - 3:00 PM)">Morning Shift (7:00 AM - 3:00 PM)</option>
                                 <option value="Night Shift (10:00 PM - 6:00 AM)">Night Shift (10:00 PM - 6:00 AM)</option>
-                                <option value="Weekend Emergency Duty">Weekend Emergency Duty</option>
+                                <option value="Weekend Duty Coverage">Weekend Duty Coverage</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-[10px] font-bold text-navy uppercase">Reason for Swap</label>
-                            <textarea id="modalShiftReason" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-xl text-xs outline-none" rows="2" placeholder="e.g. Vet emergency coverage" required></textarea>
+                            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Reason for Swap</label>
+                            <textarea id="modalShiftReason" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none focus:border-blue-500" rows="2" placeholder="e.g. Emergency veterinary call coverage" required></textarea>
                         </div>
                         <div class="flex space-x-2 pt-2">
-                            <button type="submit" class="w-full bg-navy text-white text-xs font-bold py-2 rounded-xl">Submit to Admin</button>
-                            <button type="button" onclick="closeShiftModal()" class="w-full bg-slate-200 text-slate-700 text-xs font-bold py-2 rounded-xl">Cancel</button>
+                            <button type="submit" class="interactive-btn w-full btn-gradient text-white text-xs font-bold py-2.5 rounded-xl shadow">Submit to Admin</button>
+                            <button type="button" onclick="closeShiftModal()" class="interactive-btn w-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-2.5 rounded-xl transition">Cancel</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
 
-        <!-- IN-APP MODAL: DISCOUNT WAIVER REQUEST (Staff -> Admin Approval) -->
+        <!-- IN-APP MODAL: DISCOUNT WAIVER REQUEST -->
         <div id="discountModal" class="hidden fixed inset-0 z-50 pointer-events-none">
             <div class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm"></div>
             <div class="flex min-h-full items-center justify-center p-4 relative z-10">
-                <div class="bg-white rounded-2xl p-5 w-full max-w-xs text-left shadow-2xl space-y-3">
-                    <div class="flex justify-between items-center border-b pb-2">
-                        <h3 class="text-sm font-extrabold text-navy"><i class="fa-solid fa-file-invoice-dollar text-emerald-600 mr-1"></i> Medical Fee Discount Request</h3>
-                        <button type="button" onclick="closeDiscountModal()" class="text-slate-400 text-xs"><i class="fa-solid fa-xmark"></i></button>
+                <div class="bg-white rounded-3xl p-5 w-full max-w-xs text-left shadow-2xl space-y-3.5 border border-slate-100 animate-modal-pop">
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                        <h3 class="text-sm font-black text-slate-900"><i class="fa-solid fa-file-invoice-dollar text-emerald-600 mr-1.5"></i> Medical Discount Request</h3>
+                        <button type="button" onclick="closeDiscountModal()" class="interactive-btn text-slate-400 hover:text-slate-600 text-xs"><i class="fa-solid fa-xmark"></i></button>
                     </div>
-                    <form onsubmit="handleDiscountSubmit(event)" class="space-y-2.5">
+                    <form onsubmit="handleDiscountSubmit(event)" class="space-y-3">
                         <div>
-                            <label class="block text-[10px] font-bold text-navy uppercase">Discount Amount (PHP)</label>
-                            <input type="number" id="modalDiscountAmount" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-xl text-xs outline-none" placeholder="e.g. 500" min="100" required>
+                            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Discount Amount (PHP)</label>
+                            <input type="number" id="modalDiscountAmount" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-blue-500" placeholder="e.g. 500" min="100" required>
                         </div>
                         <div>
-                            <label class="block text-[10px] font-bold text-navy uppercase">Clinical Justification</label>
-                            <textarea id="modalDiscountReason" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-xl text-xs outline-none" rows="2" placeholder="e.g. Stray animal emergency clinic discount" required></textarea>
+                            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Clinical Justification</label>
+                            <textarea id="modalDiscountReason" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none focus:border-blue-500" rows="2" placeholder="e.g. Emergency rescue care discount" required></textarea>
                         </div>
                         <div class="flex space-x-2 pt-2">
-                            <button type="submit" class="w-full bg-emerald-600 text-white text-xs font-bold py-2 rounded-xl">Request Admin Approval</button>
-                            <button type="button" onclick="closeDiscountModal()" class="w-full bg-slate-200 text-slate-700 text-xs font-bold py-2 rounded-xl">Cancel</button>
+                            <button type="submit" class="interactive-btn w-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-2.5 rounded-xl shadow transition">Submit Request</button>
+                            <button type="button" onclick="closeDiscountModal()" class="interactive-btn w-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-2.5 rounded-xl transition">Cancel</button>
                         </div>
                     </form>
                 </div>
@@ -271,35 +329,35 @@
         <div id="addPetModal" class="hidden fixed inset-0 z-50 pointer-events-none">
             <div class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm"></div>
             <div class="flex min-h-full items-center justify-center p-4 relative z-10">
-                <div class="bg-white rounded-2xl p-5 w-full max-w-xs text-left shadow-2xl space-y-3">
-                    <div class="flex justify-between items-center border-b pb-2">
-                        <h3 class="text-sm font-extrabold text-navy"><i class="fa-solid fa-paw text-gold mr-1"></i> Add New Pet Profile</h3>
-                        <button type="button" onclick="closePetModal()" class="text-slate-400 text-xs"><i class="fa-solid fa-xmark"></i></button>
+                <div class="bg-white rounded-3xl p-5 w-full max-w-xs text-left shadow-2xl space-y-3.5 border border-slate-100 animate-modal-pop">
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                        <h3 class="text-sm font-black text-slate-900"><i class="fa-solid fa-paw text-amber-500 mr-1.5"></i> Register Pet Profile</h3>
+                        <button type="button" onclick="closePetModal()" class="interactive-btn text-slate-400 hover:text-slate-600 text-xs"><i class="fa-solid fa-xmark"></i></button>
                     </div>
-                    <form onsubmit="handlePetSubmit(event)" class="space-y-2.5">
+                    <form onsubmit="handlePetSubmit(event)" class="space-y-3">
                         <div>
-                            <label class="block text-[10px] font-bold text-navy uppercase">Pet Name</label>
-                            <input type="text" id="modalPetName" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-xl text-xs outline-none" placeholder="e.g. Buddy" required>
+                            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Pet Name</label>
+                            <input type="text" id="modalPetName" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-blue-500" placeholder="e.g. Buddy" required>
                         </div>
                         <div>
-                            <label class="block text-[10px] font-bold text-navy uppercase">Species</label>
-                            <select id="modalPetSpecies" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-xl text-xs outline-none">
+                            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Species</label>
+                            <select id="modalPetSpecies" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-blue-500">
                                 <option value="Dog">Dog</option>
                                 <option value="Cat">Cat</option>
                                 <option value="Other">Other</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-[10px] font-bold text-navy uppercase">Breed</label>
-                            <input type="text" id="modalPetBreed" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-xl text-xs outline-none" placeholder="e.g. Golden Retriever">
+                            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Breed</label>
+                            <input type="text" id="modalPetBreed" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none focus:border-blue-500" placeholder="e.g. Golden Retriever">
                         </div>
                         <div>
-                            <label class="block text-[10px] font-bold text-navy uppercase">Age (Years)</label>
-                            <input type="number" id="modalPetAge" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-xl text-xs outline-none" value="2" min="1">
+                            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Age (Years)</label>
+                            <input type="number" id="modalPetAge" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-blue-500" value="2" min="1">
                         </div>
                         <div class="flex space-x-2 pt-2">
-                            <button type="submit" class="w-full bg-navy text-white text-xs font-bold py-2 rounded-xl">Save Pet Profile</button>
-                            <button type="button" onclick="closePetModal()" class="w-full bg-slate-200 text-slate-700 text-xs font-bold py-2 rounded-xl">Cancel</button>
+                            <button type="submit" class="interactive-btn w-full btn-gradient text-white text-xs font-bold py-2.5 rounded-xl shadow">Save Profile</button>
+                            <button type="button" onclick="closePetModal()" class="interactive-btn w-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-2.5 rounded-xl transition">Cancel</button>
                         </div>
                     </form>
                 </div>
@@ -310,36 +368,36 @@
         <div id="bookingModal" class="hidden fixed inset-0 z-50 pointer-events-none">
             <div class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm"></div>
             <div class="flex min-h-full items-center justify-center p-4 relative z-10">
-                <div class="bg-white rounded-2xl p-5 w-full max-w-xs text-left shadow-2xl space-y-3">
-                    <div class="flex justify-between items-center border-b pb-2">
-                        <h3 class="text-sm font-extrabold text-navy"><i class="fa-solid fa-calendar-plus text-gold mr-1"></i> New Boarding Reservation</h3>
-                        <button type="button" onclick="closeBookingModal()" class="text-slate-400 text-xs"><i class="fa-solid fa-xmark"></i></button>
+                <div class="bg-white rounded-3xl p-5 w-full max-w-xs text-left shadow-2xl space-y-3.5 border border-slate-100 animate-modal-pop">
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                        <h3 class="text-sm font-black text-slate-900"><i class="fa-solid fa-calendar-plus text-amber-500 mr-1.5"></i> Boarding Reservation</h3>
+                        <button type="button" onclick="closeBookingModal()" class="interactive-btn text-slate-400 hover:text-slate-600 text-xs"><i class="fa-solid fa-xmark"></i></button>
                     </div>
-                    <form onsubmit="handleBookingSubmit(event)" class="space-y-2.5">
+                    <form onsubmit="handleBookingSubmit(event)" class="space-y-3">
                         <div>
-                            <label class="block text-[10px] font-bold text-navy uppercase">Select Registered Pet</label>
-                            <select id="modalBookingPet" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-xl text-xs outline-none" required>
+                            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Select Registered Pet</label>
+                            <select id="modalBookingPet" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-blue-500" required>
                                 <!-- Populated dynamically -->
                             </select>
                         </div>
                         <div>
-                            <label class="block text-[10px] font-bold text-navy uppercase">Boarding Unit</label>
-                            <select id="modalBookingUnit" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-xl text-xs outline-none">
-                                <option value="1">Deluxe Kennel 101 (Dog)</option>
-                                <option value="2">Cat Condo A1 (Cat)</option>
+                            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Boarding Suite / Kennel</label>
+                            <select id="modalBookingUnit" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-blue-500">
+                                <option value="1">Deluxe Kennel 101 (Dog Suite)</option>
+                                <option value="2">Cat Condo A1 (Cat Suite)</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-[10px] font-bold text-navy uppercase">Check-In Date & Time</label>
-                            <input type="datetime-local" id="modalBookingCheckIn" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-xl text-xs outline-none" required>
+                            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Check-In Date & Time</label>
+                            <input type="datetime-local" id="modalBookingCheckIn" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none focus:border-blue-500" required>
                         </div>
                         <div>
-                            <label class="block text-[10px] font-bold text-navy uppercase">Check-Out Date & Time</label>
-                            <input type="datetime-local" id="modalBookingCheckOut" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-xl text-xs outline-none" required>
+                            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Check-Out Date & Time</label>
+                            <input type="datetime-local" id="modalBookingCheckOut" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none focus:border-blue-500" required>
                         </div>
                         <div class="flex space-x-2 pt-2">
-                            <button type="submit" class="w-full bg-navy text-white text-xs font-bold py-2 rounded-xl">Submit Booking</button>
-                            <button type="button" onclick="closeBookingModal()" class="w-full bg-slate-200 text-slate-700 text-xs font-bold py-2 rounded-xl">Cancel</button>
+                            <button type="submit" class="interactive-btn w-full btn-gradient text-white text-xs font-bold py-2.5 rounded-xl shadow">Submit Reservation</button>
+                            <button type="button" onclick="closeBookingModal()" class="interactive-btn w-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-2.5 rounded-xl transition">Cancel</button>
                         </div>
                     </form>
                 </div>
@@ -350,13 +408,15 @@
         <div id="logoutModal" class="hidden fixed inset-0 z-50 pointer-events-none">
             <div class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm"></div>
             <div class="flex min-h-full items-center justify-center p-4 relative z-10">
-                <div class="bg-white rounded-2xl p-5 w-full max-w-xs text-center shadow-2xl">
-                    <i class="fa-solid fa-right-from-bracket text-rose-500 text-2xl mb-2"></i>
-                    <h3 class="text-base font-black text-navy">Logout Confirmation</h3>
-                    <p class="text-xs text-slate-500 mt-1 mb-4">Are you sure you want to sign out of PetStay?</p>
+                <div class="bg-white rounded-3xl p-6 w-full max-w-xs text-center shadow-2xl border border-slate-100 animate-modal-pop">
+                    <div class="w-12 h-12 bg-rose-50 text-rose-500 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                        <i class="fa-solid fa-arrow-right-from-bracket text-lg"></i>
+                    </div>
+                    <h3 class="text-base font-black text-slate-900">End Portal Session?</h3>
+                    <p class="text-xs text-slate-500 mt-1 mb-5 leading-relaxed">You will be logged out of PetStay Portal.</p>
                     <div class="space-y-2">
-                        <button type="button" onclick="confirmLogout()" class="w-full rounded-xl bg-rose-600 py-2 text-xs font-bold text-white">Yes, Sign Out</button>
-                        <button type="button" onclick="closeLogoutModal()" class="w-full rounded-xl bg-slate-200 py-2 text-xs font-bold text-slate-700">Cancel</button>
+                        <button type="button" onclick="confirmLogout()" class="interactive-btn w-full rounded-xl bg-rose-600 hover:bg-rose-700 py-2.5 text-xs font-extrabold text-white shadow-md transition">Confirm Sign Out</button>
+                        <button type="button" onclick="closeLogoutModal()" class="interactive-btn w-full rounded-xl bg-slate-100 hover:bg-slate-200 py-2.5 text-xs font-bold text-slate-700 transition">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -364,7 +424,7 @@
 
     </div>
 
-    <!-- SUPABASE REST API JS ENGINE -->
+    <!-- SUPABASE REST API ENGINE -->
     <script>
         const SUPABASE_URL = "https://mtfvkupuogjnwiwhofmo.supabase.co/rest/v1/";
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im10ZnZrdXB1b2dqbndpd2hvZm1vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE3MDE4NTIsImV4cCI6MjEwNzI3Nzg1Mn0.55DnV5ibnm7Di3CeQQCebRRAQj7lE7eIVcU522dylD8";
@@ -424,8 +484,8 @@
         function showAlert(msg, type = 'error') {
             const box = document.getElementById('appAlert');
             document.getElementById('appAlertMsg').innerText = msg;
-            box.className = `mb-3 p-3 rounded-xl shadow-md text-xs font-semibold flex items-center justify-between ${type === 'error' ? 'bg-rose-100 text-rose-800 border border-rose-300' : 'bg-emerald-100 text-emerald-800 border border-emerald-300'}`;
-            document.getElementById('appAlertIcon').className = `fa-solid ${type === 'error' ? 'fa-circle-exclamation text-rose-600' : 'fa-circle-check text-emerald-600'} text-sm`;
+            box.className = `mb-4 p-3.5 rounded-2xl shadow-card text-xs font-bold flex items-center justify-between animate-fade-in ${type === 'error' ? 'bg-rose-50 text-rose-800 border border-rose-200' : 'bg-emerald-50 text-emerald-800 border border-emerald-200'}`;
+            document.getElementById('appAlertIcon').className = `fa-solid ${type === 'error' ? 'fa-circle-exclamation text-rose-500' : 'fa-circle-check text-emerald-500'} text-sm`;
             box.classList.remove('hidden');
         }
 
@@ -446,15 +506,15 @@
             if (mode === 'register') {
                 document.getElementById('registerForm').classList.remove('hidden');
                 document.getElementById('authTitle').innerText = 'Create Account';
-                document.getElementById('toggleAuthText').innerHTML = `Already registered? <button type="button" onclick="switchAuthMode('login')" class="text-skyblue font-bold hover:underline ml-1">Sign in here</button>`;
+                document.getElementById('toggleAuthText').innerHTML = `Already registered? <button type="button" onclick="switchAuthMode('login')" class="interactive-btn text-blue-600 font-bold hover:underline ml-1">Sign in here</button>`;
             } else if (mode === 'otp_request') {
                 document.getElementById('otpForm').classList.remove('hidden');
-                document.getElementById('authTitle').innerText = 'OTP Account Recovery';
-                document.getElementById('toggleAuthText').innerHTML = `Remember credentials? <button type="button" onclick="switchAuthMode('login')" class="text-skyblue font-bold hover:underline ml-1">Sign in here</button>`;
+                document.getElementById('authTitle').innerText = 'OTP Recovery';
+                document.getElementById('toggleAuthText').innerHTML = `Remember credentials? <button type="button" onclick="switchAuthMode('login')" class="interactive-btn text-blue-600 font-bold hover:underline ml-1">Sign in here</button>`;
             } else {
                 document.getElementById('loginForm').classList.remove('hidden');
                 document.getElementById('authTitle').innerText = 'Welcome Back';
-                document.getElementById('toggleAuthText').innerHTML = `Don't have an account? <button type="button" onclick="switchAuthMode('register')" class="text-skyblue font-bold hover:underline ml-1">Register here</button>`;
+                document.getElementById('toggleAuthText').innerHTML = `Don't have an account? <button type="button" onclick="switchAuthMode('register')" class="interactive-btn text-blue-600 font-bold hover:underline ml-1">Register here</button>`;
             }
         }
 
@@ -615,8 +675,13 @@
 
         function switchTab(tab) {
             currentTab = tab;
-            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('text-navy', 'font-extrabold'));
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('text-blue-600', 'font-black'));
             
+            const dynamicContent = document.getElementById('dynamicDashboardContent');
+            dynamicContent.classList.remove('animate-fade-in');
+            void dynamicContent.offsetWidth; // Trigger DOM reflow for CSS animation reset
+            dynamicContent.classList.add('animate-fade-in');
+
             if (tab === 'home') loadHomeView();
             else if (tab === 'pets') loadPetsView();
             else if (tab === 'reservations') loadReservationsView();
@@ -628,53 +693,77 @@
             const container = document.getElementById('dynamicDashboardContent');
             if (currentUser.role === 'owner') {
                 container.innerHTML = `
-                    <div class="bg-white p-4 rounded-2xl shadow border border-slate-200">
-                        <h3 class="font-black text-navy text-xs mb-2"><i class="fa-solid fa-plus-circle text-gold mr-1"></i> Quick Reserve Boarding Slot</h3>
-                        <p class="text-[11px] text-slate-500 mb-3">Submit a new reservation to show relationship with Facility Staff / Employee role.</p>
-                        <button onclick="switchTab('reservations')" class="w-full bg-navy text-white text-xs font-bold py-2 rounded-xl">Go to Reservation Form</button>
+                    <div class="grid grid-cols-2 gap-3 mb-3">
+                        <div class="bg-white p-3.5 rounded-2xl shadow-card border border-slate-100 flex flex-col justify-between hover:border-amber-200 transition">
+                            <i class="fa-solid fa-dog text-amber-500 text-xl mb-2"></i>
+                            <div>
+                                <div class="text-[10px] font-bold text-slate-400 uppercase">My Pets</div>
+                                <div class="text-lg font-black text-slate-800">Pet Records</div>
+                            </div>
+                        </div>
+                        <div class="bg-white p-3.5 rounded-2xl shadow-card border border-slate-100 flex flex-col justify-between hover:border-blue-200 transition">
+                            <i class="fa-solid fa-calendar-check text-blue-600 text-xl mb-2"></i>
+                            <div>
+                                <div class="text-[10px] font-bold text-slate-400 uppercase">Boarding</div>
+                                <div class="text-lg font-black text-slate-800">Reservations</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-5 rounded-3xl shadow-card border border-slate-100 space-y-3">
+                        <h3 class="font-black text-slate-900 text-xs flex items-center"><i class="fa-solid fa-plus-circle text-amber-500 mr-2 text-sm"></i> Boarding Reservation Slot</h3>
+                        <p class="text-[11px] text-slate-500 leading-relaxed">Book deluxe suites and kennels for pet boarding with 24/7 clinical supervision.</p>
+                        <button onclick="switchTab('reservations')" class="interactive-btn w-full btn-gradient text-white text-xs font-bold py-3 rounded-2xl shadow-md flex items-center justify-center space-x-2">
+                            <span>Open Booking Form</span>
+                            <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </button>
                     </div>`;
             } else if (currentUser.role === 'employee') {
                 container.innerHTML = `
-                    <div class="bg-white p-4 rounded-2xl shadow border border-slate-200 space-y-3">
+                    <div class="bg-white p-5 rounded-3xl shadow-card border border-slate-100 space-y-4">
                         <div>
-                            <h3 class="font-black text-navy text-xs mb-1"><i class="fa-solid fa-user-check text-skyblue mr-1"></i> Employee Staff Queue</h3>
-                            <p class="text-[11px] text-slate-500 mb-2">Review, approve, or decline customer reservations submitted by Pet Owners.</p>
-                            <button onclick="switchTab('reservations')" class="w-full bg-skyblue text-white text-xs font-bold py-2 rounded-xl">Review Pending Requests</button>
+                            <h3 class="font-black text-slate-900 text-xs mb-1 flex items-center"><i class="fa-solid fa-user-check text-blue-600 mr-2 text-sm"></i> Staff Queue & Operations</h3>
+                            <p class="text-[11px] text-slate-500 mb-3 leading-relaxed">Review and approve customer boarding reservations.</p>
+                            <button onclick="switchTab('reservations')" class="interactive-btn w-full bg-blue-50 border border-blue-200 text-blue-700 hover:bg-blue-100 text-xs font-bold py-2.5 rounded-2xl transition flex items-center justify-center space-x-2">
+                                <span>Review Pending Bookings</span>
+                                <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                            </button>
                         </div>
                         <hr class="border-slate-100">
                         <div>
-                            <h3 class="font-black text-amber-700 text-xs mb-1"><i class="fa-solid fa-user-shield mr-1"></i> Staff Actions Requiring Admin Approval</h3>
-                            <div class="grid grid-cols-2 gap-2 mt-2">
-                                <button onclick="openShiftModal()" class="bg-slate-100 border border-slate-300 hover:bg-slate-200 text-navy text-[10px] font-bold p-2.5 rounded-xl text-left space-y-1">
-                                    <i class="fa-solid fa-calendar-day text-amber-600 block text-sm"></i>
-                                    <span>Request Shift Swap</span>
+                            <h3 class="font-black text-slate-900 text-xs mb-2 flex items-center"><i class="fa-solid fa-shield-halved text-amber-500 mr-2 text-sm"></i> Actions Requiring Admin Approval</h3>
+                            <div class="grid grid-cols-2 gap-2.5">
+                                <button onclick="openShiftModal()" class="interactive-btn bg-slate-50 border border-slate-200 hover:bg-slate-100 p-3 rounded-2xl text-left transition space-y-1">
+                                    <i class="fa-solid fa-calendar-day text-amber-500 text-base block"></i>
+                                    <span class="text-[11px] font-extrabold text-slate-800 block">Shift Swap</span>
+                                    <span class="text-[9px] text-slate-400 block">Request duty swap</span>
                                 </button>
-                                <button onclick="openDiscountModal()" class="bg-slate-100 border border-slate-300 hover:bg-slate-200 text-navy text-[10px] font-bold p-2.5 rounded-xl text-left space-y-1">
-                                    <i class="fa-solid fa-file-invoice-dollar text-emerald-600 block text-sm"></i>
-                                    <span>Request Medical Waiver</span>
+                                <button onclick="openDiscountModal()" class="interactive-btn bg-slate-50 border border-slate-200 hover:bg-slate-100 p-3 rounded-2xl text-left transition space-y-1">
+                                    <i class="fa-solid fa-file-invoice-dollar text-emerald-600 text-base block"></i>
+                                    <span class="text-[11px] font-extrabold text-slate-800 block">Medical Discount</span>
+                                    <span class="text-[9px] text-slate-400 block">Request fee waiver</span>
                                 </button>
                             </div>
                         </div>
                     </div>`;
             } else {
                 container.innerHTML = `
-                    <div class="bg-white p-4 rounded-2xl shadow border border-slate-200 space-y-3">
-                        <h3 class="font-black text-navy text-xs mb-2"><i class="fa-solid fa-shield-halved text-rose-600 mr-1"></i> Admin System Controls</h3>
-                        <div class="grid grid-cols-2 gap-2">
-                            <button onclick="switchTab('approvals')" class="bg-amber-600 text-white text-xs font-bold p-3 rounded-xl flex flex-col items-center justify-center space-y-1 shadow">
-                                <i class="fa-solid fa-clipboard-check text-base"></i>
+                    <div class="bg-white p-5 rounded-3xl shadow-card border border-slate-100 space-y-3">
+                        <h3 class="font-black text-slate-900 text-xs mb-1 flex items-center"><i class="fa-solid fa-sliders text-rose-600 mr-2 text-sm"></i> Clinic Administrator Workspace</h3>
+                        <p class="text-[11px] text-slate-500 leading-relaxed">System approvals queue and audit trail security management.</p>
+                        <div class="grid grid-cols-2 gap-3 pt-1">
+                            <button onclick="switchTab('approvals')" class="interactive-btn bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-black p-3.5 rounded-2xl flex flex-col items-center justify-center space-y-1.5 shadow-md transition">
+                                <i class="fa-solid fa-clipboard-check text-lg"></i>
                                 <span>Staff Requests</span>
                             </button>
-                            <button onclick="switchTab('logs')" class="bg-rose-600 text-white text-xs font-bold p-3 rounded-xl flex flex-col items-center justify-center space-y-1 shadow">
-                                <i class="fa-solid fa-clock-rotate-left text-base"></i>
-                                <span>Audit Log Trail</span>
+                            <button onclick="switchTab('logs')" class="interactive-btn bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold p-3.5 rounded-2xl flex flex-col items-center justify-center space-y-1.5 shadow-md transition">
+                                <i class="fa-solid fa-clock-rotate-left text-lg"></i>
+                                <span>Audit Log</span>
                             </button>
                         </div>
                     </div>`;
             }
         }
 
-        // STAFF ACTIONS REQUIRING ADMIN APPROVAL
         function openShiftModal() { document.getElementById('shiftModal').classList.remove('hidden', 'pointer-events-none'); }
         function closeShiftModal() { document.getElementById('shiftModal').classList.add('hidden', 'pointer-events-none'); }
 
@@ -701,41 +790,40 @@
             showAlert("Fee Discount Request submitted! Waiting for Admin Approval.", "success");
         }
 
-        // ADMIN STAFF APPROVALS VIEW
         async function loadAdminApprovalsView() {
             const container = document.getElementById('dynamicDashboardContent');
             if (currentUser.role !== 'admin') {
-                container.innerHTML = `<p class="text-xs text-rose-600 font-bold">Access Denied: Only Administrators can review staff requests.</p>`;
+                container.innerHTML = `<p class="text-xs text-rose-600 font-bold">Access Denied: Administrators only.</p>`;
                 return;
             }
 
-            container.innerHTML = '<p class="text-xs text-slate-500 text-center py-4">Loading pending staff requests...</p>';
+            container.innerHTML = '<p class="text-xs text-slate-400 text-center py-6 font-medium">Fetching pending approvals...</p>';
 
             try {
                 const logs = await supabaseRequest('log_trails?action=like.*Pending Admin*&order=log_id.desc');
 
                 let html = `
-                    <div class="bg-white p-4 rounded-2xl shadow border border-slate-200 space-y-3">
+                    <div class="bg-white p-5 rounded-3xl shadow-card border border-slate-100 space-y-3">
                         <div class="flex justify-between items-center">
-                            <h3 class="font-bold text-xs text-amber-700"><i class="fa-solid fa-clipboard-check mr-1"></i> Admin Staff Approvals Queue</h3>
+                            <h3 class="font-black text-xs text-slate-900 flex items-center"><i class="fa-solid fa-clipboard-check text-amber-500 mr-2 text-sm"></i> Pending Staff Approvals</h3>
                         </div>
-                        <div class="space-y-2 max-h-96 overflow-y-auto custom-scrollbar">`;
+                        <div class="space-y-2.5 max-h-96 overflow-y-auto custom-scrollbar">`;
 
                 if (!logs || logs.length === 0) {
-                    html += `<p class="text-[11px] text-slate-400 py-2">No pending staff approval requests.</p>`;
+                    html += `<p class="text-[11px] text-slate-400 py-3 text-center">No pending requests requiring approval.</p>`;
                 } else {
                     logs.forEach(l => {
                         html += `
-                            <div class="p-3 bg-amber-50/50 rounded-xl border border-amber-200 space-y-1 text-xs">
-                                <div class="flex justify-between font-bold text-navy">
-                                    <span>${l.action}</span>
-                                    <span class="text-[10px] text-amber-700 bg-amber-100 px-1.5 py-0.5 rounded">Requires Approval</span>
+                            <div class="p-3.5 bg-amber-50/60 rounded-2xl border border-amber-200/80 space-y-2 text-xs transition hover:shadow-sm">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-extrabold text-slate-900">${l.action}</span>
+                                    <span class="text-[9px] font-black text-amber-800 bg-amber-200/80 px-2 py-0.5 rounded-full uppercase">Pending</span>
                                 </div>
-                                <div class="text-[11px] text-slate-700">Staff: <span class="font-bold">${l.username}</span></div>
-                                <div class="text-[10px] text-slate-500">${l.details}</div>
+                                <div class="text-[11px] font-bold text-slate-700">Staff: <span class="text-blue-600">${l.username}</span></div>
+                                <div class="text-[10px] text-slate-500 leading-relaxed bg-white p-2 rounded-xl border border-amber-100">${l.details}</div>
                                 <div class="flex space-x-2 pt-1">
-                                    <button onclick="approveStaffRequest(${l.log_id}, '${l.username}')" class="bg-emerald-600 text-white text-[10px] font-bold px-3 py-1 rounded-lg shadow">Approve Request</button>
-                                    <button onclick="declineStaffRequest(${l.log_id}, '${l.username}')" class="bg-rose-600 text-white text-[10px] font-bold px-3 py-1 rounded-lg shadow">Reject Request</button>
+                                    <button onclick="approveStaffRequest(${l.log_id}, '${l.username}')" class="interactive-btn bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-bold px-3 py-1.5 rounded-xl shadow-sm transition">Approve</button>
+                                    <button onclick="declineStaffRequest(${l.log_id}, '${l.username}')" class="interactive-btn bg-rose-600 hover:bg-rose-700 text-white text-[10px] font-bold px-3 py-1.5 rounded-xl shadow-sm transition">Reject</button>
                                 </div>
                             </div>`;
                     });
@@ -762,31 +850,31 @@
 
         async function loadPetsView() {
             const container = document.getElementById('dynamicDashboardContent');
-            container.innerHTML = '<p class="text-xs text-slate-500 text-center py-4">Loading pet records from Supabase...</p>';
+            container.innerHTML = '<p class="text-xs text-slate-400 text-center py-6 font-medium">Loading pet profiles...</p>';
 
             try {
                 const endpoint = currentUser.role === 'owner' ? `pets?owner_id=eq.${currentUser.user_id}` : `pets`;
                 const pets = await supabaseRequest(endpoint);
 
                 let html = `
-                    <div class="bg-white p-4 rounded-2xl shadow border border-slate-200 space-y-3">
+                    <div class="bg-white p-5 rounded-3xl shadow-card border border-slate-100 space-y-3">
                         <div class="flex justify-between items-center">
-                            <h3 class="font-bold text-xs text-navy"><i class="fa-solid fa-paw text-gold mr-1"></i> Registered Pets</h3>
-                            <button onclick="openPetModal()" class="bg-navy text-white text-[10px] font-bold px-2.5 py-1 rounded-lg">+ Add Pet</button>
+                            <h3 class="font-black text-xs text-slate-900 flex items-center"><i class="fa-solid fa-paw text-amber-500 mr-2 text-sm"></i> Registered Pets</h3>
+                            <button onclick="openPetModal()" class="interactive-btn btn-gradient text-white text-[10px] font-extrabold px-3 py-1.5 rounded-xl shadow">+ Register Pet</button>
                         </div>
                         <div class="space-y-2">`;
 
                 if (pets.length === 0) {
-                    html += `<p class="text-[11px] text-slate-400 py-2">No pets registered yet.</p>`;
+                    html += `<p class="text-[11px] text-slate-400 py-3 text-center">No pet profiles found.</p>`;
                 } else {
                     pets.forEach(p => {
                         html += `
-                            <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-200 flex justify-between items-center text-xs">
+                            <div class="p-3 bg-slate-50/80 rounded-2xl border border-slate-200/80 flex justify-between items-center text-xs transition hover:bg-slate-100/80">
                                 <div>
-                                    <div class="font-bold text-navy">${p.pet_name} (${p.species})</div>
-                                    <div class="text-[10px] text-slate-500">${p.breed || 'Standard Breed'} • ${p.age || 1} yrs old</div>
+                                    <div class="font-black text-slate-900">${p.pet_name} <span class="text-[10px] text-blue-600 font-bold">(${p.species})</span></div>
+                                    <div class="text-[10px] text-slate-400 font-medium">${p.breed || 'Standard Breed'} • ${p.age || 1} yrs old</div>
                                 </div>
-                                <button onclick="deletePet(${p.pet_id})" class="text-rose-600 hover:text-rose-800 text-xs p-1"><i class="fa-solid fa-trash"></i></button>
+                                <button onclick="deletePet(${p.pet_id})" class="interactive-btn text-slate-300 hover:text-rose-600 text-xs p-2 transition"><i class="fa-solid fa-trash-can"></i></button>
                             </div>`;
                     });
                 }
@@ -847,7 +935,7 @@
 
         async function loadReservationsView() {
             const container = document.getElementById('dynamicDashboardContent');
-            container.innerHTML = '<p class="text-xs text-slate-500 text-center py-4">Loading reservations from Supabase...</p>';
+            container.innerHTML = '<p class="text-xs text-slate-400 text-center py-6 font-medium">Fetching reservation records...</p>';
 
             try {
                 let selectQuery = `reservations?select=*,pets(pet_name,species,breed),users(full_name,username)&order=reservation_id.desc`;
@@ -858,39 +946,39 @@
                 let reservations = await supabaseRequest(selectQuery);
 
                 let html = `
-                    <div class="bg-white p-4 rounded-2xl shadow border border-slate-200 space-y-3">
+                    <div class="bg-white p-5 rounded-3xl shadow-card border border-slate-100 space-y-3">
                         <div class="flex justify-between items-center">
-                            <h3 class="font-bold text-xs text-navy"><i class="fa-solid fa-calendar-check text-skyblue mr-1"></i> Boarding Reservations</h3>
-                            ${currentUser.role === 'owner' ? `<button onclick="openBookingModal()" class="bg-gold text-navy text-[10px] font-extrabold px-2.5 py-1 rounded-lg">+ New Booking</button>` : ''}
+                            <h3 class="font-black text-xs text-slate-900 flex items-center"><i class="fa-solid fa-calendar-check text-blue-600 mr-2 text-sm"></i> Boarding Reservations</h3>
+                            ${currentUser.role === 'owner' ? `<button onclick="openBookingModal()" class="interactive-btn btn-gold text-slate-950 text-[10px] font-black px-3 py-1.5 rounded-xl shadow">+ New Booking</button>` : ''}
                         </div>
-                        <div class="space-y-2">`;
+                        <div class="space-y-2.5">`;
 
                 if (!reservations || reservations.length === 0) {
-                    html += `<p class="text-[11px] text-slate-400 py-2">No active reservation transactions.</p>`;
+                    html += `<p class="text-[11px] text-slate-400 py-3 text-center">No active boarding bookings.</p>`;
                 } else {
                     reservations.forEach(r => {
                         const ownerName = r.users ? r.users.full_name : 'Customer';
                         const petInfo = r.pets ? `${r.pets.pet_name} (${r.pets.species})` : 'Pet';
 
                         html += `
-                            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-1.5 text-xs">
+                            <div class="p-3.5 bg-slate-50/90 rounded-2xl border border-slate-200/80 space-y-2 text-xs transition hover:border-slate-300">
                                 <div class="flex justify-between items-center">
-                                    <span class="font-bold text-navy">Reservation #${r.reservation_id}</span>
-                                    <span class="px-2 py-0.5 rounded text-[10px] font-bold ${r.status === 'Approved' ? 'bg-emerald-100 text-emerald-800' : r.status === 'Declined' ? 'bg-rose-100 text-rose-800' : 'bg-amber-100 text-amber-800'}">${r.status}</span>
+                                    <span class="font-black text-slate-900">Reservation #${r.reservation_id}</span>
+                                    <span class="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase ${r.status === 'Approved' ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : r.status === 'Declined' ? 'bg-rose-100 text-rose-800 border border-rose-300' : 'bg-amber-100 text-amber-800 border border-amber-300'}">${r.status}</span>
                                 </div>
-                                <div class="bg-white p-2 rounded-lg border border-slate-100 space-y-0.5">
-                                    <div class="text-[11px] font-bold text-slate-800"><i class="fa-solid fa-user text-skyblue mr-1"></i> Owner: <span class="text-navy">${ownerName}</span></div>
-                                    <div class="text-[11px] font-bold text-slate-800"><i class="fa-solid fa-paw text-gold mr-1"></i> Pet: <span class="text-navy">${petInfo}</span></div>
+                                <div class="bg-white p-2.5 rounded-xl border border-slate-100 space-y-1">
+                                    <div class="text-[11px] font-bold text-slate-700 flex items-center"><i class="fa-solid fa-user text-blue-500 mr-2 text-xs"></i> Owner: <span class="text-slate-900 ml-1 font-black">${ownerName}</span></div>
+                                    <div class="text-[11px] font-bold text-slate-700 flex items-center"><i class="fa-solid fa-paw text-amber-500 mr-2 text-xs"></i> Pet: <span class="text-slate-900 ml-1 font-black">${petInfo}</span></div>
                                 </div>
-                                <div class="text-[10px] text-slate-600 space-y-0.5">
-                                    <div><i class="fa-solid fa-clock text-slate-400 mr-1"></i> Check-in: <span class="font-semibold text-slate-800">${formatDateTime(r.check_in_date)}</span></div>
-                                    <div><i class="fa-solid fa-clock text-slate-400 mr-1"></i> Check-out: <span class="font-semibold text-slate-800">${formatDateTime(r.check_out_date)}</span></div>
+                                <div class="text-[10px] text-slate-500 space-y-0.5 font-medium">
+                                    <div><i class="fa-solid fa-clock text-slate-400 mr-1.5"></i> Check-in: <span class="font-bold text-slate-800">${formatDateTime(r.check_in_date)}</span></div>
+                                    <div><i class="fa-solid fa-clock text-slate-400 mr-1.5"></i> Check-out: <span class="font-bold text-slate-800">${formatDateTime(r.check_out_date)}</span></div>
                                 </div>
 
                                 ${(currentUser.role === 'employee' || currentUser.role === 'admin') && r.status === 'Pending' ? `
                                     <div class="flex space-x-2 pt-1">
-                                        <button onclick="updateReservationStatus(${r.reservation_id}, 'Approved')" class="bg-emerald-600 text-white text-[10px] font-bold px-3 py-1 rounded-lg shadow">Approve</button>
-                                        <button onclick="updateReservationStatus(${r.reservation_id}, 'Declined')" class="bg-rose-600 text-white text-[10px] font-bold px-3 py-1 rounded-lg shadow">Decline</button>
+                                        <button onclick="updateReservationStatus(${r.reservation_id}, 'Approved')" class="interactive-btn bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-bold px-3 py-1.5 rounded-xl shadow-sm transition">Approve</button>
+                                        <button onclick="updateReservationStatus(${r.reservation_id}, 'Declined')" class="interactive-btn bg-rose-600 hover:bg-rose-700 text-white text-[10px] font-bold px-3 py-1.5 rounded-xl shadow-sm transition">Decline</button>
                                     </div>
                                 ` : ''}
                             </div>`;
@@ -900,7 +988,7 @@
                 html += `</div></div>`;
                 container.innerHTML = html;
             } catch (err) {
-                container.innerHTML = `<p class="text-xs text-rose-600">Error loading reservations: ${err.message}</p>`;
+                container.innerHTML = `<p class="text-xs text-rose-600">Error: ${err.message}</p>`;
             }
         }
 
@@ -950,7 +1038,7 @@
 
                 await recordLog('Submit Reservation', `Reservation submitted for ${formatDateTime(checkInRaw)}`);
                 closeBookingModal();
-                showAlert("Boarding reservation submitted successfully with exact date & time!", "success");
+                showAlert("Boarding reservation submitted successfully!", "success");
                 loadReservationsView();
             } catch (e) {
                 showAlert(`Booking error: ${e.message}`);
@@ -971,35 +1059,35 @@
         async function loadLogTrailsView() {
             const container = document.getElementById('dynamicDashboardContent');
             if (currentUser.role !== 'admin') {
-                container.innerHTML = `<p class="text-xs text-rose-600 font-bold">Access Denied: Log trails can only be viewed by Admin accounts.</p>`;
+                container.innerHTML = `<p class="text-xs text-rose-600 font-bold">Access Denied: Administrators only.</p>`;
                 return;
             }
 
-            container.innerHTML = '<p class="text-xs text-slate-500 text-center py-4">Loading security audit log trails...</p>';
+            container.innerHTML = '<p class="text-xs text-slate-400 text-center py-6 font-medium">Fetching audit trail logs...</p>';
 
             try {
-                const logs = await supabaseRequest('log_trails?order=log_id.desc&limit=20');
+                const logs = await supabaseRequest('log_trails?order=log_id.desc&limit=25');
 
                 let html = `
-                    <div class="bg-white p-4 rounded-2xl shadow border border-slate-200 space-y-2">
-                        <h3 class="font-bold text-xs text-rose-700"><i class="fa-solid fa-clock-rotate-left mr-1"></i> System Log Trail Audit</h3>
-                        <div class="space-y-1.5 max-h-96 overflow-y-auto custom-scrollbar">`;
+                    <div class="bg-white p-5 rounded-3xl shadow-card border border-slate-100 space-y-3">
+                        <h3 class="font-black text-xs text-rose-600 flex items-center"><i class="fa-solid fa-shield-halved mr-2 text-sm"></i> Security Audit Log Trail</h3>
+                        <div class="space-y-2 max-h-96 overflow-y-auto custom-scrollbar">`;
 
                 logs.forEach(l => {
                     html += `
-                        <div class="p-2 bg-slate-50 rounded-lg border border-slate-200 text-[10px]">
-                            <div class="flex justify-between font-bold text-slate-800">
-                                <span>${l.username} (${l.action})</span>
-                                <span class="text-slate-500">${formatDateTime(l.created_at)}</span>
+                        <div class="p-2.5 bg-slate-50/80 rounded-xl border border-slate-200/80 text-[10px]">
+                            <div class="flex justify-between font-bold text-slate-900">
+                                <span>${l.username} <span class="text-slate-400">(${l.action})</span></span>
+                                <span class="text-slate-400 font-normal">${formatDateTime(l.created_at)}</span>
                             </div>
-                            <div class="text-slate-600 mt-0.5">${l.details || ''}</div>
+                            <div class="text-slate-500 mt-0.5 font-medium">${l.details || ''}</div>
                         </div>`;
                 });
 
                 html += `</div></div>`;
                 container.innerHTML = html;
             } catch (err) {
-                container.innerHTML = `<p class="text-xs text-rose-600">Error loading logs: ${err.message}</p>`;
+                container.innerHTML = `<p class="text-xs text-rose-600">Error: ${err.message}</p>`;
             }
         }
 
