@@ -38,8 +38,8 @@
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         
         /* Dynamic Layout Engine */
-        .app-transition { transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
-        .mobile-mode { max-width: 430px; height: 880px; margin: 0 auto; }
+        .app-transition { transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        .mobile-mode { max-width: 420px; height: 860px; max-height: 92vh; margin: 0 auto; }
         .desktop-mode { max-width: 1400px; height: 95vh; margin: 0 auto; }
         
         .glass-header { background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(12px); }
@@ -47,11 +47,11 @@
         .btn-gold { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
         .btn-emerald { background: linear-gradient(135deg, #10b981 0%, #047857 100%); }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes modalPop { from { opacity: 0; transform: scale(0.92) translateY(15px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes modalPop { from { opacity: 0; transform: scale(0.94) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
         
-        .animate-fade-in { animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        .animate-modal-pop { animation: modalPop 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .animate-fade-in { animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .animate-modal-pop { animation: modalPop 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         
         .interactive-btn { transition: all 0.15s ease-in-out; }
         .interactive-btn:active { transform: scale(0.96); }
@@ -59,45 +59,45 @@
         .hover-card:hover { transform: translateY(-2px); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1); }
     </style>
 </head>
-<body class="bg-slate-950 font-sans text-slate-800 antialiased min-h-screen flex items-center justify-center p-0 sm:p-4 md:p-8">
+<body class="bg-slate-950 font-sans text-slate-800 antialiased min-h-screen flex items-center justify-center p-2 sm:p-4 md:p-6 select-none">
 
     <!-- Dynamic App Shell -->
-    <div id="appShell" class="w-full bg-slate-900 sm:rounded-[48px] shadow-2xl border-0 sm:border-[10px] sm:border-slate-800 overflow-hidden relative flex flex-col h-full mobile-mode app-transition">
+    <div id="appShell" class="w-full bg-slate-900 sm:rounded-[44px] shadow-2xl border-0 sm:border-[8px] sm:border-slate-800 overflow-hidden relative flex flex-col mobile-mode app-transition">
 
         <!-- Top Dynamic Island Notch (Mobile Only) -->
-        <div id="dynamicNotch" class="hidden sm:flex absolute top-0 left-1/2 -translate-x-1/2 w-36 h-6 bg-slate-800 rounded-b-2xl z-50 items-center justify-center space-x-3 transition-opacity">
-            <div class="w-2.5 h-2.5 rounded-full bg-slate-950 border border-slate-700/50"></div>
-            <div class="w-10 h-1.5 rounded-full bg-slate-950 border border-slate-700/50"></div>
+        <div id="dynamicNotch" class="hidden sm:flex absolute top-0 left-1/2 -translate-x-1/2 w-32 h-5 bg-slate-800 rounded-b-xl z-50 items-center justify-center space-x-2 transition-opacity">
+            <div class="w-2 h-2 rounded-full bg-slate-950 border border-slate-700/50"></div>
+            <div class="w-8 h-1 rounded-full bg-slate-950 border border-slate-700/50"></div>
         </div>
 
         <!-- Global Header -->
-        <header class="glass-header text-white sticky top-0 z-40 px-5 py-4 flex items-center justify-between border-b border-slate-800/80 shadow-lg shrink-0">
-            <div class="flex items-center space-x-3">
-                <div class="bg-gradient-to-tr from-amber-500 to-amber-300 p-2 rounded-2xl text-slate-950 font-black text-sm flex items-center justify-center w-10 h-10 shadow-glow transition transform hover:rotate-6">
-                    <i class="fa-solid fa-staff-snake text-lg"></i>
+        <header class="glass-header text-white sticky top-0 z-40 px-4 py-3 sm:pt-4 flex items-center justify-between border-b border-slate-800/80 shadow-lg shrink-0">
+            <div class="flex items-center space-x-2.5">
+                <div class="bg-gradient-to-tr from-amber-500 to-amber-300 p-2 rounded-xl text-slate-950 font-black text-sm flex items-center justify-center w-9 h-9 shadow-glow transition transform hover:rotate-6">
+                    <i class="fa-solid fa-staff-snake text-base"></i>
                 </div>
                 <div>
-                    <div class="flex items-center space-x-1.5">
-                        <span class="font-black text-xl tracking-tight text-white leading-none">Pet<span class="text-amber-400">Stay</span></span>
-                        <span id="headerTag" class="text-[9px] bg-slate-800 text-sky-400 border border-sky-500/30 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider ml-1">CLINIC</span>
+                    <div class="flex items-center space-x-1">
+                        <span class="font-black text-lg tracking-tight text-white leading-none">Pet<span class="text-amber-400">Stay</span></span>
+                        <span id="headerTag" class="text-[8px] bg-slate-800 text-sky-400 border border-sky-500/30 px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wider ml-1">CLINIC</span>
                     </div>
-                    <span id="headerSub" class="text-[11px] text-slate-400 block font-medium mt-0.5">Veterinary Enterprise Portal</span>
+                    <span id="headerSub" class="text-[10px] text-slate-400 block font-medium mt-0.5">Veterinary Enterprise Portal</span>
                 </div>
             </div>
 
-            <div class="flex items-center space-x-3">
-                <div id="navUserBadge" class="hidden flex items-center space-x-2 bg-slate-800/90 px-3 py-1.5 rounded-full text-xs font-semibold border border-slate-700/60 shadow-inner">
+            <div class="flex items-center space-x-2">
+                <div id="navUserBadge" class="hidden flex items-center space-x-1.5 bg-slate-800/90 px-2.5 py-1 rounded-full text-[11px] font-semibold border border-slate-700/60 shadow-inner">
                     <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
                     <span id="navUsername" class="text-slate-200 tracking-wide">User</span>
                 </div>
-                <button id="navLogoutBtn" onclick="openLogoutModal()" class="interactive-btn hidden bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 text-sm p-2.5 rounded-xl border border-rose-500/20">
+                <button id="navLogoutBtn" onclick="openLogoutModal()" class="interactive-btn hidden bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 text-xs p-2 rounded-lg border border-rose-500/20">
                     <i class="fa-solid fa-power-off"></i>
                 </button>
             </div>
         </header>
 
         <!-- Main Workspace Area -->
-        <div class="flex flex-row flex-grow overflow-hidden relative z-10 bg-slate-50">
+        <div class="flex flex-row flex-grow overflow-hidden relative z-10 bg-slate-50 min-h-0">
             
             <!-- Desktop Sidebar Navigation (Admin Only - Hidden on Mobile) -->
             <aside id="desktopSidebar" class="hidden w-64 bg-slate-900 border-r border-slate-800 text-slate-400 flex-col py-6 px-4 space-y-2 shrink-0 overflow-y-auto custom-scrollbar">
@@ -119,91 +119,91 @@
             </aside>
 
             <!-- Content Viewport -->
-            <main class="flex-grow overflow-y-auto custom-scrollbar p-4 md:p-6 lg:p-8 flex flex-col justify-start relative">
+            <main class="flex-grow overflow-y-auto custom-scrollbar p-3.5 sm:p-5 flex flex-col justify-start relative">
 
                 <!-- Global Alert -->
-                <div id="appAlert" class="hidden mb-5 p-4 rounded-2xl shadow-card text-sm font-bold flex items-center justify-between transition-all duration-300 animate-fade-in shrink-0 z-20">
-                    <div class="flex items-center space-x-3">
-                        <i id="appAlertIcon" class="fa-solid text-lg"></i>
+                <div id="appAlert" class="hidden mb-4 p-3.5 rounded-2xl shadow-card text-xs font-bold flex items-center justify-between transition-all duration-300 animate-fade-in shrink-0 z-20">
+                    <div class="flex items-center space-x-2.5">
+                        <i id="appAlertIcon" class="fa-solid text-base"></i>
                         <span id="appAlertMsg"></span>
                     </div>
-                    <button type="button" onclick="dismissAlert()" class="interactive-btn opacity-60 hover:opacity-100 p-2"><i class="fa-solid fa-xmark"></i></button>
+                    <button type="button" onclick="dismissAlert()" class="interactive-btn opacity-60 hover:opacity-100 p-1.5"><i class="fa-solid fa-xmark"></i></button>
                 </div>
 
                 <!-- AUTHENTICATION SECTION -->
-                <section id="authSection" class="w-full max-w-md mx-auto space-y-6 my-auto animate-fade-in">
-                    <div class="bg-white rounded-[32px] shadow-glass border border-slate-200/80 overflow-hidden">
-                        <div class="bg-slate-900 p-8 text-center text-white border-b border-slate-800 relative overflow-hidden">
-                            <div class="absolute -right-8 -bottom-8 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl"></div>
-                            <div class="absolute -left-8 -top-8 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl"></div>
-                            <h2 id="authTitle" class="text-3xl font-black tracking-tight relative z-10">Secure Login</h2>
-                            <p id="authSubtitle" class="text-sm text-slate-400 mt-2 relative z-10">Access your veterinary workspace</p>
+                <section id="authSection" class="w-full max-w-md mx-auto space-y-4 my-auto animate-fade-in">
+                    <div class="bg-white rounded-[28px] shadow-glass border border-slate-200/80 overflow-hidden">
+                        <div class="bg-slate-900 p-6 text-center text-white border-b border-slate-800 relative overflow-hidden">
+                            <div class="absolute -right-8 -bottom-8 w-28 h-28 bg-amber-500/10 rounded-full blur-xl"></div>
+                            <div class="absolute -left-8 -top-8 w-28 h-28 bg-blue-500/10 rounded-full blur-xl"></div>
+                            <h2 id="authTitle" class="text-2xl font-black tracking-tight relative z-10">Secure Login</h2>
+                            <p id="authSubtitle" class="text-xs text-slate-400 mt-1 relative z-10">Access your veterinary workspace</p>
                         </div>
 
-                        <div class="p-8">
+                        <div class="p-6">
                             <!-- LOGIN FORM -->
-                            <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-5" novalidate>
+                            <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-4" novalidate>
                                 <div>
-                                    <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Username or Email</label>
+                                    <label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wider mb-1.5">Username or Email</label>
                                     <div class="relative">
-                                        <span class="absolute left-4 top-3.5 text-slate-400 text-sm"><i class="fa-solid fa-user"></i></span>
-                                        <input type="text" id="loginUsername" class="block w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-blue-500 transition focus:bg-white" placeholder="admin, staff, or johndoe">
+                                        <span class="absolute left-3.5 top-3 text-slate-400 text-xs"><i class="fa-solid fa-user"></i></span>
+                                        <input type="text" id="loginUsername" class="block w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-blue-500 transition focus:bg-white" placeholder="admin, staff, or johndoe">
                                     </div>
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Password</label>
+                                    <label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wider mb-1.5">Password</label>
                                     <div class="relative">
-                                        <span class="absolute left-4 top-3.5 text-slate-400 text-sm"><i class="fa-solid fa-lock"></i></span>
-                                        <input type="password" id="loginPassword" class="block w-full pl-10 pr-12 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-blue-500 transition focus:bg-white" placeholder="••••••••">
-                                        <button type="button" onclick="togglePassword('loginPassword', this)" class="absolute right-4 top-3.5 text-slate-400 hover:text-slate-600"><i class="fa-solid fa-eye"></i></button>
+                                        <span class="absolute left-3.5 top-3 text-slate-400 text-xs"><i class="fa-solid fa-lock"></i></span>
+                                        <input type="password" id="loginPassword" class="block w-full pl-9 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-blue-500 transition focus:bg-white" placeholder="••••••••">
+                                        <button type="button" onclick="togglePassword('loginPassword', this)" class="absolute right-3.5 top-3 text-slate-400 hover:text-slate-600"><i class="fa-solid fa-eye text-xs"></i></button>
                                     </div>
                                 </div>
-                                <div class="flex justify-end text-xs"><button type="button" onclick="switchAuthMode('otp_request')" class="text-blue-600 font-bold hover:underline">Forgot Password? Request OTP</button></div>
-                                <button type="submit" class="interactive-btn w-full btn-gradient text-white font-black py-3.5 rounded-xl shadow-lg flex items-center justify-center space-x-2 mt-2">
-                                    <span>Access Portal</span><i class="fa-solid fa-arrow-right text-sm"></i>
+                                <div class="flex justify-end text-[11px]"><button type="button" onclick="switchAuthMode('otp_request')" class="text-blue-600 font-bold hover:underline">Forgot Password? Request OTP</button></div>
+                                <button type="submit" class="interactive-btn w-full btn-gradient text-white font-black py-3 rounded-xl shadow-md flex items-center justify-center space-x-2 mt-1">
+                                    <span class="text-xs">Access Portal</span><i class="fa-solid fa-arrow-right text-xs"></i>
                                 </button>
                             </form>
 
                             <!-- REGISTER FORM -->
-                            <form id="registerForm" onsubmit="handleRegister(event)" class="hidden space-y-4" novalidate>
-                                <input type="text" id="regFullName" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium outline-none focus:border-blue-500" placeholder="Full Name">
-                                <input type="email" id="regEmail" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium outline-none focus:border-blue-500" placeholder="Email Address">
-                                <input type="text" id="regUsername" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium outline-none focus:border-blue-500" placeholder="Username">
-                                <select id="regRole" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-blue-500">
+                            <form id="registerForm" onsubmit="handleRegister(event)" class="hidden space-y-3" novalidate>
+                                <input type="text" id="regFullName" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none focus:border-blue-500" placeholder="Full Name">
+                                <input type="email" id="regEmail" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none focus:border-blue-500" placeholder="Email Address">
+                                <input type="text" id="regUsername" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none focus:border-blue-500" placeholder="Username">
+                                <select id="regRole" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-blue-500">
                                     <option value="owner">Pet Owner (Client)</option>
                                     <option value="employee">Clinic Staff (Veterinarian / Tech)</option>
                                     <option value="admin">Clinic Administrator</option>
                                 </select>
-                                <input type="password" id="regPassword" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium outline-none focus:border-blue-500" placeholder="Password (Min 8 chars, symbols)">
-                                <input type="password" id="regConfirmPassword" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium outline-none focus:border-blue-500" placeholder="Confirm Password">
-                                <button type="submit" class="interactive-btn w-full btn-gold text-slate-950 font-black py-3.5 rounded-xl shadow-md mt-2">Create Account</button>
+                                <input type="password" id="regPassword" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none focus:border-blue-500" placeholder="Password (Min 8 chars, symbols)">
+                                <input type="password" id="regConfirmPassword" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none focus:border-blue-500" placeholder="Confirm Password">
+                                <button type="submit" class="interactive-btn w-full btn-gold text-slate-950 font-black py-3 rounded-xl shadow-md mt-1 text-xs">Create Account</button>
                             </form>
 
                             <!-- OTP FORM -->
-                            <form id="otpForm" onsubmit="handleOtpSubmit(event)" class="hidden space-y-4">
-                                <p class="text-sm text-slate-500 leading-relaxed mb-4">Enter your username or email to generate a recovery OTP code into your database record.</p>
-                                <input type="text" id="otpUsername" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium outline-none focus:border-blue-500" placeholder="Username or Email">
-                                <div id="otpInputGroup" class="hidden space-y-3 mt-4">
-                                    <input type="text" id="otpCode" class="w-full px-4 py-3 bg-amber-50 border border-amber-200 rounded-xl text-lg tracking-widest text-center font-black outline-none" placeholder="6-DIGIT OTP">
-                                    <input type="password" id="otpNewPassword" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium outline-none focus:border-blue-500" placeholder="New Password">
+                            <form id="otpForm" onsubmit="handleOtpSubmit(event)" class="hidden space-y-3">
+                                <p class="text-xs text-slate-500 leading-relaxed mb-3">Enter your username or email to generate a recovery OTP code into your database record.</p>
+                                <input type="text" id="otpUsername" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none focus:border-blue-500" placeholder="Username or Email">
+                                <div id="otpInputGroup" class="hidden space-y-2.5 mt-3">
+                                    <input type="text" id="otpCode" class="w-full px-3.5 py-2.5 bg-amber-50 border border-amber-200 rounded-xl text-base tracking-widest text-center font-black outline-none" placeholder="6-DIGIT OTP">
+                                    <input type="password" id="otpNewPassword" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none focus:border-blue-500" placeholder="New Password">
                                 </div>
-                                <button type="submit" id="otpBtn" class="interactive-btn w-full btn-gradient text-white font-bold py-3.5 rounded-xl mt-2 shadow-md">Request OTP Code</button>
+                                <button type="submit" id="otpBtn" class="interactive-btn w-full btn-gradient text-white font-bold py-3 rounded-xl mt-1 shadow-md text-xs">Request OTP Code</button>
                             </form>
 
-                            <div class="mt-6 pt-5 border-t border-slate-100 text-center text-sm text-slate-500 font-medium">
+                            <div class="mt-4 pt-4 border-t border-slate-100 text-center text-xs text-slate-500 font-medium">
                                 <span id="toggleAuthText">Don't have an account? <button onclick="switchAuthMode('register')" class="text-blue-600 font-bold hover:underline ml-1">Register here</button></span>
                             </div>
 
                             <!-- DEMO ACCOUNTS -->
-                            <div class="mt-6 p-4 bg-slate-900 rounded-2xl text-xs space-y-3 shadow-card border border-slate-800">
+                            <div class="mt-4 p-3 bg-slate-900 rounded-2xl text-[11px] space-y-2 shadow-card border border-slate-800">
                                 <div class="text-amber-400 font-black tracking-wide flex items-center justify-between">
-                                    <span><i class="fa-solid fa-key mr-2"></i> DEMO ACCOUNTS</span>
-                                    <span class="text-[10px] text-slate-400 font-normal">Pass: <code class="bg-slate-800 px-1 py-0.5 rounded">Password123!</code></span>
+                                    <span><i class="fa-solid fa-key mr-1.5"></i> DEMO ACCOUNTS</span>
+                                    <span class="text-[9px] text-slate-400 font-normal">Pass: <code class="bg-slate-800 px-1 py-0.5 rounded">Password123!</code></span>
                                 </div>
-                                <div class="grid grid-cols-3 gap-2">
-                                    <button onclick="fillDemo('johndoe')" class="interactive-btn bg-slate-800 hover:bg-slate-700 text-slate-200 py-2 rounded-xl font-bold transition border border-slate-700">1. Owner</button>
-                                    <button onclick="fillDemo('staff')" class="interactive-btn bg-slate-800 hover:bg-slate-700 text-slate-200 py-2 rounded-xl font-bold transition border border-slate-700">2. Staff</button>
-                                    <button onclick="fillDemo('admin')" class="interactive-btn bg-slate-800 hover:bg-slate-700 text-amber-300 py-2 rounded-xl font-black border border-amber-500/40 transition">3. Admin</button>
+                                <div class="grid grid-cols-3 gap-1.5">
+                                    <button onclick="fillDemo('johndoe')" class="interactive-btn bg-slate-800 hover:bg-slate-700 text-slate-200 py-1.5 rounded-xl font-bold transition border border-slate-700 text-[10px]">1. Owner</button>
+                                    <button onclick="fillDemo('staff')" class="interactive-btn bg-slate-800 hover:bg-slate-700 text-slate-200 py-1.5 rounded-xl font-bold transition border border-slate-700 text-[10px]">2. Staff</button>
+                                    <button onclick="fillDemo('admin')" class="interactive-btn bg-slate-800 hover:bg-slate-700 text-amber-300 py-1.5 rounded-xl font-black border border-amber-500/40 transition text-[10px]">3. Admin</button>
                                 </div>
                             </div>
                         </div>
@@ -214,18 +214,18 @@
                 <section id="dashboardSection" class="hidden w-full h-full flex flex-col">
                     
                     <!-- Mobile Top Banner (Visible mainly on mobile/owner/staff views) -->
-                    <div id="userBanner" class="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 rounded-[28px] p-5 md:p-6 text-white shadow-xl border border-slate-800 relative overflow-hidden animate-fade-in mb-5 shrink-0 hover-card">
-                        <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-blue-500/20 rounded-full blur-3xl"></div>
-                        <div class="flex items-center justify-between mb-3 relative z-10">
-                            <span id="dashRoleBadge" class="bg-amber-500/20 text-amber-300 border border-amber-400/30 text-[10px] md:text-xs font-black uppercase px-3 py-1 rounded-full tracking-widest">ROLE</span>
-                            <span class="text-xs text-emerald-400 font-bold bg-slate-900/50 px-3 py-1 rounded-full border border-slate-700"><i class="fa-solid fa-circle text-[8px] mr-1.5 animate-pulse"></i> Live Sync</span>
+                    <div id="userBanner" class="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 rounded-2xl p-4 text-white shadow-lg border border-slate-800 relative overflow-hidden animate-fade-in mb-3.5 shrink-0 hover-card">
+                        <div class="absolute -right-8 -bottom-8 w-32 h-32 bg-blue-500/20 rounded-full blur-2xl"></div>
+                        <div class="flex items-center justify-between mb-2 relative z-10">
+                            <span id="dashRoleBadge" class="bg-amber-500/20 text-amber-300 border border-amber-400/30 text-[9px] font-black uppercase px-2.5 py-0.5 rounded-full tracking-wider">ROLE</span>
+                            <span class="text-[10px] text-emerald-400 font-bold bg-slate-900/50 px-2.5 py-0.5 rounded-full border border-slate-700"><i class="fa-solid fa-circle text-[6px] mr-1 animate-pulse"></i> Live Sync</span>
                         </div>
-                        <h1 class="text-2xl font-black tracking-tight relative z-10">Welcome, <span id="dashUserFullName" class="text-amber-400">User</span></h1>
-                        <p class="text-[11px] text-slate-400 mt-1 relative z-10">Veterinary Clinical Management Workspace</p>
+                        <h1 class="text-lg font-black tracking-tight relative z-10">Welcome, <span id="dashUserFullName" class="text-amber-400">User</span></h1>
+                        <p class="text-[10px] text-slate-400 mt-0.5 relative z-10">Veterinary Clinical Management Workspace</p>
                     </div>
 
                     <!-- Dynamic Content Injection Area -->
-                    <div id="dynamicDashboardContent" class="flex-grow space-y-4 pb-20 md:pb-5">
+                    <div id="dynamicDashboardContent" class="flex-grow space-y-3 pb-3">
                         <!-- Content goes here based on active tab -->
                     </div>
                 </section>
@@ -233,8 +233,8 @@
             </main>
         </div>
 
-        <!-- Mobile Bottom Navigation Bar (Dynamic for Owner & Staff) -->
-        <nav id="bottomNav" class="hidden bg-white/95 backdrop-blur-md border-t border-slate-200 px-2 py-3 flex justify-around text-[10px] font-bold text-slate-500 z-40 shadow-[0_-10px_40px_rgba(0,0,0,0.05)] rounded-b-[48px] shrink-0">
+        <!-- Mobile Bottom Navigation Bar (Dynamic Flex Child for Owner & Staff) -->
+        <nav id="bottomNav" class="hidden bg-white/95 backdrop-blur-md border-t border-slate-200 px-2 py-2 flex justify-around text-[10px] font-bold text-slate-500 z-40 shadow-[0_-8px_20px_rgba(0,0,0,0.06)] rounded-b-[40px] shrink-0">
             <!-- Tabs injected dynamically via Javascript based on Role -->
         </nav>
 
@@ -243,30 +243,30 @@
         =========================================== -->
 
         <!-- SHIFT SWAP MODAL (Staff) -->
-        <div id="shiftModal" class="hidden fixed inset-0 z-50 pointer-events-none">
-            <div class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm"></div>
-            <div class="flex min-h-full items-center justify-center p-4 relative z-10">
-                <div class="bg-white rounded-[28px] p-6 w-full max-w-sm text-left shadow-2xl animate-modal-pop border border-slate-100">
-                    <div class="flex justify-between items-center border-b border-slate-100 pb-4 mb-4">
-                        <h3 class="text-base font-black text-slate-900"><i class="fa-solid fa-calendar-day text-amber-500 mr-2"></i> Shift Swap Request</h3>
-                        <button type="button" onclick="closeShiftModal()" class="text-slate-400 hover:text-rose-500 bg-slate-50 hover:bg-rose-50 rounded-full w-8 h-8 flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
+        <div id="shiftModal" class="hidden absolute inset-0 z-50 pointer-events-none">
+            <div class="absolute inset-0 bg-slate-950/80 backdrop-blur-sm pointer-events-auto"></div>
+            <div class="flex min-h-full items-center justify-center p-3 relative z-10 pointer-events-auto">
+                <div class="bg-white rounded-[24px] p-5 w-full max-w-xs text-left shadow-2xl animate-modal-pop border border-slate-100">
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-3 mb-3">
+                        <h3 class="text-xs font-black text-slate-900"><i class="fa-solid fa-calendar-day text-amber-500 mr-1.5"></i> Shift Swap Request</h3>
+                        <button type="button" onclick="closeShiftModal()" class="text-slate-400 hover:text-rose-500 bg-slate-50 hover:bg-rose-50 rounded-full w-7 h-7 flex items-center justify-center transition"><i class="fa-solid fa-xmark text-xs"></i></button>
                     </div>
-                    <form onsubmit="handleShiftSubmit(event)" class="space-y-4">
+                    <form onsubmit="handleShiftSubmit(event)" class="space-y-3">
                         <div>
-                            <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Target Shift</label>
-                            <select id="modalShiftType" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-blue-500">
+                            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Target Shift</label>
+                            <select id="modalShiftType" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-blue-500">
                                 <option value="Morning Shift (7 AM - 3 PM)">Morning Shift (7 AM - 3 PM)</option>
                                 <option value="Night Shift (10 PM - 6 AM)">Night Shift (10 PM - 6 AM)</option>
                                 <option value="Weekend Coverage">Weekend Coverage</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Justification</label>
-                            <textarea id="modalShiftReason" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium outline-none focus:border-blue-500" rows="3" placeholder="Explain why you need this swap..." required></textarea>
+                            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Justification</label>
+                            <textarea id="modalShiftReason" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none focus:border-blue-500" rows="2" placeholder="Explain why you need this swap..." required></textarea>
                         </div>
-                        <div class="flex space-x-3 pt-3">
-                            <button type="button" onclick="closeShiftModal()" class="w-1/3 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-bold py-3 rounded-xl transition">Cancel</button>
-                            <button type="submit" class="w-2/3 btn-gradient text-white text-sm font-black py-3 rounded-xl shadow-lg hover:shadow-xl transition">Submit to Admin</button>
+                        <div class="flex space-x-2 pt-2">
+                            <button type="button" onclick="closeShiftModal()" class="w-1/3 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-2.5 rounded-xl transition">Cancel</button>
+                            <button type="submit" class="w-2/3 btn-gradient text-white text-xs font-black py-2.5 rounded-xl shadow-md transition">Submit</button>
                         </div>
                     </form>
                 </div>
@@ -274,29 +274,29 @@
         </div>
 
         <!-- DISCOUNT WAIVER MODAL (Staff) -->
-        <div id="discountModal" class="hidden fixed inset-0 z-50 pointer-events-none">
-            <div class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm"></div>
-            <div class="flex min-h-full items-center justify-center p-4 relative z-10">
-                <div class="bg-white rounded-[28px] p-6 w-full max-w-sm text-left shadow-2xl animate-modal-pop border border-slate-100">
-                    <div class="flex justify-between items-center border-b border-slate-100 pb-4 mb-4">
-                        <h3 class="text-base font-black text-slate-900"><i class="fa-solid fa-file-invoice-dollar text-emerald-500 mr-2"></i> Discount Waiver Request</h3>
-                        <button type="button" onclick="closeDiscountModal()" class="text-slate-400 hover:text-rose-500 bg-slate-50 hover:bg-rose-50 rounded-full w-8 h-8 flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
+        <div id="discountModal" class="hidden absolute inset-0 z-50 pointer-events-none">
+            <div class="absolute inset-0 bg-slate-950/80 backdrop-blur-sm pointer-events-auto"></div>
+            <div class="flex min-h-full items-center justify-center p-3 relative z-10 pointer-events-auto">
+                <div class="bg-white rounded-[24px] p-5 w-full max-w-xs text-left shadow-2xl animate-modal-pop border border-slate-100">
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-3 mb-3">
+                        <h3 class="text-xs font-black text-slate-900"><i class="fa-solid fa-file-invoice-dollar text-emerald-500 mr-1.5"></i> Discount Waiver</h3>
+                        <button type="button" onclick="closeDiscountModal()" class="text-slate-400 hover:text-rose-500 bg-slate-50 hover:bg-rose-50 rounded-full w-7 h-7 flex items-center justify-center transition"><i class="fa-solid fa-xmark text-xs"></i></button>
                     </div>
-                    <form onsubmit="handleDiscountSubmit(event)" class="space-y-4">
+                    <form onsubmit="handleDiscountSubmit(event)" class="space-y-3">
                         <div>
-                            <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Amount (PHP)</label>
+                            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Amount (PHP)</label>
                             <div class="relative">
-                                <span class="absolute left-4 top-3 text-slate-400 font-bold">₱</span>
-                                <input type="number" id="modalDiscountAmount" class="w-full pl-8 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-emerald-500" placeholder="500" min="50" required>
+                                <span class="absolute left-3 top-2 text-slate-400 font-bold text-xs">₱</span>
+                                <input type="number" id="modalDiscountAmount" class="w-full pl-7 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-emerald-500" placeholder="500" min="50" required>
                             </div>
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Clinical Reason</label>
-                            <textarea id="modalDiscountReason" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium outline-none focus:border-emerald-500" rows="3" placeholder="e.g. Rescue animal subsidy, staff discount..." required></textarea>
+                            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Clinical Reason</label>
+                            <textarea id="modalDiscountReason" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none focus:border-emerald-500" rows="2" placeholder="e.g. Rescue animal subsidy..." required></textarea>
                         </div>
-                        <div class="flex space-x-3 pt-3">
-                            <button type="button" onclick="closeDiscountModal()" class="w-1/3 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-bold py-3 rounded-xl transition">Cancel</button>
-                            <button type="submit" class="w-2/3 btn-emerald text-white text-sm font-black py-3 rounded-xl shadow-lg hover:shadow-xl transition">Request Approval</button>
+                        <div class="flex space-x-2 pt-2">
+                            <button type="button" onclick="closeDiscountModal()" class="w-1/3 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-2.5 rounded-xl transition">Cancel</button>
+                            <button type="submit" class="w-2/3 btn-emerald text-white text-xs font-black py-2.5 rounded-xl shadow-md transition">Request</button>
                         </div>
                     </form>
                 </div>
@@ -304,23 +304,23 @@
         </div>
 
         <!-- ADD NEW PET MODAL -->
-        <div id="addPetModal" class="hidden fixed inset-0 z-50 pointer-events-none">
-            <div class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm"></div>
-            <div class="flex min-h-full items-center justify-center p-4 relative z-10">
-                <div class="bg-white rounded-[28px] p-6 w-full max-w-sm text-left shadow-2xl animate-modal-pop border border-slate-100">
-                    <div class="flex justify-between items-center border-b border-slate-100 pb-4 mb-4">
-                        <h3 class="text-base font-black text-slate-900"><i class="fa-solid fa-paw text-amber-500 mr-2"></i> Register Pet Profile</h3>
-                        <button type="button" onclick="closePetModal()" class="text-slate-400 hover:text-rose-500 bg-slate-50 hover:bg-rose-50 rounded-full w-8 h-8 flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
+        <div id="addPetModal" class="hidden absolute inset-0 z-50 pointer-events-none">
+            <div class="absolute inset-0 bg-slate-950/80 backdrop-blur-sm pointer-events-auto"></div>
+            <div class="flex min-h-full items-center justify-center p-3 relative z-10 pointer-events-auto">
+                <div class="bg-white rounded-[24px] p-5 w-full max-w-xs text-left shadow-2xl animate-modal-pop border border-slate-100">
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-3 mb-3">
+                        <h3 class="text-xs font-black text-slate-900"><i class="fa-solid fa-paw text-amber-500 mr-1.5"></i> Register Pet Profile</h3>
+                        <button type="button" onclick="closePetModal()" class="text-slate-400 hover:text-rose-500 bg-slate-50 hover:bg-rose-50 rounded-full w-7 h-7 flex items-center justify-center transition"><i class="fa-solid fa-xmark text-xs"></i></button>
                     </div>
-                    <form onsubmit="handlePetSubmit(event)" class="space-y-4">
+                    <form onsubmit="handlePetSubmit(event)" class="space-y-3">
                         <div>
-                            <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Pet Name</label>
-                            <input type="text" id="modalPetName" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-blue-500" placeholder="e.g. Bella" required>
+                            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Pet Name</label>
+                            <input type="text" id="modalPetName" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-blue-500" placeholder="e.g. Bella" required>
                         </div>
-                        <div class="grid grid-cols-2 gap-3">
+                        <div class="grid grid-cols-2 gap-2">
                             <div>
-                                <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Species</label>
-                                <select id="modalPetSpecies" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-blue-500">
+                                <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Species</label>
+                                <select id="modalPetSpecies" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-blue-500">
                                     <option value="Dog">Dog</option>
                                     <option value="Cat">Cat</option>
                                     <option value="Bird">Bird</option>
@@ -328,17 +328,17 @@
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Age (Years)</label>
-                                <input type="number" id="modalPetAge" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-blue-500" value="1" min="0">
+                                <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Age (Yrs)</label>
+                                <input type="number" id="modalPetAge" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-blue-500" value="1" min="0">
                             </div>
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Breed / Markings</label>
-                            <input type="text" id="modalPetBreed" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium outline-none focus:border-blue-500" placeholder="e.g. Beagle mix">
+                            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Breed / Markings</label>
+                            <input type="text" id="modalPetBreed" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none focus:border-blue-500" placeholder="e.g. Beagle mix">
                         </div>
-                        <div class="flex space-x-3 pt-3">
-                            <button type="button" onclick="closePetModal()" class="w-1/3 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-bold py-3 rounded-xl transition">Cancel</button>
-                            <button type="submit" class="w-2/3 btn-gradient text-white text-sm font-black py-3 rounded-xl shadow-lg transition">Save Profile</button>
+                        <div class="flex space-x-2 pt-2">
+                            <button type="button" onclick="closePetModal()" class="w-1/3 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-2.5 rounded-xl transition">Cancel</button>
+                            <button type="submit" class="w-2/3 btn-gradient text-white text-xs font-black py-2.5 rounded-xl shadow-md transition">Save Profile</button>
                         </div>
                     </form>
                 </div>
@@ -346,22 +346,22 @@
         </div>
 
         <!-- NEW BOOKING MODAL -->
-        <div id="bookingModal" class="hidden fixed inset-0 z-50 pointer-events-none">
-            <div class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm"></div>
-            <div class="flex min-h-full items-center justify-center p-4 relative z-10">
-                <div class="bg-white rounded-[28px] p-6 w-full max-w-sm text-left shadow-2xl animate-modal-pop border border-slate-100">
-                    <div class="flex justify-between items-center border-b border-slate-100 pb-4 mb-4">
-                        <h3 class="text-base font-black text-slate-900"><i class="fa-solid fa-calendar-plus text-blue-500 mr-2"></i> Schedule Appointment</h3>
-                        <button type="button" onclick="closeBookingModal()" class="text-slate-400 hover:text-rose-500 bg-slate-50 hover:bg-rose-50 rounded-full w-8 h-8 flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
+        <div id="bookingModal" class="hidden absolute inset-0 z-50 pointer-events-none">
+            <div class="absolute inset-0 bg-slate-950/80 backdrop-blur-sm pointer-events-auto"></div>
+            <div class="flex min-h-full items-center justify-center p-3 relative z-10 pointer-events-auto">
+                <div class="bg-white rounded-[24px] p-5 w-full max-w-xs text-left shadow-2xl animate-modal-pop border border-slate-100">
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-3 mb-3">
+                        <h3 class="text-xs font-black text-slate-900"><i class="fa-solid fa-calendar-plus text-blue-500 mr-1.5"></i> Schedule Appointment</h3>
+                        <button type="button" onclick="closeBookingModal()" class="text-slate-400 hover:text-rose-500 bg-slate-50 hover:bg-rose-50 rounded-full w-7 h-7 flex items-center justify-center transition"><i class="fa-solid fa-xmark text-xs"></i></button>
                     </div>
-                    <form onsubmit="handleBookingSubmit(event)" class="space-y-4">
+                    <form onsubmit="handleBookingSubmit(event)" class="space-y-3">
                         <div>
-                            <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Select Pet</label>
-                            <select id="modalBookingPet" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-blue-500" required></select>
+                            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Select Pet</label>
+                            <select id="modalBookingPet" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-blue-500" required></select>
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Service Type</label>
-                            <select id="modalBookingUnit" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-blue-500">
+                            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Service Type</label>
+                            <select id="modalBookingUnit" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-blue-500">
                                 <option value="3">Veterinary Consultation</option>
                                 <option value="4">Vaccination / Deworming</option>
                                 <option value="1">Boarding - Dog Kennel Suite</option>
@@ -370,17 +370,16 @@
                             </select>
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Requested Date & Time</label>
-                            <input type="datetime-local" id="modalBookingCheckIn" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium outline-none focus:border-blue-500" required>
+                            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Date & Time</label>
+                            <input type="datetime-local" id="modalBookingCheckIn" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none focus:border-blue-500" required>
                         </div>
-                        <!-- Hidden out date for non-boarding, default calculated via JS -->
                         <div id="bookingOutContainer" class="hidden">
-                            <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Expected Checkout</label>
-                            <input type="datetime-local" id="modalBookingCheckOut" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium outline-none focus:border-blue-500" required>
+                            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Checkout</label>
+                            <input type="datetime-local" id="modalBookingCheckOut" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none focus:border-blue-500" required>
                         </div>
-                        <div class="flex space-x-3 pt-3">
-                            <button type="button" onclick="closeBookingModal()" class="w-1/3 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-bold py-3 rounded-xl transition">Cancel</button>
-                            <button type="submit" class="w-2/3 btn-gold text-slate-950 text-sm font-black py-3 rounded-xl shadow-lg transition">Confirm Slot</button>
+                        <div class="flex space-x-2 pt-2">
+                            <button type="button" onclick="closeBookingModal()" class="w-1/3 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-2.5 rounded-xl transition">Cancel</button>
+                            <button type="submit" class="w-2/3 btn-gold text-slate-950 text-xs font-black py-2.5 rounded-xl shadow-md transition">Confirm Slot</button>
                         </div>
                     </form>
                 </div>
@@ -388,52 +387,100 @@
         </div>
 
         <!-- CLINICAL SOAP NOTE MODAL (Staff Only) -->
-        <div id="soapModal" class="hidden fixed inset-0 z-50 pointer-events-none">
-            <div class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm"></div>
-            <div class="flex min-h-full items-center justify-center p-4 relative z-10">
-                <div class="bg-white rounded-[28px] p-6 w-full max-w-sm text-left shadow-2xl animate-modal-pop border border-slate-100">
-                    <div class="flex justify-between items-center border-b border-slate-100 pb-3 mb-3">
-                        <h3 class="text-sm font-black text-slate-900"><i class="fa-solid fa-notes-medical text-rose-500 mr-1.5"></i> Clinical SOAP Note</h3>
-                        <button type="button" onclick="closeSoapModal()" class="text-slate-400 hover:text-rose-500 bg-slate-50 hover:bg-rose-50 rounded-full w-8 h-8 flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
+        <div id="soapModal" class="hidden absolute inset-0 z-50 pointer-events-none">
+            <div class="absolute inset-0 bg-slate-950/80 backdrop-blur-sm pointer-events-auto"></div>
+            <div class="flex min-h-full items-center justify-center p-3 relative z-10 pointer-events-auto">
+                <div class="bg-white rounded-[24px] p-4 w-full max-w-xs text-left shadow-2xl animate-modal-pop border border-slate-100">
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-2.5 mb-2.5">
+                        <h3 class="text-xs font-black text-slate-900"><i class="fa-solid fa-notes-medical text-rose-500 mr-1.5"></i> Clinical SOAP Note</h3>
+                        <button type="button" onclick="closeSoapModal()" class="text-slate-400 hover:text-rose-500 bg-slate-50 hover:bg-rose-50 rounded-full w-7 h-7 flex items-center justify-center transition"><i class="fa-solid fa-xmark text-xs"></i></button>
                     </div>
-                    <form onsubmit="handleSoapSubmit(event)" class="space-y-3">
+                    <form onsubmit="handleSoapSubmit(event)" class="space-y-2.5">
                         <input type="hidden" id="soapPetId">
                         
                         <!-- Vitals -->
-                        <div class="grid grid-cols-2 gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200">
+                        <div class="grid grid-cols-2 gap-2 bg-slate-50 p-2 rounded-xl border border-slate-200">
                             <div>
-                                <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Weight (kg)</label>
-                                <input type="number" step="0.1" id="soapWeight" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-semibold outline-none focus:border-rose-500" placeholder="e.g. 12.5" required>
+                                <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Weight (kg)</label>
+                                <input type="number" step="0.1" id="soapWeight" class="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-semibold outline-none focus:border-rose-500" placeholder="e.g. 12.5" required>
                             </div>
                             <div>
-                                <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Temp (°C)</label>
-                                <input type="number" step="0.1" id="soapTemp" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-semibold outline-none focus:border-rose-500" placeholder="e.g. 38.5" required>
+                                <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Temp (°C)</label>
+                                <input type="number" step="0.1" id="soapTemp" class="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-semibold outline-none focus:border-rose-500" placeholder="e.g. 38.5" required>
                             </div>
                         </div>
 
                         <!-- SOAP Notes -->
-                        <div class="space-y-2.5 h-64 overflow-y-auto custom-scrollbar pr-2">
+                        <div class="space-y-2 max-h-52 overflow-y-auto custom-scrollbar pr-1">
                             <div>
-                                <label class="block text-[10px] font-black text-rose-600 uppercase mb-1">S - Subjective (History)</label>
-                                <textarea id="soapSubjective" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-medium outline-none focus:border-rose-500" rows="2" placeholder="Owner reports lethargy..." required></textarea>
+                                <label class="block text-[9px] font-black text-rose-600 uppercase mb-0.5">S - Subjective</label>
+                                <textarea id="soapSubjective" class="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-medium outline-none focus:border-rose-500" rows="2" placeholder="Owner reports lethargy..." required></textarea>
                             </div>
                             <div>
-                                <label class="block text-[10px] font-black text-rose-600 uppercase mb-1">O - Objective (Exam findings)</label>
-                                <textarea id="soapObjective" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-medium outline-none focus:border-rose-500" rows="2" placeholder="Abdomen tense on palpation..." required></textarea>
+                                <label class="block text-[9px] font-black text-rose-600 uppercase mb-0.5">O - Objective</label>
+                                <textarea id="soapObjective" class="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-medium outline-none focus:border-rose-500" rows="2" placeholder="Abdomen tense..." required></textarea>
                             </div>
                             <div>
-                                <label class="block text-[10px] font-black text-rose-600 uppercase mb-1">A - Assessment (Diagnosis)</label>
-                                <textarea id="soapAssessment" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-medium outline-none focus:border-rose-500" rows="2" placeholder="Suspected gastroenteritis..." required></textarea>
+                                <label class="block text-[9px] font-black text-rose-600 uppercase mb-0.5">A - Assessment</label>
+                                <textarea id="soapAssessment" class="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-medium outline-none focus:border-rose-500" rows="2" placeholder="Suspected gastroenteritis..." required></textarea>
                             </div>
                             <div>
-                                <label class="block text-[10px] font-black text-rose-600 uppercase mb-1">P - Plan (Treatment)</label>
-                                <textarea id="soapPlan" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-medium outline-none focus:border-rose-500" rows="2" placeholder="Administer Cerenia..." required></textarea>
+                                <label class="block text-[9px] font-black text-rose-600 uppercase mb-0.5">P - Plan</label>
+                                <textarea id="soapPlan" class="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-medium outline-none focus:border-rose-500" rows="2" placeholder="Administer Cerenia..." required></textarea>
                             </div>
                         </div>
 
                         <div class="flex space-x-2 pt-2 border-t border-slate-100">
-                            <button type="button" onclick="closeSoapModal()" class="w-1/3 bg-slate-100 text-slate-700 text-xs font-bold py-2.5 rounded-xl transition">Discard</button>
-                            <button type="submit" class="w-2/3 bg-rose-600 hover:bg-rose-700 text-white text-xs font-black py-2.5 rounded-xl shadow-lg transition">Save Medical Record</button>
+                            <button type="button" onclick="closeSoapModal()" class="w-1/3 bg-slate-100 text-slate-700 text-xs font-bold py-2 rounded-xl transition">Discard</button>
+                            <button type="submit" class="w-2/3 bg-rose-600 hover:bg-rose-700 text-white text-xs font-black py-2 rounded-xl shadow-md transition">Save Medical Record</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- ADD INVENTORY ITEM MODAL -->
+        <div id="inventoryModal" class="hidden absolute inset-0 z-50 pointer-events-none">
+            <div class="absolute inset-0 bg-slate-950/80 backdrop-blur-sm pointer-events-auto"></div>
+            <div class="flex min-h-full items-center justify-center p-3 relative z-10 pointer-events-auto">
+                <div class="bg-white rounded-[24px] p-5 w-full max-w-xs text-left shadow-2xl animate-modal-pop border border-slate-100">
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-3 mb-3">
+                        <h3 class="text-xs font-black text-slate-900"><i class="fa-solid fa-boxes-stacked text-emerald-600 mr-1.5"></i> Add Pharmacy / Item</h3>
+                        <button type="button" onclick="closeInventoryModal()" class="text-slate-400 hover:text-rose-500 bg-slate-50 hover:bg-rose-50 rounded-full w-7 h-7 flex items-center justify-center transition"><i class="fa-solid fa-xmark text-xs"></i></button>
+                    </div>
+                    <form onsubmit="handleInventorySubmit(event)" class="space-y-3">
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Item Name</label>
+                            <input type="text" id="invName" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-emerald-500" placeholder="e.g. Rabies Vaccine 10ml" required>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Category</label>
+                                <select id="invCategory" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-emerald-500">
+                                    <option value="Vaccine">Vaccine</option>
+                                    <option value="Medication">Medication</option>
+                                    <option value="Consumable">Consumable</option>
+                                    <option value="Food/Diet">Food/Diet</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Quantity</label>
+                                <input type="number" id="invQty" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-emerald-500" value="10" min="0" required>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Reorder Alert</label>
+                                <input type="number" id="invAlert" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-emerald-500" value="5" min="0" required>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Unit Price (₱)</label>
+                                <input type="number" step="0.01" id="invPrice" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-emerald-500" value="250.00" min="0" required>
+                            </div>
+                        </div>
+                        <div class="flex space-x-2 pt-2">
+                            <button type="button" onclick="closeInventoryModal()" class="w-1/3 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-2.5 rounded-xl transition">Cancel</button>
+                            <button type="submit" class="w-2/3 btn-emerald text-white text-xs font-black py-2.5 rounded-xl shadow-md transition">Save Item</button>
                         </div>
                     </form>
                 </div>
@@ -441,41 +488,40 @@
         </div>
 
         <!-- GENERATE INVOICE MODAL -->
-        <div id="invoiceModal" class="hidden fixed inset-0 z-50 pointer-events-none">
-            <div class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm"></div>
-            <div class="flex min-h-full items-center justify-center p-4 relative z-10">
-                <div class="bg-white rounded-[28px] p-6 w-full max-w-sm text-left shadow-2xl animate-modal-pop border border-slate-100">
-                    <div class="flex justify-between items-center border-b border-slate-100 pb-4 mb-4">
-                        <h3 class="text-base font-black text-slate-900"><i class="fa-solid fa-file-invoice text-indigo-600 mr-2"></i> Issue Billing Invoice</h3>
-                        <button type="button" onclick="closeInvoiceModal()" class="text-slate-400 hover:text-rose-500 bg-slate-50 hover:bg-rose-50 rounded-full w-8 h-8 flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
+        <div id="invoiceModal" class="hidden absolute inset-0 z-50 pointer-events-none">
+            <div class="absolute inset-0 bg-slate-950/80 backdrop-blur-sm pointer-events-auto"></div>
+            <div class="flex min-h-full items-center justify-center p-3 relative z-10 pointer-events-auto">
+                <div class="bg-white rounded-[24px] p-5 w-full max-w-xs text-left shadow-2xl animate-modal-pop border border-slate-100">
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-3 mb-3">
+                        <h3 class="text-xs font-black text-slate-900"><i class="fa-solid fa-file-invoice text-indigo-600 mr-1.5"></i> Issue Invoice</h3>
+                        <button type="button" onclick="closeInvoiceModal()" class="text-slate-400 hover:text-rose-500 bg-slate-50 hover:bg-rose-50 rounded-full w-7 h-7 flex items-center justify-center transition"><i class="fa-solid fa-xmark text-xs"></i></button>
                     </div>
-                    <form onsubmit="handleInvoiceSubmit(event)" class="space-y-4">
+                    <form onsubmit="handleInvoiceSubmit(event)" class="space-y-3">
                         <input type="hidden" id="invcResId">
                         <input type="hidden" id="invcUserId">
                         
-                        <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-100 mb-4">
-                            <p class="text-xs font-bold text-indigo-800">Generating bill for Appointment <span id="invcApptDisplay">#0</span></p>
-                            <p class="text-[10px] text-indigo-600 mt-1">Select items consumed during this visit.</p>
+                        <div class="bg-indigo-50 p-3 rounded-xl border border-indigo-100 mb-2">
+                            <p class="text-xs font-bold text-indigo-800">Generating bill for <span id="invcApptDisplay">#0</span></p>
                         </div>
 
                         <div>
-                            <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Consultation / Service Fee (₱)</label>
-                            <input type="number" id="invcFee" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-black outline-none focus:border-indigo-500" value="800" min="0" required>
+                            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Service Fee (₱)</label>
+                            <input type="number" id="invcFee" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-black outline-none focus:border-indigo-500" value="800" min="0" required>
                         </div>
                         
                         <div>
-                            <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Medications / Supplies Total (₱)</label>
-                            <input type="number" id="invcSupplies" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-black outline-none focus:border-indigo-500" value="0" min="0">
+                            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Medications / Supplies (₱)</label>
+                            <input type="number" id="invcSupplies" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-black outline-none focus:border-indigo-500" value="0" min="0">
                         </div>
 
-                        <div class="flex justify-between items-center bg-slate-900 text-white p-4 rounded-xl mt-4">
-                            <span class="text-xs font-bold uppercase tracking-widest text-slate-400">Total Bill</span>
-                            <span class="text-lg font-black text-amber-400" id="invcTotalDisplay">₱800.00</span>
+                        <div class="flex justify-between items-center bg-slate-900 text-white p-3 rounded-xl mt-3">
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Total Bill</span>
+                            <span class="text-base font-black text-amber-400" id="invcTotalDisplay">₱800.00</span>
                         </div>
 
-                        <div class="flex space-x-3 pt-3">
-                            <button type="button" onclick="closeInvoiceModal()" class="w-1/3 bg-slate-100 text-slate-700 text-sm font-bold py-3 rounded-xl transition">Cancel</button>
-                            <button type="submit" class="w-2/3 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-black py-3 rounded-xl shadow-lg transition">Issue Invoice</button>
+                        <div class="flex space-x-2 pt-2">
+                            <button type="button" onclick="closeInvoiceModal()" class="w-1/3 bg-slate-100 text-slate-700 text-xs font-bold py-2.5 rounded-xl transition">Cancel</button>
+                            <button type="submit" class="w-2/3 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-black py-2.5 rounded-xl shadow-md transition">Issue Invoice</button>
                         </div>
                     </form>
                 </div>
@@ -483,16 +529,16 @@
         </div>
 
         <!-- LOGOUT CONFIRMATION MODAL -->
-        <div id="logoutModal" class="hidden fixed inset-0 z-50 pointer-events-none">
-            <div class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm"></div>
-            <div class="flex min-h-full items-center justify-center p-4 relative z-10">
-                <div class="bg-white rounded-[32px] p-8 w-full max-w-sm text-center shadow-2xl animate-modal-pop border border-slate-100">
-                    <div class="w-16 h-16 bg-rose-50 text-rose-500 rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-inner"><i class="fa-solid fa-power-off text-2xl"></i></div>
-                    <h3 class="text-xl font-black text-slate-900">End Session?</h3>
-                    <p class="text-sm text-slate-500 mt-2 mb-6">You will be securely logged out of the veterinary portal.</p>
-                    <div class="space-y-3">
-                        <button type="button" onclick="confirmLogout()" class="interactive-btn w-full rounded-xl bg-rose-600 hover:bg-rose-700 text-white py-3.5 text-sm font-extrabold shadow-lg transition">Confirm Sign Out</button>
-                        <button type="button" onclick="closeLogoutModal()" class="interactive-btn w-full rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 py-3.5 text-sm font-bold transition">Return to Dashboard</button>
+        <div id="logoutModal" class="hidden absolute inset-0 z-50 pointer-events-none">
+            <div class="absolute inset-0 bg-slate-950/80 backdrop-blur-sm pointer-events-auto"></div>
+            <div class="flex min-h-full items-center justify-center p-3 relative z-10 pointer-events-auto">
+                <div class="bg-white rounded-[28px] p-6 w-full max-w-xs text-center shadow-2xl animate-modal-pop border border-slate-100">
+                    <div class="w-12 h-12 bg-rose-50 text-rose-500 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-inner"><i class="fa-solid fa-power-off text-xl"></i></div>
+                    <h3 class="text-lg font-black text-slate-900">End Session?</h3>
+                    <p class="text-xs text-slate-500 mt-1 mb-5">You will be securely logged out of the portal.</p>
+                    <div class="space-y-2">
+                        <button type="button" onclick="confirmLogout()" class="interactive-btn w-full rounded-xl bg-rose-600 hover:bg-rose-700 text-white py-3 text-xs font-extrabold shadow-md transition">Confirm Sign Out</button>
+                        <button type="button" onclick="closeLogoutModal()" class="interactive-btn w-full rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 py-3 text-xs font-bold transition">Return to Dashboard</button>
                     </div>
                 </div>
             </div>
@@ -545,13 +591,13 @@
         function showAlert(msg, type = 'error') {
             const box = document.getElementById('appAlert');
             document.getElementById('appAlertMsg').innerText = msg;
-            box.className = `mb-5 p-4 rounded-2xl shadow-card text-sm font-bold flex items-center justify-between animate-fade-in z-20 ${type === 'error' ? 'bg-rose-50 text-rose-800 border border-rose-200' : 'bg-emerald-50 text-emerald-800 border border-emerald-200'}`;
-            document.getElementById('appAlertIcon').className = `fa-solid ${type === 'error' ? 'fa-circle-exclamation text-rose-500' : 'fa-circle-check text-emerald-500'} text-lg`;
+            box.className = `mb-4 p-3.5 rounded-2xl shadow-card text-xs font-bold flex items-center justify-between animate-fade-in z-20 ${type === 'error' ? 'bg-rose-50 text-rose-800 border border-rose-200' : 'bg-emerald-50 text-emerald-800 border border-emerald-200'}`;
+            document.getElementById('appAlertIcon').className = `fa-solid ${type === 'error' ? 'fa-circle-exclamation text-rose-500' : 'fa-circle-check text-emerald-500'} text-base`;
             box.classList.remove('hidden');
             setTimeout(dismissAlert, 5000);
         }
         function dismissAlert() { document.getElementById('appAlert').classList.add('hidden'); }
-        function togglePassword(id, btn) { const input = document.getElementById(id); input.type = input.type === 'password' ? 'text' : 'password'; btn.innerHTML = `<i class="fa-solid fa-${input.type === 'password' ? 'eye' : 'eye-slash'}"></i>`; }
+        function togglePassword(id, btn) { const input = document.getElementById(id); input.type = input.type === 'password' ? 'text' : 'password'; btn.innerHTML = `<i class="fa-solid fa-${input.type === 'password' ? 'eye' : 'eye-slash'} text-xs"></i>`; }
 
         // Auth Flow
         function switchAuthMode(mode) {
@@ -611,7 +657,7 @@
         async function handleOtpSubmit(e) { e.preventDefault(); showAlert("OTP disabled in demo."); }
 
         // ==========================================
-        // LAYOUT & ROUTING ENGINE (FIXED)
+        // LAYOUT & ROUTING ENGINE
         // ==========================================
         function renderAuthenticatedSession() {
             document.getElementById('authSection').classList.add('hidden');
@@ -626,25 +672,21 @@
             const shell = document.getElementById('appShell');
             
             if (currentUser.role === 'admin') {
-                // ==========================================
                 // ADMIN ONLY: DESKTOP ENTERPRISE DASHBOARD
-                // ==========================================
-                shell.classList.remove('mobile-mode', 'sm:rounded-[48px]', 'sm:border-[10px]');
+                shell.classList.remove('mobile-mode', 'sm:rounded-[44px]', 'sm:border-[8px]');
                 shell.classList.add('desktop-mode', 'sm:rounded-[32px]', 'sm:border-[8px]');
                 document.getElementById('dynamicNotch').classList.add('hidden');
                 document.getElementById('bottomNav').classList.add('hidden');
                 document.getElementById('desktopSidebar').classList.remove('hidden');
-                document.getElementById('userBanner').classList.add('hidden'); // Clean top for admin
+                document.getElementById('userBanner').classList.add('hidden');
                 
                 document.getElementById('headerTag').innerText = "ADMIN PORTAL";
                 document.getElementById('adminMenuSection').classList.remove('hidden');
 
             } else {
-                // ==========================================
                 // STAFF & OWNERS: MOBILE UI BOUNDARY
-                // ==========================================
                 shell.classList.remove('desktop-mode', 'sm:rounded-[32px]', 'sm:border-[8px]');
-                shell.classList.add('mobile-mode', 'sm:rounded-[48px]', 'sm:border-[10px]');
+                shell.classList.add('mobile-mode', 'sm:rounded-[44px]', 'sm:border-[8px]');
                 document.getElementById('dynamicNotch').classList.remove('hidden');
                 document.getElementById('desktopSidebar').classList.add('hidden');
                 document.getElementById('bottomNav').classList.remove('hidden');
@@ -655,18 +697,18 @@
                 if (currentUser.role === 'employee') {
                     document.getElementById('headerTag').innerText = "STAFF PORTAL";
                     document.getElementById('bottomNav').innerHTML = `
-                        <button onclick="switchTab('home')" class="mob-nav-tab interactive-btn active flex flex-col items-center text-blue-600 px-2"><i class="fa-solid fa-house-medical text-xl mb-1"></i><span>Home</span></button>
-                        <button onclick="switchTab('patients')" class="mob-nav-tab interactive-btn flex flex-col items-center px-2 hover:text-slate-800"><i class="fa-solid fa-bed-pulse text-xl mb-1"></i><span>Patients</span></button>
-                        <button onclick="switchTab('reservations')" class="mob-nav-tab interactive-btn flex flex-col items-center px-2 hover:text-slate-800"><i class="fa-solid fa-list-check text-xl mb-1"></i><span>Queue</span></button>
-                        <button onclick="switchTab('inventory')" class="mob-nav-tab interactive-btn flex flex-col items-center px-2 hover:text-slate-800"><i class="fa-solid fa-pills text-xl mb-1"></i><span>Inv/Rx</span></button>
+                        <button onclick="switchTab('home')" class="mob-nav-tab interactive-btn active flex flex-col items-center text-blue-600 px-2"><i class="fa-solid fa-house-medical text-lg mb-0.5"></i><span>Home</span></button>
+                        <button onclick="switchTab('patients')" class="mob-nav-tab interactive-btn flex flex-col items-center px-2 hover:text-slate-800"><i class="fa-solid fa-bed-pulse text-lg mb-0.5"></i><span>Patients</span></button>
+                        <button onclick="switchTab('reservations')" class="mob-nav-tab interactive-btn flex flex-col items-center px-2 hover:text-slate-800"><i class="fa-solid fa-list-check text-lg mb-0.5"></i><span>Queue</span></button>
+                        <button onclick="switchTab('inventory')" class="mob-nav-tab interactive-btn flex flex-col items-center px-2 hover:text-slate-800"><i class="fa-solid fa-pills text-lg mb-0.5"></i><span>Inv/Rx</span></button>
                     `;
                 } else {
                     document.getElementById('headerTag').innerText = "VET CLINIC";
                     document.getElementById('bottomNav').innerHTML = `
-                        <button onclick="switchTab('home')" class="mob-nav-tab interactive-btn active flex flex-col items-center text-blue-600 px-2"><i class="fa-solid fa-house-medical text-xl mb-1"></i><span>Home</span></button>
-                        <button onclick="switchTab('pets')" class="mob-nav-tab interactive-btn flex flex-col items-center px-2 hover:text-slate-800"><i class="fa-solid fa-paw text-xl mb-1"></i><span>Pets</span></button>
-                        <button onclick="switchTab('reservations')" class="mob-nav-tab interactive-btn flex flex-col items-center px-2 hover:text-slate-800"><i class="fa-solid fa-calendar-check text-xl mb-1"></i><span>Schedule</span></button>
-                        <button onclick="switchTab('billing')" class="mob-nav-tab interactive-btn flex flex-col items-center px-2 hover:text-slate-800"><i class="fa-solid fa-file-invoice-dollar text-xl mb-1"></i><span>Billing</span></button>
+                        <button onclick="switchTab('home')" class="mob-nav-tab interactive-btn active flex flex-col items-center text-blue-600 px-2"><i class="fa-solid fa-house-medical text-lg mb-0.5"></i><span>Home</span></button>
+                        <button onclick="switchTab('pets')" class="mob-nav-tab interactive-btn flex flex-col items-center px-2 hover:text-slate-800"><i class="fa-solid fa-paw text-lg mb-0.5"></i><span>Pets</span></button>
+                        <button onclick="switchTab('reservations')" class="mob-nav-tab interactive-btn flex flex-col items-center px-2 hover:text-slate-800"><i class="fa-solid fa-calendar-check text-lg mb-0.5"></i><span>Schedule</span></button>
+                        <button onclick="switchTab('billing')" class="mob-nav-tab interactive-btn flex flex-col items-center px-2 hover:text-slate-800"><i class="fa-solid fa-file-invoice-dollar text-lg mb-0.5"></i><span>Billing</span></button>
                     `;
                 }
             }
@@ -787,36 +829,36 @@
         function loadStaffDashboard() {
             const container = document.getElementById('dynamicDashboardContent');
             container.innerHTML = `
-                <div class="h-full flex flex-col space-y-4 w-full">
+                <div class="h-full flex flex-col space-y-3 w-full">
                     
-                    <div class="bg-white p-5 rounded-3xl shadow-card border border-slate-100 flex flex-col hover-card">
-                        <div class="text-blue-600 text-2xl mb-3"><i class="fa-solid fa-user-doctor"></i></div>
-                        <h3 class="font-black text-sm text-slate-900 mb-1">Patient Triage & Queue</h3>
-                        <p class="text-[11px] text-slate-500 mb-4 leading-relaxed">Admit active patients and write detailed SOAP medical notes.</p>
-                        <button onclick="switchTab('patients')" class="interactive-btn w-full btn-gradient text-white text-xs font-bold py-3.5 rounded-xl shadow-md flex justify-between items-center px-4">
+                    <div class="bg-white p-4 rounded-2xl shadow-card border border-slate-100 flex flex-col hover-card">
+                        <div class="text-blue-600 text-xl mb-2"><i class="fa-solid fa-user-doctor"></i></div>
+                        <h3 class="font-black text-xs text-slate-900 mb-0.5">Patient Triage & Queue</h3>
+                        <p class="text-[10px] text-slate-500 mb-3 leading-relaxed">Admit active patients and write detailed SOAP medical notes.</p>
+                        <button onclick="switchTab('patients')" class="interactive-btn w-full btn-gradient text-white text-[11px] font-bold py-3 rounded-xl shadow-md flex justify-between items-center px-3.5">
                             <span>Open Active Patients</span><i class="fa-solid fa-arrow-right"></i>
                         </button>
                     </div>
                     
-                    <div class="bg-white p-5 rounded-3xl shadow-card border border-slate-100 flex flex-col hover-card">
-                        <div class="text-emerald-600 text-2xl mb-3"><i class="fa-solid fa-pills"></i></div>
-                        <h3 class="font-black text-sm text-slate-900 mb-1">Pharmacy & Inventory</h3>
-                        <p class="text-[11px] text-slate-500 mb-4 leading-relaxed">Manage clinic medical supplies and check stock levels.</p>
-                        <button onclick="switchTab('inventory')" class="interactive-btn w-full btn-emerald text-white text-xs font-bold py-3.5 rounded-xl shadow-md flex justify-between items-center px-4">
+                    <div class="bg-white p-4 rounded-2xl shadow-card border border-slate-100 flex flex-col hover-card">
+                        <div class="text-emerald-600 text-xl mb-2"><i class="fa-solid fa-pills"></i></div>
+                        <h3 class="font-black text-xs text-slate-900 mb-0.5">Pharmacy & Inventory</h3>
+                        <p class="text-[10px] text-slate-500 mb-3 leading-relaxed">Manage clinic medical supplies and check stock levels.</p>
+                        <button onclick="switchTab('inventory')" class="interactive-btn w-full btn-emerald text-white text-[11px] font-bold py-3 rounded-xl shadow-md flex justify-between items-center px-3.5">
                             <span>Access Inventory</span><i class="fa-solid fa-arrow-right"></i>
                         </button>
                     </div>
 
-                    <div class="bg-slate-900 rounded-3xl shadow-xl p-5 text-white border border-slate-800 mt-2">
-                        <h3 class="font-black text-xs text-slate-200 mb-3 flex items-center"><i class="fa-solid fa-building-shield text-amber-500 mr-2"></i> HR Action Center</h3>
-                        <div class="grid grid-cols-2 gap-3">
-                            <button onclick="openShiftModal()" class="interactive-btn bg-slate-800 hover:bg-slate-700 border border-slate-700 p-3.5 rounded-2xl text-left transition">
-                                <i class="fa-solid fa-calendar-day text-amber-500 text-xl mb-2 block"></i>
-                                <span class="text-xs font-black block">Shift Swap</span>
+                    <div class="bg-slate-900 rounded-2xl shadow-xl p-4 text-white border border-slate-800 mt-1">
+                        <h3 class="font-black text-[11px] text-slate-200 mb-2.5 flex items-center"><i class="fa-solid fa-building-shield text-amber-500 mr-1.5"></i> HR Action Center</h3>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="openShiftModal()" class="interactive-btn bg-slate-800 hover:bg-slate-700 border border-slate-700 p-3 rounded-xl text-left transition">
+                                <i class="fa-solid fa-calendar-day text-amber-500 text-lg mb-1 block"></i>
+                                <span class="text-[11px] font-black block">Shift Swap</span>
                             </button>
-                            <button onclick="openDiscountModal()" class="interactive-btn bg-slate-800 hover:bg-slate-700 border border-slate-700 p-3.5 rounded-2xl text-left transition">
-                                <i class="fa-solid fa-file-invoice-dollar text-emerald-500 text-xl mb-2 block"></i>
-                                <span class="text-xs font-black block">Fee Waiver</span>
+                            <button onclick="openDiscountModal()" class="interactive-btn bg-slate-800 hover:bg-slate-700 border border-slate-700 p-3 rounded-xl text-left transition">
+                                <i class="fa-solid fa-file-invoice-dollar text-emerald-500 text-lg mb-1 block"></i>
+                                <span class="text-[11px] font-black block">Fee Waiver</span>
                             </button>
                         </div>
                     </div>
@@ -829,21 +871,21 @@
         function loadOwnerDashboard() {
             const container = document.getElementById('dynamicDashboardContent');
             container.innerHTML = `
-                <div class="grid grid-cols-2 gap-3 mb-4">
-                    <button onclick="switchTab('pets')" class="interactive-btn hover-card bg-white p-4 rounded-[24px] shadow-card border border-slate-100 flex flex-col justify-between text-left">
-                        <i class="fa-solid fa-dog text-amber-500 text-2xl mb-3"></i>
-                        <div><div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">My Pets</div><div class="text-sm font-black text-slate-800">Profiles</div></div>
+                <div class="grid grid-cols-2 gap-2.5 mb-3">
+                    <button onclick="switchTab('pets')" class="interactive-btn hover-card bg-white p-3.5 rounded-2xl shadow-card border border-slate-100 flex flex-col justify-between text-left">
+                        <i class="fa-solid fa-dog text-amber-500 text-xl mb-2"></i>
+                        <div><div class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">My Pets</div><div class="text-xs font-black text-slate-800">Profiles</div></div>
                     </button>
-                    <button onclick="switchTab('billing')" class="interactive-btn hover-card bg-white p-4 rounded-[24px] shadow-card border border-slate-100 flex flex-col justify-between text-left">
-                        <i class="fa-solid fa-file-invoice-dollar text-indigo-500 text-2xl mb-3"></i>
-                        <div><div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Payments</div><div class="text-sm font-black text-slate-800">Invoices</div></div>
+                    <button onclick="switchTab('billing')" class="interactive-btn hover-card bg-white p-3.5 rounded-2xl shadow-card border border-slate-100 flex flex-col justify-between text-left">
+                        <i class="fa-solid fa-file-invoice-dollar text-indigo-500 text-xl mb-2"></i>
+                        <div><div class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Payments</div><div class="text-xs font-black text-slate-800">Invoices</div></div>
                     </button>
                 </div>
-                <div class="bg-gradient-to-br from-blue-600 to-indigo-700 p-5 rounded-[28px] shadow-lg text-white mb-4 hover-card relative overflow-hidden">
-                    <div class="absolute right-0 bottom-0 text-7xl opacity-10 -mr-4 -mb-4"><i class="fa-solid fa-calendar-plus"></i></div>
-                    <h3 class="font-black text-base mb-1 relative z-10">Schedule an Appointment</h3>
-                    <p class="text-[11px] text-blue-200 leading-relaxed mb-5 w-4/5 relative z-10">Book a vet consultation, vaccination schedule, or reserve a deluxe boarding suite.</p>
-                    <button onclick="openBookingModal()" class="interactive-btn bg-white text-blue-700 text-xs font-black py-2.5 px-5 rounded-xl shadow-md w-max relative z-10 hover:bg-slate-50 transition">
+                <div class="bg-gradient-to-br from-blue-600 to-indigo-700 p-4 rounded-2xl shadow-lg text-white mb-3 hover-card relative overflow-hidden">
+                    <div class="absolute right-0 bottom-0 text-6xl opacity-10 -mr-3 -mb-3"><i class="fa-solid fa-calendar-plus"></i></div>
+                    <h3 class="font-black text-sm mb-1 relative z-10">Schedule an Appointment</h3>
+                    <p class="text-[10px] text-blue-200 leading-relaxed mb-4 w-4/5 relative z-10">Book a vet consultation, vaccination schedule, or reserve a deluxe boarding suite.</p>
+                    <button onclick="openBookingModal()" class="interactive-btn bg-white text-blue-700 text-[11px] font-black py-2 px-4 rounded-xl shadow-md w-max relative z-10 hover:bg-slate-50 transition">
                         Book Now
                     </button>
                 </div>`;
@@ -854,45 +896,45 @@
         // ==========================================
         async function loadPetsView() {
             const container = document.getElementById('dynamicDashboardContent');
-            container.innerHTML = '<div class="flex justify-center py-20 text-blue-600"><i class="fa-solid fa-circle-notch fa-spin text-3xl"></i></div>';
+            container.innerHTML = '<div class="flex justify-center py-16 text-blue-600"><i class="fa-solid fa-circle-notch fa-spin text-2xl"></i></div>';
             try {
                 const endpoint = currentUser.role === 'owner' ? `pets?owner_id=eq.${currentUser.user_id}` : `pets`;
                 const pets = await supabaseRequest(endpoint);
                 
                 let html = `
-                    <div class="flex justify-between items-center mb-4 px-1">
-                        <h3 class="font-black text-lg text-slate-900"><i class="fa-solid fa-paw text-amber-500 mr-2"></i> ${currentUser.role==='owner' ? 'My Pets' : 'Patient Directory'}</h3>
-                        <button onclick="openPetModal()" class="interactive-btn btn-gradient text-white text-[10px] font-extrabold px-3 py-1.5 rounded-xl shadow">+ Register Pet</button>
+                    <div class="flex justify-between items-center mb-3 px-0.5">
+                        <h3 class="font-black text-base text-slate-900"><i class="fa-solid fa-paw text-amber-500 mr-1.5"></i> ${currentUser.role==='owner' ? 'My Pets' : 'Patient Directory'}</h3>
+                        <button onclick="openPetModal()" class="interactive-btn btn-gradient text-white text-[9px] font-extrabold px-2.5 py-1.5 rounded-xl shadow">+ Register Pet</button>
                     </div>
-                    <div class="space-y-3">`;
+                    <div class="space-y-2.5">`;
                 
-                if (pets.length === 0) html += `<div class="py-10 text-center text-slate-400 font-medium italic bg-white rounded-2xl border border-dashed border-slate-200 shadow-sm">No pet profiles found.</div>`;
+                if (pets.length === 0) html += `<div class="py-8 text-center text-slate-400 font-medium italic bg-white rounded-2xl border border-dashed border-slate-200 shadow-sm text-xs">No pet profiles found.</div>`;
                 else {
                     pets.forEach(p => {
                         html += `
-                            <div class="bg-white rounded-[24px] border border-slate-100 shadow-sm p-4 hover-card transition">
-                                <div class="flex justify-between items-start mb-3">
-                                    <div class="flex items-center space-x-3">
-                                        <div class="w-10 h-10 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center text-lg shadow-inner shrink-0">
+                            <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-3.5 hover-card transition">
+                                <div class="flex justify-between items-start mb-2.5">
+                                    <div class="flex items-center space-x-2.5">
+                                        <div class="w-9 h-9 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center text-base shadow-inner shrink-0">
                                             <i class="fa-solid ${p.species.toLowerCase() === 'cat' ? 'fa-cat' : 'fa-dog'}"></i>
                                         </div>
                                         <div>
-                                            <h4 class="font-black text-base text-slate-900 leading-none mb-1">${p.pet_name}</h4>
+                                            <h4 class="font-black text-sm text-slate-900 leading-none mb-0.5">${p.pet_name}</h4>
                                             <div class="text-[10px] text-blue-600 font-bold">${p.species} • ${p.age || 0} Yrs</div>
                                         </div>
                                     </div>
-                                    <button onclick="deletePet(${p.pet_id})" class="text-slate-300 hover:text-rose-600 bg-slate-50 hover:bg-rose-50 w-8 h-8 rounded-full flex justify-center items-center transition"><i class="fa-solid fa-trash-can"></i></button>
+                                    <button onclick="deletePet(${p.pet_id})" class="text-slate-300 hover:text-rose-600 bg-slate-50 hover:bg-rose-50 w-7 h-7 rounded-full flex justify-center items-center transition"><i class="fa-solid fa-trash-can text-xs"></i></button>
                                 </div>
-                                <div class="text-[11px] text-slate-500 mb-4 px-1"><span class="font-bold text-slate-400">Breed:</span> ${p.breed || 'Mixed'}</div>
+                                <div class="text-[10px] text-slate-500 mb-3 px-0.5"><span class="font-bold text-slate-400">Breed:</span> ${p.breed || 'Mixed'}</div>
                                 <div class="grid grid-cols-2 gap-2">
-                                    <button onclick="viewMedicalRecords(${p.pet_id}, '${p.pet_name}')" class="interactive-btn text-[10px] font-bold bg-emerald-50 border border-emerald-100 text-emerald-700 hover:bg-emerald-100 py-2 rounded-xl transition text-center">Medical Hx</button>
-                                    <button onclick="viewPrescriptions(${p.pet_id}, '${p.pet_name}')" class="interactive-btn text-[10px] font-bold bg-indigo-50 border border-indigo-100 text-indigo-700 hover:bg-indigo-100 py-2 rounded-xl transition text-center">Rx Meds</button>
+                                    <button onclick="viewMedicalRecords(${p.pet_id}, '${p.pet_name}')" class="interactive-btn text-[9px] font-bold bg-emerald-50 border border-emerald-100 text-emerald-700 hover:bg-emerald-100 py-1.5 rounded-xl transition text-center">Medical Hx</button>
+                                    <button onclick="viewPrescriptions(${p.pet_id}, '${p.pet_name}')" class="interactive-btn text-[9px] font-bold bg-indigo-50 border border-indigo-100 text-indigo-700 hover:bg-indigo-100 py-1.5 rounded-xl transition text-center">Rx Meds</button>
                                 </div>
                             </div>`;
                     });
                 }
                 container.innerHTML = html + `</div>`;
-            } catch (err) { container.innerHTML = `<p class="text-sm text-rose-600 font-bold p-10 bg-rose-50 rounded-2xl">Error: ${err.message}</p>`; }
+            } catch (err) { container.innerHTML = `<p class="text-xs text-rose-600 font-bold p-6 bg-rose-50 rounded-2xl">Error: ${err.message}</p>`; }
         }
 
         // ==========================================
@@ -900,66 +942,66 @@
         // ==========================================
         async function loadReservationsView() {
             const container = document.getElementById('dynamicDashboardContent');
-            container.innerHTML = '<div class="flex justify-center py-20 text-blue-600"><i class="fa-solid fa-circle-notch fa-spin text-3xl"></i></div>';
+            container.innerHTML = '<div class="flex justify-center py-16 text-blue-600"><i class="fa-solid fa-circle-notch fa-spin text-2xl"></i></div>';
             try {
                 let selectQuery = `reservations?select=*,pets(pet_name,species,breed),users(full_name,username)&order=reservation_id.desc`;
                 if (currentUser.role === 'owner') selectQuery += `&user_id=eq.${currentUser.user_id}`;
                 let res = await supabaseRequest(selectQuery);
                 
                 let html = `
-                    <div class="flex justify-between items-center mb-4 px-1">
-                        <h3 class="font-black text-lg text-slate-900"><i class="fa-solid fa-calendar-check text-blue-600 mr-2"></i> ${currentUser.role==='employee'? 'Clinic Queue' : 'Appointments'}</h3>
-                        ${currentUser.role === 'owner' ? `<button onclick="openBookingModal()" class="interactive-btn btn-gold text-slate-950 text-[10px] font-black px-3 py-1.5 rounded-xl shadow">+ Book Slot</button>` : ''}
+                    <div class="flex justify-between items-center mb-3 px-0.5">
+                        <h3 class="font-black text-base text-slate-900"><i class="fa-solid fa-calendar-check text-blue-600 mr-1.5"></i> ${currentUser.role==='employee'? 'Clinic Queue' : 'Appointments'}</h3>
+                        ${currentUser.role === 'owner' ? `<button onclick="openBookingModal()" class="interactive-btn btn-gold text-slate-950 text-[9px] font-black px-2.5 py-1.5 rounded-xl shadow">+ Book Slot</button>` : ''}
                     </div>
-                    <div class="space-y-3">`;
+                    <div class="space-y-2.5">`;
                 
-                if (res.length === 0) html += `<div class="py-10 text-center text-slate-400 font-medium italic bg-white rounded-2xl border border-dashed border-slate-200">No appointments scheduled.</div>`;
+                if (res.length === 0) html += `<div class="py-8 text-center text-slate-400 font-medium italic bg-white rounded-2xl border border-dashed border-slate-200 text-xs">No appointments scheduled.</div>`;
                 else {
                     res.forEach(r => {
                         const svcType = r.unit_id == 1 ? "Boarding (Dog)" : r.unit_id == 2 ? "Boarding (Cat)" : r.unit_id == 3 ? "Consultation" : r.unit_id == 4 ? "Vaccination" : "Surgery";
                         const svcColor = (r.unit_id <= 2) ? "text-amber-500 bg-amber-50" : "text-blue-500 bg-blue-50";
                         
                         html += `
-                            <div class="p-4 bg-white rounded-[20px] shadow-sm border border-slate-100 hover-card transition relative overflow-hidden flex flex-col gap-3">
+                            <div class="p-3.5 bg-white rounded-2xl shadow-sm border border-slate-100 hover-card transition relative overflow-hidden flex flex-col gap-2.5">
                                 ${r.status === 'Approved' ? '<div class="absolute left-0 top-0 w-1 h-full bg-emerald-400"></div>' : ''}
                                 
-                                <div class="flex justify-between items-start pl-1">
-                                    <div class="flex items-center space-x-3">
-                                        <div class="w-10 h-10 rounded-xl flex items-center justify-center text-lg font-black ${svcColor} shrink-0">
+                                <div class="flex justify-between items-start pl-0.5">
+                                    <div class="flex items-center space-x-2.5">
+                                        <div class="w-9 h-9 rounded-xl flex items-center justify-center text-base font-black ${svcColor} shrink-0">
                                             <i class="fa-solid ${r.unit_id <= 2 ? 'fa-hotel' : 'fa-user-doctor'}"></i>
                                         </div>
                                         <div>
-                                            <div class="font-black text-slate-900 text-sm">Apt #${r.reservation_id}</div>
-                                            <div class="text-[10px] font-bold text-slate-500 mt-0.5">${svcType}</div>
+                                            <div class="font-black text-slate-900 text-xs">Apt #${r.reservation_id}</div>
+                                            <div class="text-[9px] font-bold text-slate-500 mt-0.5">${svcType}</div>
                                         </div>
                                     </div>
-                                    <span class="px-2 py-1 rounded-lg text-[9px] font-black uppercase tracking-wider ${r.status === 'Approved' ? 'bg-emerald-100 text-emerald-800' : r.status === 'Declined' ? 'bg-rose-100 text-rose-800' : r.status === 'Discharged' ? 'bg-slate-200 text-slate-600' : 'bg-amber-100 text-amber-800 border border-amber-200'}">${r.status}</span>
+                                    <span class="px-2 py-0.5 rounded-md text-[8px] font-black uppercase tracking-wider ${r.status === 'Approved' ? 'bg-emerald-100 text-emerald-800' : r.status === 'Declined' ? 'bg-rose-100 text-rose-800' : r.status === 'Discharged' ? 'bg-slate-200 text-slate-600' : 'bg-amber-100 text-amber-800 border border-amber-200'}">${r.status}</span>
                                 </div>
 
-                                <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 grid grid-cols-2 gap-2">
+                                <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100 grid grid-cols-2 gap-2">
                                     <div>
-                                        <div class="text-[9px] font-bold text-slate-400 uppercase">Patient</div>
-                                        <div class="text-xs font-black text-slate-800 mt-0.5">${r.pets ? r.pets.pet_name : 'N/A'}</div>
+                                        <div class="text-[8px] font-bold text-slate-400 uppercase">Patient</div>
+                                        <div class="text-[11px] font-black text-slate-800 mt-0.5">${r.pets ? r.pets.pet_name : 'N/A'}</div>
                                     </div>
                                     <div>
-                                        <div class="text-[9px] font-bold text-slate-400 uppercase">Owner</div>
-                                        <div class="text-xs font-bold text-blue-600 mt-0.5 truncate">${r.users ? r.users.full_name : 'N/A'}</div>
+                                        <div class="text-[8px] font-bold text-slate-400 uppercase">Owner</div>
+                                        <div class="text-[11px] font-bold text-blue-600 mt-0.5 truncate">${r.users ? r.users.full_name : 'N/A'}</div>
                                     </div>
                                 </div>
                                 
-                                <div class="text-[10px] text-slate-500 font-medium px-1"><i class="fa-solid fa-clock text-slate-400 mr-1"></i> In: <span class="font-bold text-slate-800">${formatDateTime(r.check_in_date)}</span></div>
+                                <div class="text-[9px] text-slate-500 font-medium px-0.5"><i class="fa-solid fa-clock text-slate-400 mr-1"></i> In: <span class="font-bold text-slate-800">${formatDateTime(r.check_in_date)}</span></div>
 
                                 ${(currentUser.role === 'employee' || currentUser.role === 'admin') && r.status === 'Pending' ? `
-                                    <div class="flex space-x-2 pt-2 border-t border-slate-100 mt-1">
-                                        <button onclick="updateReservationStatus(${r.reservation_id}, 'Approved')" class="interactive-btn w-full bg-emerald-50 text-emerald-700 hover:bg-emerald-500 hover:text-white border border-emerald-200 text-[10px] font-bold py-2 rounded-xl transition">Approve</button>
-                                        <button onclick="updateReservationStatus(${r.reservation_id}, 'Declined')" class="interactive-btn w-full bg-rose-50 text-rose-700 hover:bg-rose-500 hover:text-white border border-rose-200 text-[10px] font-bold py-2 rounded-xl transition">Decline</button>
+                                    <div class="flex space-x-2 pt-1.5 border-t border-slate-100">
+                                        <button onclick="updateReservationStatus(${r.reservation_id}, 'Approved')" class="interactive-btn w-full bg-emerald-50 text-emerald-700 hover:bg-emerald-500 hover:text-white border border-emerald-200 text-[9px] font-bold py-1.5 rounded-xl transition">Approve</button>
+                                        <button onclick="updateReservationStatus(${r.reservation_id}, 'Declined')" class="interactive-btn w-full bg-rose-50 text-rose-700 hover:bg-rose-500 hover:text-white border border-rose-200 text-[9px] font-bold py-1.5 rounded-xl transition">Decline</button>
                                     </div>
                                 ` : ''}
                             </div>`;
                     });
                 }
                 container.innerHTML = html + `</div>`;
-            } catch (e) { container.innerHTML = `<p class="text-rose-500 p-10 bg-rose-50 rounded-2xl">Error: ${e.message}</p>`; }
+            } catch (e) { container.innerHTML = `<p class="text-xs text-rose-500 p-6 bg-rose-50 rounded-2xl">Error: ${e.message}</p>`; }
         }
 
         // ==========================================
@@ -968,48 +1010,48 @@
         async function loadPatientsView() {
             const container = document.getElementById('dynamicDashboardContent');
             if (currentUser.role === 'owner') return showAlert('Access Denied');
-            container.innerHTML = '<div class="flex justify-center py-20 text-blue-600"><i class="fa-solid fa-circle-notch fa-spin text-3xl"></i></div>';
+            container.innerHTML = '<div class="flex justify-center py-16 text-blue-600"><i class="fa-solid fa-circle-notch fa-spin text-2xl"></i></div>';
             
             try {
                 let res = await supabaseRequest(`reservations?status=eq.Approved&select=*,pets(pet_id,pet_name,species,breed,age),users(full_name)&order=check_in_date.asc`);
                 
                 let html = `
-                    <div class="flex justify-between items-center mb-4 px-1">
+                    <div class="flex justify-between items-center mb-3 px-0.5">
                         <div>
-                            <h3 class="font-black text-lg text-slate-900"><i class="fa-solid fa-bed-pulse text-rose-500 mr-2"></i> Active Patients</h3>
+                            <h3 class="font-black text-base text-slate-900"><i class="fa-solid fa-bed-pulse text-rose-500 mr-1.5"></i> Active Patients</h3>
                         </div>
-                        <span class="bg-rose-100 text-rose-700 font-black px-2.5 py-1 rounded-lg text-[10px]">${res.length} Admitted</span>
+                        <span class="bg-rose-100 text-rose-700 font-black px-2 py-0.5 rounded-lg text-[9px]">${res.length} Admitted</span>
                     </div>
-                    <div class="space-y-3">`;
+                    <div class="space-y-2.5">`;
                 
-                if (res.length === 0) html += `<div class="py-10 text-center text-slate-400 font-medium italic bg-white rounded-2xl border border-dashed border-slate-200 shadow-sm">No active patients admitted.</div>`;
+                if (res.length === 0) html += `<div class="py-8 text-center text-slate-400 font-medium italic bg-white rounded-2xl border border-dashed border-slate-200 shadow-sm text-xs">No active patients admitted.</div>`;
                 else {
                     res.forEach(r => {
                         html += `
-                            <div class="bg-white rounded-[24px] border border-slate-100 shadow-sm p-4 hover-card flex flex-col relative overflow-hidden transition">
+                            <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-3.5 hover-card flex flex-col relative overflow-hidden transition">
                                 <div class="absolute top-0 left-0 w-full h-1 bg-rose-400"></div>
-                                <div class="flex justify-between items-start mb-3 mt-1">
+                                <div class="flex justify-between items-start mb-2.5 mt-0.5">
                                     <div>
-                                        <div class="text-[9px] font-black uppercase text-rose-500 tracking-widest mb-0.5">Apt #${r.reservation_id}</div>
-                                        <h4 class="font-black text-lg text-slate-900 leading-none">${r.pets.pet_name}</h4>
-                                        <div class="text-[10px] font-bold text-slate-500 mt-1">${r.pets.species} • Owner: ${r.users.full_name}</div>
+                                        <div class="text-[8px] font-black uppercase text-rose-500 tracking-wider mb-0.5">Apt #${r.reservation_id}</div>
+                                        <h4 class="font-black text-base text-slate-900 leading-none">${r.pets.pet_name}</h4>
+                                        <div class="text-[9px] font-bold text-slate-500 mt-0.5">${r.pets.species} • Owner: ${r.users.full_name}</div>
                                     </div>
-                                    <div class="w-10 h-10 rounded-full bg-rose-50 text-rose-500 flex justify-center items-center text-lg shadow-inner"><i class="fa-solid fa-stethoscope"></i></div>
+                                    <div class="w-8 h-8 rounded-full bg-rose-50 text-rose-500 flex justify-center items-center text-base shadow-inner"><i class="fa-solid fa-stethoscope"></i></div>
                                 </div>
                                 
-                                <div class="bg-slate-50 rounded-xl p-2.5 text-[10px] text-slate-600 font-medium mb-3 border border-slate-100">
+                                <div class="bg-slate-50 rounded-xl p-2 text-[9px] text-slate-600 font-medium mb-2.5 border border-slate-100">
                                     <span class="font-bold">Admitted:</span> ${formatDateTime(r.check_in_date)}
                                 </div>
 
                                 <div class="grid grid-cols-2 gap-2 mt-auto">
-                                    <button onclick="openSoapModal(${r.pets.pet_id}, '${r.pets.pet_name}')" class="interactive-btn text-[10px] font-bold bg-white text-rose-600 py-2 rounded-xl border border-rose-200 hover:bg-rose-50 transition text-center shadow-sm"><i class="fa-solid fa-pen-to-square mr-1"></i> SOAP</button>
-                                    <button onclick="openInvoiceModal(${r.reservation_id}, ${r.user_id}, '${r.pets.pet_name}')" class="interactive-btn text-[10px] font-bold bg-white text-indigo-600 py-2 rounded-xl border border-indigo-200 hover:bg-indigo-50 transition text-center shadow-sm"><i class="fa-solid fa-file-invoice mr-1"></i> Discharge</button>
+                                    <button onclick="openSoapModal(${r.pets.pet_id}, '${r.pets.pet_name}')" class="interactive-btn text-[9px] font-bold bg-white text-rose-600 py-1.5 rounded-xl border border-rose-200 hover:bg-rose-50 transition text-center shadow-sm"><i class="fa-solid fa-pen-to-square mr-1"></i> SOAP</button>
+                                    <button onclick="openInvoiceModal(${r.reservation_id}, ${r.user_id}, '${r.pets.pet_name}')" class="interactive-btn text-[9px] font-bold bg-white text-indigo-600 py-1.5 rounded-xl border border-indigo-200 hover:bg-indigo-50 transition text-center shadow-sm"><i class="fa-solid fa-file-invoice mr-1"></i> Discharge</button>
                                 </div>
                             </div>`;
                     });
                 }
                 container.innerHTML = html + `</div>`;
-            } catch (e) { container.innerHTML = `<p class="text-rose-500 p-10 bg-rose-50 rounded-2xl">Error: ${e.message}</p>`; }
+            } catch (e) { container.innerHTML = `<p class="text-xs text-rose-500 p-6 bg-rose-50 rounded-2xl">Error: ${e.message}</p>`; }
         }
 
         // ==========================================
@@ -1018,38 +1060,38 @@
         async function loadInventoryView() {
             const container = document.getElementById('dynamicDashboardContent');
             if (currentUser.role === 'owner') return showAlert('Access Denied');
-            container.innerHTML = '<div class="flex justify-center py-20 text-blue-600"><i class="fa-solid fa-circle-notch fa-spin text-3xl"></i></div>';
+            container.innerHTML = '<div class="flex justify-center py-16 text-blue-600"><i class="fa-solid fa-circle-notch fa-spin text-2xl"></i></div>';
             
             try {
                 let inv = await supabaseRequest(`inventory?order=item_name.asc`);
                 
                 let html = `
-                    <div class="flex justify-between items-center mb-4 px-1">
-                        <h3 class="font-black text-lg text-slate-900"><i class="fa-solid fa-boxes-stacked text-emerald-600 mr-2"></i> Inventory</h3>
-                        <button onclick="openInventoryModal()" class="interactive-btn btn-emerald text-white text-[10px] font-black px-3 py-1.5 rounded-xl shadow">+ Add Item</button>
+                    <div class="flex justify-between items-center mb-3 px-0.5">
+                        <h3 class="font-black text-base text-slate-900"><i class="fa-solid fa-boxes-stacked text-emerald-600 mr-1.5"></i> Inventory</h3>
+                        <button onclick="openInventoryModal()" class="interactive-btn btn-emerald text-white text-[9px] font-black px-2.5 py-1.5 rounded-xl shadow">+ Add Item</button>
                     </div>
-                    <div class="space-y-2.5">`;
+                    <div class="space-y-2">`;
                 
-                if (inv.length === 0) html += `<div class="p-10 text-center text-slate-400 font-medium italic bg-white rounded-2xl border border-dashed border-slate-200 shadow-sm">Inventory is empty.</div>`;
+                if (inv.length === 0) html += `<div class="p-8 text-center text-slate-400 font-medium italic bg-white rounded-2xl border border-dashed border-slate-200 shadow-sm text-xs">Inventory is empty.</div>`;
                 else {
                     inv.forEach(i => {
                         const isLow = i.quantity <= i.reorder_level;
                         html += `
-                            <div class="p-4 bg-white rounded-[20px] shadow-sm border ${isLow ? 'border-rose-200' : 'border-slate-100'} flex justify-between items-center transition">
+                            <div class="p-3 bg-white rounded-2xl shadow-sm border ${isLow ? 'border-rose-200' : 'border-slate-100'} flex justify-between items-center transition">
                                 <div class="pr-2">
-                                    <div class="font-black text-sm text-slate-800 leading-tight">${i.item_name} ${isLow ? '<i class="fa-solid fa-triangle-exclamation text-rose-500 ml-1"></i>' : ''}</div>
-                                    <div class="text-[10px] font-bold text-slate-400 mt-1 uppercase">${i.category} • ${formatCurrency(i.unit_price)}</div>
+                                    <div class="font-black text-xs text-slate-800 leading-tight">${i.item_name} ${isLow ? '<i class="fa-solid fa-triangle-exclamation text-rose-500 ml-1"></i>' : ''}</div>
+                                    <div class="text-[9px] font-bold text-slate-400 mt-0.5 uppercase">${i.category} • ${formatCurrency(i.unit_price)}</div>
                                 </div>
-                                <div class="flex items-center bg-slate-50 rounded-xl border border-slate-200 p-1 shrink-0">
-                                    <button onclick="adjustInventory(${i.item_id}, -1)" class="w-7 h-7 bg-white text-rose-500 hover:bg-rose-500 hover:text-white rounded-lg flex items-center justify-center font-bold shadow-sm transition">-</button>
-                                    <span class="font-black text-sm w-8 text-center ${isLow ? 'text-rose-600' : 'text-slate-700'}">${i.quantity}</span>
-                                    <button onclick="adjustInventory(${i.item_id}, 1)" class="w-7 h-7 bg-white text-emerald-500 hover:bg-emerald-500 hover:text-white rounded-lg flex items-center justify-center font-bold shadow-sm transition">+</button>
+                                <div class="flex items-center bg-slate-50 rounded-xl border border-slate-200 p-0.5 shrink-0">
+                                    <button onclick="adjustInventory(${i.item_id}, -1)" class="w-6 h-6 bg-white text-rose-500 hover:bg-rose-500 hover:text-white rounded-lg flex items-center justify-center font-bold text-xs shadow-sm transition">-</button>
+                                    <span class="font-black text-xs w-7 text-center ${isLow ? 'text-rose-600' : 'text-slate-700'}">${i.quantity}</span>
+                                    <button onclick="adjustInventory(${i.item_id}, 1)" class="w-6 h-6 bg-white text-emerald-500 hover:bg-emerald-500 hover:text-white rounded-lg flex items-center justify-center font-bold text-xs shadow-sm transition">+</button>
                                 </div>
                             </div>`;
                     });
                 }
                 container.innerHTML = html + `</div>`;
-            } catch (e) { container.innerHTML = `<p class="text-rose-500 p-10 bg-rose-50 rounded-2xl">Error: ${e.message}</p>`; }
+            } catch (e) { container.innerHTML = `<p class="text-xs text-rose-500 p-6 bg-rose-50 rounded-2xl">Error: ${e.message}</p>`; }
         }
 
         async function adjustInventory(id, change) {
@@ -1067,7 +1109,7 @@
         // ==========================================
         async function loadBillingView() {
             const container = document.getElementById('dynamicDashboardContent');
-            container.innerHTML = '<div class="flex justify-center py-20 text-blue-600"><i class="fa-solid fa-circle-notch fa-spin text-3xl"></i></div>';
+            container.innerHTML = '<div class="flex justify-center py-16 text-blue-600"><i class="fa-solid fa-circle-notch fa-spin text-2xl"></i></div>';
             
             try {
                 let query = `invoices?select=*,users(full_name)&order=invoice_id.desc`;
@@ -1075,39 +1117,39 @@
                 let invcs = await supabaseRequest(query);
                 
                 let html = `
-                    <div class="flex justify-between items-center mb-4 px-1">
-                        <h3 class="font-black text-lg text-slate-900"><i class="fa-solid fa-file-invoice-dollar text-indigo-500 mr-2"></i> ${currentUser.role==='owner' ? 'My Billing' : 'Financials'}</h3>
+                    <div class="flex justify-between items-center mb-3 px-0.5">
+                        <h3 class="font-black text-base text-slate-900"><i class="fa-solid fa-file-invoice-dollar text-indigo-500 mr-1.5"></i> ${currentUser.role==='owner' ? 'My Billing' : 'Financials'}</h3>
                     </div>
-                    <div class="space-y-3">`;
+                    <div class="space-y-2.5">`;
                 
-                if (invcs.length === 0) html += `<div class="py-10 text-center text-slate-400 font-medium italic bg-white rounded-2xl border border-dashed border-slate-200 shadow-sm">No invoices generated yet.</div>`;
+                if (invcs.length === 0) html += `<div class="py-8 text-center text-slate-400 font-medium italic bg-white rounded-2xl border border-dashed border-slate-200 shadow-sm text-xs">No invoices generated yet.</div>`;
                 else {
                     invcs.forEach(i => {
                         html += `
-                            <div class="p-4 bg-white rounded-[20px] shadow-sm border border-slate-100 relative overflow-hidden flex flex-col gap-3 transition hover-card">
+                            <div class="p-3.5 bg-white rounded-2xl shadow-sm border border-slate-100 relative overflow-hidden flex flex-col gap-2.5 transition hover-card">
                                 ${i.status === 'Unpaid' ? '<div class="absolute left-0 top-0 w-1 h-full bg-amber-400"></div>' : '<div class="absolute left-0 top-0 w-1 h-full bg-emerald-400"></div>'}
                                 
-                                <div class="flex justify-between items-start pl-1">
+                                <div class="flex justify-between items-start pl-0.5">
                                     <div>
-                                        <div class="font-black text-slate-900 text-sm">#INV-${i.invoice_id.toString().padStart(5, '0')}</div>
-                                        <div class="text-[10px] text-slate-400 font-bold mt-0.5">${formatDateTime(i.issued_at)}</div>
+                                        <div class="font-black text-slate-900 text-xs">#INV-${i.invoice_id.toString().padStart(5, '0')}</div>
+                                        <div class="text-[9px] text-slate-400 font-bold mt-0.5">${formatDateTime(i.issued_at)}</div>
                                     </div>
-                                    <span class="px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-wider ${i.status === 'Paid' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">${i.status}</span>
+                                    <span class="px-2 py-0.5 rounded-md text-[8px] font-black uppercase tracking-wider ${i.status === 'Paid' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">${i.status}</span>
                                 </div>
 
-                                <div class="bg-slate-50 rounded-xl p-3 border border-slate-100 flex justify-between items-center">
-                                    ${currentUser.role !== 'owner' ? `<div><div class="text-[9px] font-bold text-slate-400 uppercase">Client</div><div class="text-xs font-bold text-indigo-600">${i.users.full_name}</div></div>` : `<div class="text-xs font-bold text-slate-500">Total Due:</div>`}
-                                    <div class="text-lg font-black text-slate-800">${formatCurrency(i.total_amount)}</div>
+                                <div class="bg-slate-50 rounded-xl p-2.5 border border-slate-100 flex justify-between items-center">
+                                    ${currentUser.role !== 'owner' ? `<div><div class="text-[8px] font-bold text-slate-400 uppercase">Client</div><div class="text-xs font-bold text-indigo-600">${i.users.full_name}</div></div>` : `<div class="text-xs font-bold text-slate-500">Total Due:</div>`}
+                                    <div class="text-base font-black text-slate-800">${formatCurrency(i.total_amount)}</div>
                                 </div>
 
                                 ${(currentUser.role === 'admin' || currentUser.role === 'employee') && i.status === 'Unpaid' ? `
-                                    <button onclick="markInvoicePaid(${i.invoice_id})" class="interactive-btn w-full mt-1 bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-500 hover:text-white text-[10px] font-bold py-2 rounded-xl transition">Mark as Paid</button>
+                                    <button onclick="markInvoicePaid(${i.invoice_id})" class="interactive-btn w-full mt-0.5 bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-500 hover:text-white text-[9px] font-bold py-1.5 rounded-xl transition">Mark as Paid</button>
                                 ` : ''}
                             </div>`;
                     });
                 }
                 container.innerHTML = html + `</div>`;
-            } catch (e) { container.innerHTML = `<p class="text-rose-500 p-10 bg-rose-50 rounded-2xl">Error: ${e.message}</p>`; }
+            } catch (e) { container.innerHTML = `<p class="text-xs text-rose-500 p-6 bg-rose-50 rounded-2xl">Error: ${e.message}</p>`; }
         }
 
         async function markInvoicePaid(id) {
@@ -1117,6 +1159,116 @@
                 showAlert("Payment recorded successfully!", "success");
                 loadBillingView();
             } catch(e) { showAlert("Error updating payment."); }
+        }
+
+        // ==========================================
+        // ADMIN APPROVALS VIEW
+        // ==========================================
+        async function loadAdminApprovalsView() {
+            const container = document.getElementById('dynamicDashboardContent');
+            if (currentUser.role !== 'admin') return showAlert('Access Denied');
+            container.innerHTML = '<div class="flex justify-center py-16 text-blue-600"><i class="fa-solid fa-circle-notch fa-spin text-2xl"></i></div>';
+            
+            try {
+                let logs = [];
+                try {
+                    logs = await supabaseRequest('log_trails?action=ilike.*Request*&order=log_id.desc&limit=20');
+                } catch(e) { console.warn(e); }
+
+                let html = `
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center mb-1">
+                            <h3 class="font-black text-lg text-slate-900"><i class="fa-solid fa-clipboard-check text-amber-500 mr-1.5"></i> Staff Approvals</h3>
+                        </div>`;
+
+                if (!logs || logs.length === 0) {
+                    html += `
+                        <div class="bg-white p-8 rounded-2xl border border-dashed border-slate-200 text-center text-slate-400 font-medium text-xs shadow-sm">
+                            <i class="fa-solid fa-check-circle text-3xl text-emerald-400 mb-2 block"></i>
+                            No pending staff shift swaps or fee waiver approvals at this time.
+                        </div>`;
+                } else {
+                    html += `<div class="space-y-2.5">`;
+                    logs.forEach(item => {
+                        html += `
+                            <div class="bg-white p-4 rounded-2xl shadow-card border border-slate-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-3 hover-card transition">
+                                <div>
+                                    <div class="font-black text-xs text-slate-900">${item.action || 'Staff Request'}</div>
+                                    <div class="text-[11px] text-slate-600 mt-0.5">${item.details || 'No details specified'}</div>
+                                    <div class="text-[9px] font-bold text-slate-400 mt-1">Requested by: <span class="text-blue-600">${item.username || 'Staff'}</span> • ${formatDateTime(item.created_at)}</div>
+                                </div>
+                                <div class="flex space-x-2 shrink-0">
+                                    <button onclick="showAlert('Request Approved successfully!','success')" class="interactive-btn bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-500 hover:text-white px-3 py-1.5 rounded-xl text-[10px] font-bold transition">Approve</button>
+                                    <button onclick="showAlert('Request Declined.')" class="interactive-btn bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-500 hover:text-white px-3 py-1.5 rounded-xl text-[10px] font-bold transition">Decline</button>
+                                </div>
+                            </div>`;
+                    });
+                    html += `</div>`;
+                }
+                container.innerHTML = html + `</div>`;
+            } catch(e) {
+                container.innerHTML = `<p class="text-xs text-rose-500 font-bold p-6 bg-rose-50 rounded-2xl">Error: ${e.message}</p>`;
+            }
+        }
+
+        // ==========================================
+        // AUDIT LOGS VIEW
+        // ==========================================
+        async function loadLogTrailsView() {
+            const container = document.getElementById('dynamicDashboardContent');
+            if (currentUser.role !== 'admin') return showAlert('Access Denied');
+            container.innerHTML = '<div class="flex justify-center py-16 text-blue-600"><i class="fa-solid fa-circle-notch fa-spin text-2xl"></i></div>';
+            
+            try {
+                let logs = [];
+                try {
+                    logs = await supabaseRequest('log_trails?order=log_id.desc&limit=50');
+                } catch(e) { console.warn(e); }
+
+                let html = `
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-black text-lg text-slate-900"><i class="fa-solid fa-shield-halved text-rose-500 mr-1.5"></i> Audit Trail</h3>
+                            <button onclick="loadLogTrailsView()" class="interactive-btn bg-white border border-slate-200 text-slate-600 px-3 py-1 rounded-xl text-[10px] font-bold shadow-sm hover:text-blue-600 transition"><i class="fa-solid fa-rotate-right mr-1"></i> Refresh</button>
+                        </div>`;
+
+                if (!logs || logs.length === 0) {
+                    html += `<div class="bg-white p-8 rounded-2xl border border-dashed border-slate-200 text-center text-slate-400 text-xs font-medium">No audit log entries recorded yet.</div>`;
+                } else {
+                    html += `
+                        <div class="bg-white rounded-2xl border border-slate-100 shadow-card overflow-hidden">
+                            <div class="overflow-x-auto custom-scrollbar">
+                                <table class="w-full text-left border-collapse">
+                                    <thead>
+                                        <tr class="bg-slate-900 text-white text-[9px] uppercase font-black tracking-widest">
+                                            <th class="p-3">ID</th>
+                                            <th class="p-3">User</th>
+                                            <th class="p-3">Action</th>
+                                            <th class="p-3">Details</th>
+                                            <th class="p-3">Timestamp</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-100 text-[11px] font-medium">`;
+                    logs.forEach(l => {
+                        html += `
+                            <tr class="hover:bg-slate-50 transition">
+                                <td class="p-3 font-mono text-[10px] text-slate-400">#${l.log_id || '-'}</td>
+                                <td class="p-3 font-bold text-blue-600">${l.username || 'System'}</td>
+                                <td class="p-3 font-black text-slate-800">${l.action || 'System Event'}</td>
+                                <td class="p-3 text-slate-500 max-w-xs truncate">${l.details || '-'}</td>
+                                <td class="p-3 text-[10px] text-slate-400 whitespace-nowrap">${formatDateTime(l.created_at)}</td>
+                            </tr>`;
+                    });
+                    html += `
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>`;
+                }
+                container.innerHTML = html + `</div>`;
+            } catch(e) {
+                container.innerHTML = `<p class="text-xs text-rose-500 font-bold p-6 bg-rose-50 rounded-2xl">Error: ${e.message}</p>`;
+            }
         }
 
         // ==========================================
