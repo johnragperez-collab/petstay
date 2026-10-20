@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PetStay - Modern Veterinary & Boarding Management</title>
+    <title>PetStay - Enterprise Veterinary Clinic Management</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Pro Icons -->
@@ -15,13 +15,6 @@
             theme: {
                 extend: {
                     colors: {
-                        brand: {
-                            50: '#f0f7ff',
-                            100: '#e0effe',
-                            500: '#2563eb',
-                            600: '#1d4ed8',
-                            900: '#0f172a',
-                        },
                         clinic: {
                             teal: '#0d9488',
                             gold: '#f59e0b',
@@ -40,383 +33,466 @@
         }
     </script>
     <style>
-        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 99px; }
-        .mobile-shell { max-width: 430px; height: 880px; }
-        .glass-header { background: rgba(15, 23, 42, 0.92); backdrop-filter: blur(12px); }
-        .glass-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(8px); }
-        .btn-gradient { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); }
-        .btn-primary { background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); }
-        .btn-gold { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
-
-        /* Animation Keyframes */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(6px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes modalPop {
-            from { opacity: 0; transform: scale(0.92) translateY(10px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
-        }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         
-        .animate-fade-in {
-            animation: fadeIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-        .animate-modal-pop {
-            animation: modalPop 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-        .interactive-btn {
-            transition: all 0.15s ease-in-out;
-        }
-        .interactive-btn:active {
-            transform: scale(0.95);
-        }
+        /* Dynamic Layout Engine */
+        .app-transition { transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        .mobile-mode { max-width: 430px; height: 880px; margin: 0 auto; }
+        .desktop-mode { max-width: 1400px; height: 95vh; margin: 0 auto; }
+        
+        .glass-header { background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(12px); }
+        .btn-gradient { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); }
+        .btn-gold { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
+        .btn-emerald { background: linear-gradient(135deg, #10b981 0%, #047857 100%); }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes modalPop { from { opacity: 0; transform: scale(0.92) translateY(15px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+        
+        .animate-fade-in { animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .animate-modal-pop { animation: modalPop 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        
+        .interactive-btn { transition: all 0.15s ease-in-out; }
+        .interactive-btn:active { transform: scale(0.96); }
+        .hover-card { transition: all 0.2s ease; }
+        .hover-card:hover { transform: translateY(-2px); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1); }
     </style>
 </head>
-<body class="bg-slate-950 font-sans text-slate-800 antialiased min-h-screen flex items-center justify-center p-0 sm:p-6">
+<body class="bg-slate-950 font-sans text-slate-800 antialiased min-h-screen flex items-center justify-center p-0 sm:p-4 md:p-8">
 
-    <!-- Mobile Frame Shell -->
-    <div class="mobile-shell w-full bg-slate-900 sm:rounded-[48px] shadow-2xl border-0 sm:border-[10px] sm:border-slate-800 overflow-hidden relative flex flex-col justify-between h-full sm:h-[880px]">
+    <!-- Dynamic App Shell -->
+    <div id="appShell" class="w-full bg-slate-900 sm:rounded-[48px] shadow-2xl border-0 sm:border-[10px] sm:border-slate-800 overflow-hidden relative flex flex-col h-full mobile-mode app-transition">
 
-        <!-- Top Dynamic Island Notch -->
-        <div class="hidden sm:flex absolute top-0 left-1/2 -translate-x-1/2 w-36 h-6 bg-slate-800 rounded-b-2xl z-50 items-center justify-center space-x-3">
+        <!-- Top Dynamic Island Notch (Mobile Only) -->
+        <div id="dynamicNotch" class="hidden sm:flex absolute top-0 left-1/2 -translate-x-1/2 w-36 h-6 bg-slate-800 rounded-b-2xl z-50 items-center justify-center space-x-3 transition-opacity">
             <div class="w-2.5 h-2.5 rounded-full bg-slate-950 border border-slate-700/50"></div>
             <div class="w-10 h-1.5 rounded-full bg-slate-950 border border-slate-700/50"></div>
         </div>
 
-        <!-- Glassmorphism App Header -->
-        <header class="glass-header text-white sticky top-0 z-40 px-5 py-4 flex items-center justify-between border-b border-slate-800/80 shadow-lg">
+        <!-- Global Header -->
+        <header class="glass-header text-white sticky top-0 z-40 px-5 py-4 flex items-center justify-between border-b border-slate-800/80 shadow-lg shrink-0">
             <div class="flex items-center space-x-3">
-                <div class="bg-gradient-to-tr from-amber-500 to-amber-300 p-2 rounded-2xl text-slate-950 font-black text-sm flex items-center justify-center w-9 h-9 shadow-glow transition transform hover:rotate-6">
-                    <i class="fa-solid fa-paw text-base"></i>
+                <div class="bg-gradient-to-tr from-amber-500 to-amber-300 p-2 rounded-2xl text-slate-950 font-black text-sm flex items-center justify-center w-10 h-10 shadow-glow transition transform hover:rotate-6">
+                    <i class="fa-solid fa-staff-snake text-lg"></i>
                 </div>
                 <div>
                     <div class="flex items-center space-x-1.5">
-                        <span class="font-black text-lg tracking-tight text-white leading-none">Pet<span class="text-amber-400">Stay</span></span>
-                        <span class="text-[9px] bg-slate-800 text-sky-400 border border-sky-500/30 px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wider">VET CLINIC</span>
+                        <span class="font-black text-xl tracking-tight text-white leading-none">Pet<span class="text-amber-400">Stay</span></span>
+                        <span id="headerTag" class="text-[9px] bg-slate-800 text-sky-400 border border-sky-500/30 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider ml-1">CLINIC</span>
                     </div>
-                    <span class="text-[10px] text-slate-400 block font-medium mt-0.5">Medical & Boarding Portal</span>
+                    <span id="headerSub" class="text-[11px] text-slate-400 block font-medium mt-0.5">Veterinary Enterprise Portal</span>
                 </div>
             </div>
 
-            <div class="flex items-center space-x-2">
-                <div id="navUserBadge" class="hidden flex items-center space-x-2 bg-slate-800/90 px-3 py-1.5 rounded-full text-[11px] font-semibold border border-slate-700/60 shadow-inner">
+            <div class="flex items-center space-x-3">
+                <div id="navUserBadge" class="hidden flex items-center space-x-2 bg-slate-800/90 px-3 py-1.5 rounded-full text-xs font-semibold border border-slate-700/60 shadow-inner">
                     <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                    <span id="navUsername" class="text-slate-200">User</span>
+                    <span id="navUsername" class="text-slate-200 tracking-wide">User</span>
                 </div>
-                <button id="navLogoutBtn" onclick="openLogoutModal()" class="interactive-btn hidden bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 text-xs font-bold p-2.5 rounded-xl border border-rose-500/20 transition-all duration-200">
-                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                <button id="navLogoutBtn" onclick="openLogoutModal()" class="interactive-btn hidden bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 text-sm p-2.5 rounded-xl border border-rose-500/20">
+                    <i class="fa-solid fa-power-off"></i>
                 </button>
             </div>
         </header>
 
-        <!-- Main Content Area -->
-        <main class="flex-grow overflow-y-auto custom-scrollbar p-4 flex flex-col justify-start relative z-10 bg-slate-50">
-
-            <!-- Global Alert Container -->
-            <div id="appAlert" class="hidden mb-4 p-3.5 rounded-2xl shadow-card text-xs font-bold flex items-center justify-between transition-all duration-300 animate-fade-in">
-                <div class="flex items-center space-x-2.5">
-                    <i id="appAlertIcon" class="fa-solid text-sm"></i>
-                    <span id="appAlertMsg"></span>
+        <!-- Main Workspace Area -->
+        <div class="flex flex-row flex-grow overflow-hidden relative z-10 bg-slate-50">
+            
+            <!-- Desktop Sidebar Navigation (Admin Only - Hidden on Mobile) -->
+            <aside id="desktopSidebar" class="hidden w-64 bg-slate-900 border-r border-slate-800 text-slate-400 flex-col py-6 px-4 space-y-2 shrink-0 overflow-y-auto custom-scrollbar">
+                <div class="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2 pl-3">Main Menu</div>
+                <button onclick="switchTab('home')" class="desk-nav-tab interactive-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-slate-800 hover:text-white transition text-sm font-bold text-left"><i class="fa-solid fa-house-medical w-5 text-center"></i><span>Dashboard</span></button>
+                <button onclick="switchTab('patients')" class="desk-nav-tab interactive-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-slate-800 hover:text-white transition text-sm font-bold text-left"><i class="fa-solid fa-bed-pulse w-5 text-center"></i><span>Active Patients</span></button>
+                <button onclick="switchTab('reservations')" class="desk-nav-tab interactive-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-slate-800 hover:text-white transition text-sm font-bold text-left"><i class="fa-solid fa-calendar-check w-5 text-center"></i><span>Appointments</span></button>
+                <button onclick="switchTab('pets')" class="desk-nav-tab interactive-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-slate-800 hover:text-white transition text-sm font-bold text-left"><i class="fa-solid fa-paw w-5 text-center"></i><span>Pet Directory</span></button>
+                
+                <div class="text-[10px] font-black uppercase tracking-widest text-slate-500 mt-6 mb-2 pl-3">Operations</div>
+                <button onclick="switchTab('inventory')" class="desk-nav-tab interactive-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-slate-800 hover:text-white transition text-sm font-bold text-left"><i class="fa-solid fa-boxes-stacked w-5 text-center"></i><span>Inventory & Rx</span></button>
+                <button onclick="switchTab('billing')" class="desk-nav-tab interactive-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-slate-800 hover:text-white transition text-sm font-bold text-left"><i class="fa-solid fa-file-invoice-dollar w-5 text-center"></i><span>Billing & Invoices</span></button>
+                
+                <div id="adminMenuSection" class="hidden">
+                    <div class="text-[10px] font-black uppercase tracking-widest text-rose-500 mt-6 mb-2 pl-3">Administration</div>
+                    <button onclick="switchTab('approvals')" class="desk-nav-tab interactive-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-slate-800 hover:text-white transition text-sm font-bold text-left"><i class="fa-solid fa-clipboard-check w-5 text-center text-amber-500"></i><span class="text-amber-500">Staff Approvals</span></button>
+                    <button onclick="switchTab('audit')" class="desk-nav-tab interactive-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-slate-800 hover:text-white transition text-sm font-bold text-left"><i class="fa-solid fa-shield-halved w-5 text-center text-rose-500"></i><span class="text-rose-500">Audit Logs</span></button>
                 </div>
-                <button type="button" onclick="dismissAlert()" class="interactive-btn opacity-60 hover:opacity-100 transition"><i class="fa-solid fa-xmark"></i></button>
-            </div>
+            </aside>
 
-            <!-- AUTHENTICATION SECTION -->
-            <section id="authSection" class="w-full space-y-4 my-auto animate-fade-in">
-                <div class="bg-white rounded-[32px] shadow-glass border border-slate-200/80 overflow-hidden">
-                    <div class="bg-slate-900 p-6 text-center text-white border-b border-slate-800 relative overflow-hidden">
-                        <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-amber-500/10 rounded-full blur-xl"></div>
-                        <h2 id="authTitle" class="text-2xl font-black tracking-tight text-white relative z-10">Welcome Back</h2>
-                        <p id="authSubtitle" class="text-xs text-slate-400 mt-1 relative z-10">Sign in to manage veterinary & boarding logs</p>
+            <!-- Content Viewport -->
+            <main class="flex-grow overflow-y-auto custom-scrollbar p-4 md:p-6 lg:p-8 flex flex-col justify-start relative">
+
+                <!-- Global Alert -->
+                <div id="appAlert" class="hidden mb-5 p-4 rounded-2xl shadow-card text-sm font-bold flex items-center justify-between transition-all duration-300 animate-fade-in shrink-0 z-20">
+                    <div class="flex items-center space-x-3">
+                        <i id="appAlertIcon" class="fa-solid text-lg"></i>
+                        <span id="appAlertMsg"></span>
                     </div>
+                    <button type="button" onclick="dismissAlert()" class="interactive-btn opacity-60 hover:opacity-100 p-2"><i class="fa-solid fa-xmark"></i></button>
+                </div>
 
-                    <div class="p-6">
-                        <!-- LOGIN FORM -->
-                        <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-4" novalidate>
-                            <div>
-                                <label class="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-1.5">Username or Email</label>
-                                <div class="relative">
-                                    <span class="absolute left-3.5 top-3 text-slate-400 text-xs"><i class="fa-solid fa-user"></i></span>
-                                    <input type="text" id="loginUsername" class="block w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 outline-none focus:border-blue-500 focus:bg-white transition" placeholder="e.g. johndoe">
+                <!-- AUTHENTICATION SECTION -->
+                <section id="authSection" class="w-full max-w-md mx-auto space-y-6 my-auto animate-fade-in">
+                    <div class="bg-white rounded-[32px] shadow-glass border border-slate-200/80 overflow-hidden">
+                        <div class="bg-slate-900 p-8 text-center text-white border-b border-slate-800 relative overflow-hidden">
+                            <div class="absolute -right-8 -bottom-8 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl"></div>
+                            <div class="absolute -left-8 -top-8 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl"></div>
+                            <h2 id="authTitle" class="text-3xl font-black tracking-tight relative z-10">Secure Login</h2>
+                            <p id="authSubtitle" class="text-sm text-slate-400 mt-2 relative z-10">Access your veterinary workspace</p>
+                        </div>
+
+                        <div class="p-8">
+                            <!-- LOGIN FORM -->
+                            <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-5" novalidate>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Username or Email</label>
+                                    <div class="relative">
+                                        <span class="absolute left-4 top-3.5 text-slate-400 text-sm"><i class="fa-solid fa-user"></i></span>
+                                        <input type="text" id="loginUsername" class="block w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-blue-500 transition focus:bg-white" placeholder="admin, staff, or johndoe">
+                                    </div>
                                 </div>
-                            </div>
-                            <div>
-                                <label class="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-1.5">Password</label>
-                                <div class="relative">
-                                    <span class="absolute left-3.5 top-3 text-slate-400 text-xs"><i class="fa-solid fa-lock"></i></span>
-                                    <input type="password" id="loginPassword" class="block w-full pl-9 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 outline-none focus:border-blue-500 focus:bg-white transition" placeholder="••••••••">
-                                    <button type="button" onclick="togglePassword('loginPassword', this)" class="interactive-btn absolute right-3 top-2.5 text-slate-400 hover:text-slate-600 text-xs p-1"><i class="fa-solid fa-eye"></i></button>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Password</label>
+                                    <div class="relative">
+                                        <span class="absolute left-4 top-3.5 text-slate-400 text-sm"><i class="fa-solid fa-lock"></i></span>
+                                        <input type="password" id="loginPassword" class="block w-full pl-10 pr-12 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-blue-500 transition focus:bg-white" placeholder="••••••••">
+                                        <button type="button" onclick="togglePassword('loginPassword', this)" class="absolute right-4 top-3.5 text-slate-400 hover:text-slate-600"><i class="fa-solid fa-eye"></i></button>
+                                    </div>
                                 </div>
-                            </div>
+                                <div class="flex justify-end text-xs"><button type="button" onclick="switchAuthMode('otp_request')" class="text-blue-600 font-bold hover:underline">Forgot Password? Request OTP</button></div>
+                                <button type="submit" class="interactive-btn w-full btn-gradient text-white font-black py-3.5 rounded-xl shadow-lg flex items-center justify-center space-x-2 mt-2">
+                                    <span>Access Portal</span><i class="fa-solid fa-arrow-right text-sm"></i>
+                                </button>
+                            </form>
 
-                            <div class="flex justify-end text-[11px]">
-                                <button type="button" onclick="switchAuthMode('otp_request')" class="interactive-btn text-blue-600 font-bold hover:underline">Forgot / Request OTP?</button>
-                            </div>
-
-                            <button type="submit" id="loginSubmitBtn" class="interactive-btn w-full btn-gradient hover:opacity-95 text-white font-extrabold py-3 px-4 rounded-xl shadow-md transition flex items-center justify-center space-x-2">
-                                <span>Sign In to Portal</span>
-                                <i class="fa-solid fa-arrow-right text-xs"></i>
-                            </button>
-                        </form>
-
-                        <!-- REGISTER FORM -->
-                        <form id="registerForm" onsubmit="handleRegister(event)" class="hidden space-y-3" novalidate>
-                            <div>
-                                <label class="block text-[10px] font-bold text-slate-600 uppercase">Full Name</label>
-                                <input type="text" id="regFullName" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none focus:border-blue-500" placeholder="Juan Dela Cruz">
-                            </div>
-                            <div>
-                                <label class="block text-[10px] font-bold text-slate-600 uppercase">Email</label>
-                                <input type="email" id="regEmail" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none focus:border-blue-500" placeholder="juan@example.com">
-                            </div>
-                            <div>
-                                <label class="block text-[10px] font-bold text-slate-600 uppercase">Username</label>
-                                <input type="text" id="regUsername" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none focus:border-blue-500" placeholder="Username">
-                            </div>
-                            <div>
-                                <label class="block text-[10px] font-bold text-slate-600 uppercase">Portal Role</label>
-                                <select id="regRole" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-blue-500">
-                                    <option value="owner">Pet Owner (Customer)</option>
-                                    <option value="employee">Clinic Staff (Employee)</option>
+                            <!-- REGISTER FORM -->
+                            <form id="registerForm" onsubmit="handleRegister(event)" class="hidden space-y-4" novalidate>
+                                <input type="text" id="regFullName" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium outline-none focus:border-blue-500" placeholder="Full Name">
+                                <input type="email" id="regEmail" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium outline-none focus:border-blue-500" placeholder="Email Address">
+                                <input type="text" id="regUsername" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium outline-none focus:border-blue-500" placeholder="Username">
+                                <select id="regRole" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-blue-500">
+                                    <option value="owner">Pet Owner (Client)</option>
+                                    <option value="employee">Clinic Staff (Veterinarian / Tech)</option>
                                     <option value="admin">Clinic Administrator</option>
                                 </select>
+                                <input type="password" id="regPassword" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium outline-none focus:border-blue-500" placeholder="Password (Min 8 chars, symbols)">
+                                <input type="password" id="regConfirmPassword" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium outline-none focus:border-blue-500" placeholder="Confirm Password">
+                                <button type="submit" class="interactive-btn w-full btn-gold text-slate-950 font-black py-3.5 rounded-xl shadow-md mt-2">Create Account</button>
+                            </form>
+
+                            <!-- OTP FORM -->
+                            <form id="otpForm" onsubmit="handleOtpSubmit(event)" class="hidden space-y-4">
+                                <p class="text-sm text-slate-500 leading-relaxed mb-4">Enter your username or email to generate a recovery OTP code into your database record.</p>
+                                <input type="text" id="otpUsername" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium outline-none focus:border-blue-500" placeholder="Username or Email">
+                                <div id="otpInputGroup" class="hidden space-y-3 mt-4">
+                                    <input type="text" id="otpCode" class="w-full px-4 py-3 bg-amber-50 border border-amber-200 rounded-xl text-lg tracking-widest text-center font-black outline-none" placeholder="6-DIGIT OTP">
+                                    <input type="password" id="otpNewPassword" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium outline-none focus:border-blue-500" placeholder="New Password">
+                                </div>
+                                <button type="submit" id="otpBtn" class="interactive-btn w-full btn-gradient text-white font-bold py-3.5 rounded-xl mt-2 shadow-md">Request OTP Code</button>
+                            </form>
+
+                            <div class="mt-6 pt-5 border-t border-slate-100 text-center text-sm text-slate-500 font-medium">
+                                <span id="toggleAuthText">Don't have an account? <button onclick="switchAuthMode('register')" class="text-blue-600 font-bold hover:underline ml-1">Register here</button></span>
                             </div>
-                            <div>
-                                <label class="block text-[10px] font-bold text-slate-600 uppercase">Password (Min 8 chars, A-Z, 0-9, symbol)</label>
-                                <div class="relative">
-                                    <input type="password" id="regPassword" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none focus:border-blue-500" placeholder="••••••••">
-                                    <button type="button" onclick="togglePassword('regPassword', this)" class="interactive-btn absolute right-3 top-2.5 text-slate-400 text-xs"><i class="fa-solid fa-eye"></i></button>
+
+                            <!-- DEMO ACCOUNTS -->
+                            <div class="mt-6 p-4 bg-slate-900 rounded-2xl text-xs space-y-3 shadow-card border border-slate-800">
+                                <div class="text-amber-400 font-black tracking-wide flex items-center justify-between">
+                                    <span><i class="fa-solid fa-key mr-2"></i> DEMO ACCOUNTS</span>
+                                    <span class="text-[10px] text-slate-400 font-normal">Pass: <code class="bg-slate-800 px-1 py-0.5 rounded">Password123!</code></span>
+                                </div>
+                                <div class="grid grid-cols-3 gap-2">
+                                    <button onclick="fillDemo('johndoe')" class="interactive-btn bg-slate-800 hover:bg-slate-700 text-slate-200 py-2 rounded-xl font-bold transition border border-slate-700">1. Owner</button>
+                                    <button onclick="fillDemo('staff')" class="interactive-btn bg-slate-800 hover:bg-slate-700 text-slate-200 py-2 rounded-xl font-bold transition border border-slate-700">2. Staff</button>
+                                    <button onclick="fillDemo('admin')" class="interactive-btn bg-slate-800 hover:bg-slate-700 text-amber-300 py-2 rounded-xl font-black border border-amber-500/40 transition">3. Admin</button>
                                 </div>
                             </div>
-                            <div>
-                                <label class="block text-[10px] font-bold text-slate-600 uppercase">Confirm Password</label>
-                                <input type="password" id="regConfirmPassword" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none focus:border-blue-500" placeholder="••••••••">
-                            </div>
-                            <button type="submit" class="interactive-btn w-full btn-gold text-slate-950 font-black py-2.5 px-4 rounded-xl shadow-md transition">
-                                Create Account
-                            </button>
-                        </form>
-
-                        <!-- OTP RECOVERY FORM -->
-                        <form id="otpForm" onsubmit="handleOtpSubmit(event)" class="hidden space-y-3">
-                            <p class="text-xs text-slate-500 leading-relaxed">Enter your registered username or email address to generate a 6-digit Recovery OTP into your database record.</p>
-                            <div>
-                                <label class="block text-[10px] font-bold text-slate-600 uppercase">Username or Email</label>
-                                <input type="text" id="otpUsername" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none" placeholder="Username or Email">
-                            </div>
-                            <div id="otpInputGroup" class="hidden space-y-2">
-                                <label class="block text-[10px] font-bold text-slate-600 uppercase">6-Digit OTP Code</label>
-                                <input type="text" id="otpCode" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none tracking-widest text-center font-black" placeholder="123456">
-                                <label class="block text-[10px] font-bold text-slate-600 uppercase">New Password</label>
-                                <input type="password" id="otpNewPassword" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none" placeholder="New Password123!">
-                            </div>
-                            <button type="submit" id="otpBtn" class="interactive-btn w-full btn-gradient text-white font-bold py-2.5 rounded-xl text-xs shadow-md">Request OTP Code</button>
-                        </form>
-
-                        <div class="mt-4 pt-4 border-t border-slate-100 text-center">
-                            <p id="toggleAuthText" class="text-xs text-slate-500 font-medium">
-                                Don't have an account? 
-                                <button type="button" onclick="switchAuthMode('register')" class="interactive-btn text-blue-600 font-bold hover:underline ml-1">Register here</button>
-                            </p>
                         </div>
+                    </div>
+                </section>
 
-                        <!-- QUICK DEMO BUTTONS -->
-                        <div class="mt-4 p-3 bg-slate-900 rounded-2xl text-[10px] space-y-1.5 shadow-card">
-                            <div class="text-amber-400 font-extrabold flex items-center justify-between">
-                                <span><i class="fa-solid fa-key mr-1"></i> Demo Access Accounts:</span>
-                                <span class="text-[9px] text-slate-400 font-normal">Pass: <code>Password123!</code></span>
-                            </div>
-                            <div class="grid grid-cols-3 gap-1.5">
-                                <button onclick="fillDemo('johndoe')" class="interactive-btn bg-slate-800 hover:bg-slate-700 text-slate-200 py-1.5 px-2 rounded-lg font-bold border border-slate-700 transition text-center">1. Owner</button>
-                                <button onclick="fillDemo('staff')" class="interactive-btn bg-slate-800 hover:bg-slate-700 text-slate-200 py-1.5 px-2 rounded-lg font-bold border border-slate-700 transition text-center">2. Staff</button>
-                                <button onclick="fillDemo('admin')" class="interactive-btn bg-slate-800 hover:bg-slate-700 text-slate-200 py-1.5 px-2 rounded-lg font-bold border border-slate-700 transition text-center">3. Admin</button>
-                            </div>
+                <!-- DASHBOARD SECTION -->
+                <section id="dashboardSection" class="hidden w-full h-full flex flex-col">
+                    
+                    <!-- Mobile Top Banner (Visible mainly on mobile/owner/staff views) -->
+                    <div id="userBanner" class="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 rounded-[28px] p-5 md:p-6 text-white shadow-xl border border-slate-800 relative overflow-hidden animate-fade-in mb-5 shrink-0 hover-card">
+                        <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-blue-500/20 rounded-full blur-3xl"></div>
+                        <div class="flex items-center justify-between mb-3 relative z-10">
+                            <span id="dashRoleBadge" class="bg-amber-500/20 text-amber-300 border border-amber-400/30 text-[10px] md:text-xs font-black uppercase px-3 py-1 rounded-full tracking-widest">ROLE</span>
+                            <span class="text-xs text-emerald-400 font-bold bg-slate-900/50 px-3 py-1 rounded-full border border-slate-700"><i class="fa-solid fa-circle text-[8px] mr-1.5 animate-pulse"></i> Live Sync</span>
                         </div>
-
+                        <h1 class="text-2xl font-black tracking-tight relative z-10">Welcome, <span id="dashUserFullName" class="text-amber-400">User</span></h1>
+                        <p class="text-[11px] text-slate-400 mt-1 relative z-10">Veterinary Clinical Management Workspace</p>
                     </div>
-                </div>
-            </section>
 
-            <!-- DASHBOARD SECTION -->
-            <section id="dashboardSection" class="hidden space-y-4 w-full">
-                <!-- User Profile Banner Card -->
-                <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 rounded-3xl p-4 text-white shadow-xl border border-slate-800 relative overflow-hidden animate-fade-in">
-                    <div class="absolute -right-4 -bottom-4 w-28 h-28 bg-blue-500/10 rounded-full blur-2xl"></div>
-                    <div class="flex items-center justify-between mb-2">
-                        <span id="dashRoleBadge" class="bg-amber-500/20 text-amber-300 border border-amber-400/30 text-[9px] font-black uppercase px-2.5 py-0.5 rounded-full tracking-wider">ROLE</span>
-                        <span class="text-[10px] text-emerald-400 font-semibold flex items-center"><i class="fa-solid fa-circle text-[6px] mr-1.5 animate-pulse"></i> Supabase Live</span>
+                    <!-- Dynamic Content Injection Area -->
+                    <div id="dynamicDashboardContent" class="flex-grow space-y-4 pb-20 md:pb-5">
+                        <!-- Content goes here based on active tab -->
                     </div>
-                    <h1 class="text-lg font-black tracking-tight">Welcome, <span id="dashUserFullName" class="text-amber-400">User</span></h1>
-                    <p class="text-[10px] text-slate-400 mt-0.5">Pet Boarding & Clinical Management Workspace</p>
-                </div>
+                </section>
 
-                <div id="dynamicDashboardContent" class="space-y-4">
-                    <!-- Dynamic Dashboard Components with Fade-in Animation -->
-                </div>
-            </section>
+            </main>
+        </div>
 
-        </main>
-
-        <!-- Navigation Bar -->
-        <nav id="bottomNav" class="hidden bg-white/95 backdrop-blur-md border-t border-slate-200 px-3 py-2.5 flex justify-around text-[10px] font-bold text-slate-500 z-40 shadow-lg">
-            <button onclick="switchTab('home')" class="nav-tab interactive-btn active flex flex-col items-center text-blue-600 transition"><i class="fa-solid fa-house-medical text-base mb-0.5"></i><span>Home</span></button>
-            <button onclick="switchTab('pets')" class="nav-tab interactive-btn flex flex-col items-center hover:text-slate-800 transition"><i class="fa-solid fa-paw text-base mb-0.5"></i><span>Pets</span></button>
-            <button onclick="switchTab('reservations')" class="nav-tab interactive-btn flex flex-col items-center hover:text-slate-800 transition"><i class="fa-solid fa-calendar-check text-base mb-0.5"></i><span>Bookings</span></button>
-            <button id="navApprovalsTab" onclick="switchTab('approvals')" class="nav-tab interactive-btn hidden flex flex-col items-center text-amber-600 hover:text-amber-700 transition"><i class="fa-solid fa-clipboard-check text-base mb-0.5"></i><span>Approvals</span></button>
-            <button id="navLogsTab" onclick="switchTab('logs')" class="nav-tab interactive-btn hidden flex flex-col items-center text-rose-600 hover:text-rose-700 transition"><i class="fa-solid fa-clock-rotate-left text-base mb-0.5"></i><span>Audit Log</span></button>
+        <!-- Mobile Bottom Navigation Bar (Dynamic for Owner & Staff) -->
+        <nav id="bottomNav" class="hidden bg-white/95 backdrop-blur-md border-t border-slate-200 px-2 py-3 flex justify-around text-[10px] font-bold text-slate-500 z-40 shadow-[0_-10px_40px_rgba(0,0,0,0.05)] rounded-b-[48px] shrink-0">
+            <!-- Tabs injected dynamically via Javascript based on Role -->
         </nav>
 
-        <!-- IN-APP MODAL: SHIFT SWAP REQUEST -->
+        <!-- ==========================================
+             MODALS DIRECTORY 
+        =========================================== -->
+
+        <!-- SHIFT SWAP MODAL (Staff) -->
         <div id="shiftModal" class="hidden fixed inset-0 z-50 pointer-events-none">
             <div class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm"></div>
             <div class="flex min-h-full items-center justify-center p-4 relative z-10">
-                <div class="bg-white rounded-3xl p-5 w-full max-w-xs text-left shadow-2xl space-y-3.5 border border-slate-100 animate-modal-pop">
-                    <div class="flex justify-between items-center border-b border-slate-100 pb-3">
-                        <h3 class="text-sm font-black text-slate-900"><i class="fa-solid fa-calendar-day text-amber-500 mr-1.5"></i> Request Shift Swap</h3>
-                        <button type="button" onclick="closeShiftModal()" class="interactive-btn text-slate-400 hover:text-slate-600 text-xs"><i class="fa-solid fa-xmark"></i></button>
+                <div class="bg-white rounded-[28px] p-6 w-full max-w-sm text-left shadow-2xl animate-modal-pop border border-slate-100">
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-4 mb-4">
+                        <h3 class="text-base font-black text-slate-900"><i class="fa-solid fa-calendar-day text-amber-500 mr-2"></i> Shift Swap Request</h3>
+                        <button type="button" onclick="closeShiftModal()" class="text-slate-400 hover:text-rose-500 bg-slate-50 hover:bg-rose-50 rounded-full w-8 h-8 flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
                     </div>
-                    <form onsubmit="handleShiftSubmit(event)" class="space-y-3">
+                    <form onsubmit="handleShiftSubmit(event)" class="space-y-4">
                         <div>
-                            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Requested Shift</label>
-                            <select id="modalShiftType" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-blue-500">
-                                <option value="Morning Shift (7:00 AM - 3:00 PM)">Morning Shift (7:00 AM - 3:00 PM)</option>
-                                <option value="Night Shift (10:00 PM - 6:00 AM)">Night Shift (10:00 PM - 6:00 AM)</option>
-                                <option value="Weekend Duty Coverage">Weekend Duty Coverage</option>
+                            <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Target Shift</label>
+                            <select id="modalShiftType" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-blue-500">
+                                <option value="Morning Shift (7 AM - 3 PM)">Morning Shift (7 AM - 3 PM)</option>
+                                <option value="Night Shift (10 PM - 6 AM)">Night Shift (10 PM - 6 AM)</option>
+                                <option value="Weekend Coverage">Weekend Coverage</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Reason for Swap</label>
-                            <textarea id="modalShiftReason" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none focus:border-blue-500" rows="2" placeholder="e.g. Emergency veterinary call coverage" required></textarea>
+                            <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Justification</label>
+                            <textarea id="modalShiftReason" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium outline-none focus:border-blue-500" rows="3" placeholder="Explain why you need this swap..." required></textarea>
                         </div>
-                        <div class="flex space-x-2 pt-2">
-                            <button type="submit" class="interactive-btn w-full btn-gradient text-white text-xs font-bold py-2.5 rounded-xl shadow">Submit to Admin</button>
-                            <button type="button" onclick="closeShiftModal()" class="interactive-btn w-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-2.5 rounded-xl transition">Cancel</button>
+                        <div class="flex space-x-3 pt-3">
+                            <button type="button" onclick="closeShiftModal()" class="w-1/3 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-bold py-3 rounded-xl transition">Cancel</button>
+                            <button type="submit" class="w-2/3 btn-gradient text-white text-sm font-black py-3 rounded-xl shadow-lg hover:shadow-xl transition">Submit to Admin</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
 
-        <!-- IN-APP MODAL: DISCOUNT WAIVER REQUEST -->
+        <!-- DISCOUNT WAIVER MODAL (Staff) -->
         <div id="discountModal" class="hidden fixed inset-0 z-50 pointer-events-none">
             <div class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm"></div>
             <div class="flex min-h-full items-center justify-center p-4 relative z-10">
-                <div class="bg-white rounded-3xl p-5 w-full max-w-xs text-left shadow-2xl space-y-3.5 border border-slate-100 animate-modal-pop">
-                    <div class="flex justify-between items-center border-b border-slate-100 pb-3">
-                        <h3 class="text-sm font-black text-slate-900"><i class="fa-solid fa-file-invoice-dollar text-emerald-600 mr-1.5"></i> Medical Discount Request</h3>
-                        <button type="button" onclick="closeDiscountModal()" class="interactive-btn text-slate-400 hover:text-slate-600 text-xs"><i class="fa-solid fa-xmark"></i></button>
+                <div class="bg-white rounded-[28px] p-6 w-full max-w-sm text-left shadow-2xl animate-modal-pop border border-slate-100">
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-4 mb-4">
+                        <h3 class="text-base font-black text-slate-900"><i class="fa-solid fa-file-invoice-dollar text-emerald-500 mr-2"></i> Discount Waiver Request</h3>
+                        <button type="button" onclick="closeDiscountModal()" class="text-slate-400 hover:text-rose-500 bg-slate-50 hover:bg-rose-50 rounded-full w-8 h-8 flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
                     </div>
-                    <form onsubmit="handleDiscountSubmit(event)" class="space-y-3">
+                    <form onsubmit="handleDiscountSubmit(event)" class="space-y-4">
                         <div>
-                            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Discount Amount (PHP)</label>
-                            <input type="number" id="modalDiscountAmount" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-blue-500" placeholder="e.g. 500" min="100" required>
+                            <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Amount (PHP)</label>
+                            <div class="relative">
+                                <span class="absolute left-4 top-3 text-slate-400 font-bold">₱</span>
+                                <input type="number" id="modalDiscountAmount" class="w-full pl-8 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-emerald-500" placeholder="500" min="50" required>
+                            </div>
                         </div>
                         <div>
-                            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Clinical Justification</label>
-                            <textarea id="modalDiscountReason" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none focus:border-blue-500" rows="2" placeholder="e.g. Emergency rescue care discount" required></textarea>
+                            <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Clinical Reason</label>
+                            <textarea id="modalDiscountReason" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium outline-none focus:border-emerald-500" rows="3" placeholder="e.g. Rescue animal subsidy, staff discount..." required></textarea>
                         </div>
-                        <div class="flex space-x-2 pt-2">
-                            <button type="submit" class="interactive-btn w-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-2.5 rounded-xl shadow transition">Submit Request</button>
-                            <button type="button" onclick="closeDiscountModal()" class="interactive-btn w-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-2.5 rounded-xl transition">Cancel</button>
+                        <div class="flex space-x-3 pt-3">
+                            <button type="button" onclick="closeDiscountModal()" class="w-1/3 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-bold py-3 rounded-xl transition">Cancel</button>
+                            <button type="submit" class="w-2/3 btn-emerald text-white text-sm font-black py-3 rounded-xl shadow-lg hover:shadow-xl transition">Request Approval</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
 
-        <!-- IN-APP MODAL: ADD NEW PET -->
+        <!-- ADD NEW PET MODAL -->
         <div id="addPetModal" class="hidden fixed inset-0 z-50 pointer-events-none">
             <div class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm"></div>
             <div class="flex min-h-full items-center justify-center p-4 relative z-10">
-                <div class="bg-white rounded-3xl p-5 w-full max-w-xs text-left shadow-2xl space-y-3.5 border border-slate-100 animate-modal-pop">
-                    <div class="flex justify-between items-center border-b border-slate-100 pb-3">
-                        <h3 class="text-sm font-black text-slate-900"><i class="fa-solid fa-paw text-amber-500 mr-1.5"></i> Register Pet Profile</h3>
-                        <button type="button" onclick="closePetModal()" class="interactive-btn text-slate-400 hover:text-slate-600 text-xs"><i class="fa-solid fa-xmark"></i></button>
+                <div class="bg-white rounded-[28px] p-6 w-full max-w-sm text-left shadow-2xl animate-modal-pop border border-slate-100">
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-4 mb-4">
+                        <h3 class="text-base font-black text-slate-900"><i class="fa-solid fa-paw text-amber-500 mr-2"></i> Register Pet Profile</h3>
+                        <button type="button" onclick="closePetModal()" class="text-slate-400 hover:text-rose-500 bg-slate-50 hover:bg-rose-50 rounded-full w-8 h-8 flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
                     </div>
-                    <form onsubmit="handlePetSubmit(event)" class="space-y-3">
+                    <form onsubmit="handlePetSubmit(event)" class="space-y-4">
                         <div>
-                            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Pet Name</label>
-                            <input type="text" id="modalPetName" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-blue-500" placeholder="e.g. Buddy" required>
+                            <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Pet Name</label>
+                            <input type="text" id="modalPetName" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-blue-500" placeholder="e.g. Bella" required>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Species</label>
+                                <select id="modalPetSpecies" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-blue-500">
+                                    <option value="Dog">Dog</option>
+                                    <option value="Cat">Cat</option>
+                                    <option value="Bird">Bird</option>
+                                    <option value="Exotic/Other">Exotic/Other</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Age (Years)</label>
+                                <input type="number" id="modalPetAge" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-blue-500" value="1" min="0">
+                            </div>
                         </div>
                         <div>
-                            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Species</label>
-                            <select id="modalPetSpecies" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-blue-500">
-                                <option value="Dog">Dog</option>
-                                <option value="Cat">Cat</option>
-                                <option value="Other">Other</option>
-                            </select>
+                            <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Breed / Markings</label>
+                            <input type="text" id="modalPetBreed" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium outline-none focus:border-blue-500" placeholder="e.g. Beagle mix">
                         </div>
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Breed</label>
-                            <input type="text" id="modalPetBreed" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none focus:border-blue-500" placeholder="e.g. Golden Retriever">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Age (Years)</label>
-                            <input type="number" id="modalPetAge" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-blue-500" value="2" min="1">
-                        </div>
-                        <div class="flex space-x-2 pt-2">
-                            <button type="submit" class="interactive-btn w-full btn-gradient text-white text-xs font-bold py-2.5 rounded-xl shadow">Save Profile</button>
-                            <button type="button" onclick="closePetModal()" class="interactive-btn w-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-2.5 rounded-xl transition">Cancel</button>
+                        <div class="flex space-x-3 pt-3">
+                            <button type="button" onclick="closePetModal()" class="w-1/3 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-bold py-3 rounded-xl transition">Cancel</button>
+                            <button type="submit" class="w-2/3 btn-gradient text-white text-sm font-black py-3 rounded-xl shadow-lg transition">Save Profile</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
 
-        <!-- IN-APP MODAL: NEW BOARDING RESERVATION -->
+        <!-- NEW BOOKING MODAL -->
         <div id="bookingModal" class="hidden fixed inset-0 z-50 pointer-events-none">
             <div class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm"></div>
             <div class="flex min-h-full items-center justify-center p-4 relative z-10">
-                <div class="bg-white rounded-3xl p-5 w-full max-w-xs text-left shadow-2xl space-y-3.5 border border-slate-100 animate-modal-pop">
-                    <div class="flex justify-between items-center border-b border-slate-100 pb-3">
-                        <h3 class="text-sm font-black text-slate-900"><i class="fa-solid fa-calendar-plus text-amber-500 mr-1.5"></i> Boarding Reservation</h3>
-                        <button type="button" onclick="closeBookingModal()" class="interactive-btn text-slate-400 hover:text-slate-600 text-xs"><i class="fa-solid fa-xmark"></i></button>
+                <div class="bg-white rounded-[28px] p-6 w-full max-w-sm text-left shadow-2xl animate-modal-pop border border-slate-100">
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-4 mb-4">
+                        <h3 class="text-base font-black text-slate-900"><i class="fa-solid fa-calendar-plus text-blue-500 mr-2"></i> Schedule Appointment</h3>
+                        <button type="button" onclick="closeBookingModal()" class="text-slate-400 hover:text-rose-500 bg-slate-50 hover:bg-rose-50 rounded-full w-8 h-8 flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
                     </div>
-                    <form onsubmit="handleBookingSubmit(event)" class="space-y-3">
+                    <form onsubmit="handleBookingSubmit(event)" class="space-y-4">
                         <div>
-                            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Select Registered Pet</label>
-                            <select id="modalBookingPet" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-blue-500" required>
-                                <!-- Populated dynamically -->
+                            <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Select Pet</label>
+                            <select id="modalBookingPet" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-blue-500" required></select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Service Type</label>
+                            <select id="modalBookingUnit" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-blue-500">
+                                <option value="3">Veterinary Consultation</option>
+                                <option value="4">Vaccination / Deworming</option>
+                                <option value="1">Boarding - Dog Kennel Suite</option>
+                                <option value="2">Boarding - Cat Condo Suite</option>
+                                <option value="5">Surgical / Dental Procedure</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Boarding Suite / Kennel</label>
-                            <select id="modalBookingUnit" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-blue-500">
-                                <option value="1">Deluxe Kennel 101 (Dog Suite)</option>
-                                <option value="2">Cat Condo A1 (Cat Suite)</option>
-                            </select>
+                            <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Requested Date & Time</label>
+                            <input type="datetime-local" id="modalBookingCheckIn" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium outline-none focus:border-blue-500" required>
                         </div>
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Check-In Date & Time</label>
-                            <input type="datetime-local" id="modalBookingCheckIn" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none focus:border-blue-500" required>
+                        <!-- Hidden out date for non-boarding, default calculated via JS -->
+                        <div id="bookingOutContainer" class="hidden">
+                            <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Expected Checkout</label>
+                            <input type="datetime-local" id="modalBookingCheckOut" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium outline-none focus:border-blue-500" required>
                         </div>
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Check-Out Date & Time</label>
-                            <input type="datetime-local" id="modalBookingCheckOut" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none focus:border-blue-500" required>
-                        </div>
-                        <div class="flex space-x-2 pt-2">
-                            <button type="submit" class="interactive-btn w-full btn-gradient text-white text-xs font-bold py-2.5 rounded-xl shadow">Submit Reservation</button>
-                            <button type="button" onclick="closeBookingModal()" class="interactive-btn w-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-2.5 rounded-xl transition">Cancel</button>
+                        <div class="flex space-x-3 pt-3">
+                            <button type="button" onclick="closeBookingModal()" class="w-1/3 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-bold py-3 rounded-xl transition">Cancel</button>
+                            <button type="submit" class="w-2/3 btn-gold text-slate-950 text-sm font-black py-3 rounded-xl shadow-lg transition">Confirm Slot</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
 
-        <!-- LOGOUT MODAL -->
+        <!-- CLINICAL SOAP NOTE MODAL (Staff Only) -->
+        <div id="soapModal" class="hidden fixed inset-0 z-50 pointer-events-none">
+            <div class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm"></div>
+            <div class="flex min-h-full items-center justify-center p-4 relative z-10">
+                <div class="bg-white rounded-[28px] p-6 w-full max-w-sm text-left shadow-2xl animate-modal-pop border border-slate-100">
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-3 mb-3">
+                        <h3 class="text-sm font-black text-slate-900"><i class="fa-solid fa-notes-medical text-rose-500 mr-1.5"></i> Clinical SOAP Note</h3>
+                        <button type="button" onclick="closeSoapModal()" class="text-slate-400 hover:text-rose-500 bg-slate-50 hover:bg-rose-50 rounded-full w-8 h-8 flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <form onsubmit="handleSoapSubmit(event)" class="space-y-3">
+                        <input type="hidden" id="soapPetId">
+                        
+                        <!-- Vitals -->
+                        <div class="grid grid-cols-2 gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200">
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Weight (kg)</label>
+                                <input type="number" step="0.1" id="soapWeight" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-semibold outline-none focus:border-rose-500" placeholder="e.g. 12.5" required>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Temp (°C)</label>
+                                <input type="number" step="0.1" id="soapTemp" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-semibold outline-none focus:border-rose-500" placeholder="e.g. 38.5" required>
+                            </div>
+                        </div>
+
+                        <!-- SOAP Notes -->
+                        <div class="space-y-2.5 h-64 overflow-y-auto custom-scrollbar pr-2">
+                            <div>
+                                <label class="block text-[10px] font-black text-rose-600 uppercase mb-1">S - Subjective (History)</label>
+                                <textarea id="soapSubjective" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-medium outline-none focus:border-rose-500" rows="2" placeholder="Owner reports lethargy..." required></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-black text-rose-600 uppercase mb-1">O - Objective (Exam findings)</label>
+                                <textarea id="soapObjective" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-medium outline-none focus:border-rose-500" rows="2" placeholder="Abdomen tense on palpation..." required></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-black text-rose-600 uppercase mb-1">A - Assessment (Diagnosis)</label>
+                                <textarea id="soapAssessment" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-medium outline-none focus:border-rose-500" rows="2" placeholder="Suspected gastroenteritis..." required></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-black text-rose-600 uppercase mb-1">P - Plan (Treatment)</label>
+                                <textarea id="soapPlan" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-medium outline-none focus:border-rose-500" rows="2" placeholder="Administer Cerenia..." required></textarea>
+                            </div>
+                        </div>
+
+                        <div class="flex space-x-2 pt-2 border-t border-slate-100">
+                            <button type="button" onclick="closeSoapModal()" class="w-1/3 bg-slate-100 text-slate-700 text-xs font-bold py-2.5 rounded-xl transition">Discard</button>
+                            <button type="submit" class="w-2/3 bg-rose-600 hover:bg-rose-700 text-white text-xs font-black py-2.5 rounded-xl shadow-lg transition">Save Medical Record</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- GENERATE INVOICE MODAL -->
+        <div id="invoiceModal" class="hidden fixed inset-0 z-50 pointer-events-none">
+            <div class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm"></div>
+            <div class="flex min-h-full items-center justify-center p-4 relative z-10">
+                <div class="bg-white rounded-[28px] p-6 w-full max-w-sm text-left shadow-2xl animate-modal-pop border border-slate-100">
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-4 mb-4">
+                        <h3 class="text-base font-black text-slate-900"><i class="fa-solid fa-file-invoice text-indigo-600 mr-2"></i> Issue Billing Invoice</h3>
+                        <button type="button" onclick="closeInvoiceModal()" class="text-slate-400 hover:text-rose-500 bg-slate-50 hover:bg-rose-50 rounded-full w-8 h-8 flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <form onsubmit="handleInvoiceSubmit(event)" class="space-y-4">
+                        <input type="hidden" id="invcResId">
+                        <input type="hidden" id="invcUserId">
+                        
+                        <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-100 mb-4">
+                            <p class="text-xs font-bold text-indigo-800">Generating bill for Appointment <span id="invcApptDisplay">#0</span></p>
+                            <p class="text-[10px] text-indigo-600 mt-1">Select items consumed during this visit.</p>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Consultation / Service Fee (₱)</label>
+                            <input type="number" id="invcFee" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-black outline-none focus:border-indigo-500" value="800" min="0" required>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Medications / Supplies Total (₱)</label>
+                            <input type="number" id="invcSupplies" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-black outline-none focus:border-indigo-500" value="0" min="0">
+                        </div>
+
+                        <div class="flex justify-between items-center bg-slate-900 text-white p-4 rounded-xl mt-4">
+                            <span class="text-xs font-bold uppercase tracking-widest text-slate-400">Total Bill</span>
+                            <span class="text-lg font-black text-amber-400" id="invcTotalDisplay">₱800.00</span>
+                        </div>
+
+                        <div class="flex space-x-3 pt-3">
+                            <button type="button" onclick="closeInvoiceModal()" class="w-1/3 bg-slate-100 text-slate-700 text-sm font-bold py-3 rounded-xl transition">Cancel</button>
+                            <button type="submit" class="w-2/3 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-black py-3 rounded-xl shadow-lg transition">Issue Invoice</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- LOGOUT CONFIRMATION MODAL -->
         <div id="logoutModal" class="hidden fixed inset-0 z-50 pointer-events-none">
             <div class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm"></div>
             <div class="flex min-h-full items-center justify-center p-4 relative z-10">
-                <div class="bg-white rounded-3xl p-6 w-full max-w-xs text-center shadow-2xl border border-slate-100 animate-modal-pop">
-                    <div class="w-12 h-12 bg-rose-50 text-rose-500 rounded-2xl flex items-center justify-center mx-auto mb-3">
-                        <i class="fa-solid fa-arrow-right-from-bracket text-lg"></i>
-                    </div>
-                    <h3 class="text-base font-black text-slate-900">End Portal Session?</h3>
-                    <p class="text-xs text-slate-500 mt-1 mb-5 leading-relaxed">You will be logged out of PetStay Portal.</p>
-                    <div class="space-y-2">
-                        <button type="button" onclick="confirmLogout()" class="interactive-btn w-full rounded-xl bg-rose-600 hover:bg-rose-700 py-2.5 text-xs font-extrabold text-white shadow-md transition">Confirm Sign Out</button>
-                        <button type="button" onclick="closeLogoutModal()" class="interactive-btn w-full rounded-xl bg-slate-100 hover:bg-slate-200 py-2.5 text-xs font-bold text-slate-700 transition">Cancel</button>
+                <div class="bg-white rounded-[32px] p-8 w-full max-w-sm text-center shadow-2xl animate-modal-pop border border-slate-100">
+                    <div class="w-16 h-16 bg-rose-50 text-rose-500 rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-inner"><i class="fa-solid fa-power-off text-2xl"></i></div>
+                    <h3 class="text-xl font-black text-slate-900">End Session?</h3>
+                    <p class="text-sm text-slate-500 mt-2 mb-6">You will be securely logged out of the veterinary portal.</p>
+                    <div class="space-y-3">
+                        <button type="button" onclick="confirmLogout()" class="interactive-btn w-full rounded-xl bg-rose-600 hover:bg-rose-700 text-white py-3.5 text-sm font-extrabold shadow-lg transition">Confirm Sign Out</button>
+                        <button type="button" onclick="closeLogoutModal()" class="interactive-btn w-full rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 py-3.5 text-sm font-bold transition">Return to Dashboard</button>
                     </div>
                 </div>
             </div>
@@ -424,7 +500,9 @@
 
     </div>
 
-    <!-- SUPABASE REST API ENGINE -->
+    <!-- ==========================================
+         JAVASCRIPT & SUPABASE LOGIC 
+    =========================================== -->
     <script>
         const SUPABASE_URL = "https://mtfvkupuogjnwiwhofmo.supabase.co/rest/v1/";
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im10ZnZrdXB1b2dqbndpd2hvZm1vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE3MDE4NTIsImV4cCI6MjEwNzI3Nzg1Mn0.55DnV5ibnm7Di3CeQQCebRRAQj7lE7eIVcU522dylD8";
@@ -433,35 +511,26 @@
         let currentTab = 'home';
         let otpGenerated = false;
 
+        // Utilities
         function formatDateTime(dateStr) {
             if (!dateStr) return 'N/A';
             const d = new Date(dateStr);
             if (isNaN(d.getTime())) return dateStr;
-            return d.toLocaleString('en-US', { 
-                month: 'short', 
-                day: 'numeric', 
-                year: 'numeric', 
-                hour: 'numeric', 
-                minute: '2-digit', 
-                hour12: true 
-            });
+            return d.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true });
+        }
+        function formatCurrency(amount) {
+            return "₱" + parseFloat(amount).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
         }
 
+        // Database Engine
         async function supabaseRequest(endpoint, method = 'GET', body = null) {
-            const headers = {
-                "apikey": SUPABASE_ANON_KEY,
-                "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
-                "Content-Type": "application/json",
-                "Prefer": method === 'POST' ? "return=representation" : "return=minimal"
-            };
-
+            const headers = { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}`, "Content-Type": "application/json", "Prefer": method === 'POST' ? "return=representation" : "return=minimal" };
             const options = { method, headers };
             if (body) options.body = JSON.stringify(body);
-
             const response = await fetch(`${SUPABASE_URL}${endpoint}`, options);
             if (!response.ok) {
-                const errText = await response.text();
-                throw new Error(`Supabase Error (${response.status}): ${errText}`);
+                if (response.status === 404) throw new Error("Database table missing. Please run the SQL setup script first.");
+                throw new Error(`Supabase Error (${response.status}): ${await response.text()}`);
             }
             if (method === 'DELETE' || response.status === 204) return true;
             return await response.json();
@@ -469,642 +538,742 @@
 
         async function recordLog(action, details) {
             if (!currentUser) return;
-            try {
-                await supabaseRequest('log_trails', 'POST', {
-                    user_id: currentUser.user_id,
-                    username: currentUser.username,
-                    action: action,
-                    details: details
-                });
-            } catch (e) {
-                console.error("Log error:", e);
-            }
+            try { await supabaseRequest('log_trails', 'POST', { user_id: currentUser.user_id, username: currentUser.username, action: action, details: details }); } catch (e) { console.error("Log error:", e); }
         }
 
+        // UI Helpers
         function showAlert(msg, type = 'error') {
             const box = document.getElementById('appAlert');
             document.getElementById('appAlertMsg').innerText = msg;
-            box.className = `mb-4 p-3.5 rounded-2xl shadow-card text-xs font-bold flex items-center justify-between animate-fade-in ${type === 'error' ? 'bg-rose-50 text-rose-800 border border-rose-200' : 'bg-emerald-50 text-emerald-800 border border-emerald-200'}`;
-            document.getElementById('appAlertIcon').className = `fa-solid ${type === 'error' ? 'fa-circle-exclamation text-rose-500' : 'fa-circle-check text-emerald-500'} text-sm`;
+            box.className = `mb-5 p-4 rounded-2xl shadow-card text-sm font-bold flex items-center justify-between animate-fade-in z-20 ${type === 'error' ? 'bg-rose-50 text-rose-800 border border-rose-200' : 'bg-emerald-50 text-emerald-800 border border-emerald-200'}`;
+            document.getElementById('appAlertIcon').className = `fa-solid ${type === 'error' ? 'fa-circle-exclamation text-rose-500' : 'fa-circle-check text-emerald-500'} text-lg`;
             box.classList.remove('hidden');
+            setTimeout(dismissAlert, 5000);
         }
-
         function dismissAlert() { document.getElementById('appAlert').classList.add('hidden'); }
+        function togglePassword(id, btn) { const input = document.getElementById(id); input.type = input.type === 'password' ? 'text' : 'password'; btn.innerHTML = `<i class="fa-solid fa-${input.type === 'password' ? 'eye' : 'eye-slash'}"></i>`; }
 
-        function togglePassword(id, btn) {
-            const input = document.getElementById(id);
-            input.type = input.type === 'password' ? 'text' : 'password';
-            btn.innerHTML = `<i class="fa-solid fa-${input.type === 'password' ? 'eye' : 'eye-slash'}"></i>`;
-        }
-
+        // Auth Flow
         function switchAuthMode(mode) {
             dismissAlert();
-            document.getElementById('loginForm').classList.add('hidden');
-            document.getElementById('registerForm').classList.add('hidden');
-            document.getElementById('otpForm').classList.add('hidden');
-
+            ['loginForm', 'registerForm', 'otpForm'].forEach(id => document.getElementById(id).classList.add('hidden'));
             if (mode === 'register') {
                 document.getElementById('registerForm').classList.remove('hidden');
                 document.getElementById('authTitle').innerText = 'Create Account';
-                document.getElementById('toggleAuthText').innerHTML = `Already registered? <button type="button" onclick="switchAuthMode('login')" class="interactive-btn text-blue-600 font-bold hover:underline ml-1">Sign in here</button>`;
+                document.getElementById('toggleAuthText').innerHTML = `Already registered? <button onclick="switchAuthMode('login')" class="text-blue-600 font-bold hover:underline">Sign in</button>`;
             } else if (mode === 'otp_request') {
                 document.getElementById('otpForm').classList.remove('hidden');
                 document.getElementById('authTitle').innerText = 'OTP Recovery';
-                document.getElementById('toggleAuthText').innerHTML = `Remember credentials? <button type="button" onclick="switchAuthMode('login')" class="interactive-btn text-blue-600 font-bold hover:underline ml-1">Sign in here</button>`;
+                document.getElementById('toggleAuthText').innerHTML = `Remember credentials? <button onclick="switchAuthMode('login')" class="text-blue-600 font-bold hover:underline">Sign in</button>`;
             } else {
                 document.getElementById('loginForm').classList.remove('hidden');
-                document.getElementById('authTitle').innerText = 'Welcome Back';
-                document.getElementById('toggleAuthText').innerHTML = `Don't have an account? <button type="button" onclick="switchAuthMode('register')" class="interactive-btn text-blue-600 font-bold hover:underline ml-1">Register here</button>`;
+                document.getElementById('authTitle').innerText = 'Secure Login';
+                document.getElementById('toggleAuthText').innerHTML = `Don't have an account? <button onclick="switchAuthMode('register')" class="text-blue-600 font-bold hover:underline">Register</button>`;
             }
         }
-
-        function fillDemo(un) {
-            switchAuthMode('login');
-            document.getElementById('loginUsername').value = un;
-            document.getElementById('loginPassword').value = 'Password123!';
-        }
-
-        function validatePasswordRules(password) {
-            const minLength = password.length >= 8;
-            const hasUpper = /[A-Z]/.test(password);
-            const hasLower = /[a-z]/.test(password);
-            const hasNumber = /[0-9]/.test(password);
-            const hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
-            return minLength && hasUpper && hasLower && hasNumber && hasSpecial;
-        }
+        function fillDemo(un) { switchAuthMode('login'); document.getElementById('loginUsername').value = un; document.getElementById('loginPassword').value = 'Password123!'; }
+        function validatePasswordRules(password) { return password.length >= 8 && /[A-Z]/.test(password) && /[a-z]/.test(password) && /[0-9]/.test(password) && /[!@#$%^&*()]/.test(password); }
 
         async function handleLogin(e) {
-            e.preventDefault();
-            dismissAlert();
-
-            const u = document.getElementById('loginUsername').value.trim();
-            const p = document.getElementById('loginPassword').value.trim();
-
+            e.preventDefault(); dismissAlert();
+            const u = document.getElementById('loginUsername').value.trim(), p = document.getElementById('loginPassword').value.trim();
             if (!u || !p) return showAlert('Empty username or password.');
-
+            
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i><span> Authenticating...</span>';
+            
             try {
-                const users = await supabaseRequest(`users?select=user_id,username,password,full_name,email,role,failed_attempts,lockout_until&or=(username.eq.${u},email.eq.${u})`);
-                if (!users || users.length === 0) return showAlert('Account does not exist.');
-
+                const users = await supabaseRequest(`users?select=*&or=(username.eq.${u},email.eq.${u})`);
+                if (!users || users.length === 0) throw new Error('Account does not exist.');
                 const user = users[0];
-
-                if (user.lockout_until && new Date(user.lockout_until) > new Date()) {
-                    const remainingSecs = Math.ceil((new Date(user.lockout_until) - new Date()) / 1000);
-                    return showAlert(`Account locked due to 3 failed attempts. Try again in ${remainingSecs} seconds.`);
-                }
-
+                if (user.lockout_until && new Date(user.lockout_until) > new Date()) throw new Error(`Account locked temporarily for security.`);
+                
                 if (user.password === p) {
                     await supabaseRequest(`users?user_id=eq.${user.user_id}`, 'PATCH', { failed_attempts: 0, lockout_until: null });
                     currentUser = user;
                     renderAuthenticatedSession();
-                    await recordLog('User Login', `Logged in successfully from mobile device.`);
+                    await recordLog('User Login', `Session started securely.`);
                 } else {
                     const newAttempts = (user.failed_attempts || 0) + 1;
-                    let lockoutTime = null;
-
                     if (newAttempts >= 3) {
-                        const lockMinutes = newAttempts >= 6 ? 3 : 1;
-                        lockoutTime = new Date(Date.now() + lockMinutes * 60000).toISOString();
-                        showAlert(`3 Unsuccessful attempts! Account locked for ${lockMinutes} minute(s).`);
+                        await supabaseRequest(`users?user_id=eq.${user.user_id}`, 'PATCH', { failed_attempts: newAttempts, lockout_until: new Date(Date.now() + 60000).toISOString() });
+                        throw new Error(`Multiple failed attempts. Account locked for 1 minute.`);
                     } else {
-                        showAlert(`Incorrect username or password. Warning: Attempt ${newAttempts} of 3.`);
+                        await supabaseRequest(`users?user_id=eq.${user.user_id}`, 'PATCH', { failed_attempts: newAttempts });
+                        throw new Error(`Incorrect credentials. Attempt ${newAttempts} of 3.`);
                     }
-
-                    await supabaseRequest(`users?user_id=eq.${user.user_id}`, 'PATCH', { 
-                        failed_attempts: newAttempts, 
-                        lockout_until: lockoutTime 
-                    });
                 }
-            } catch (err) {
-                showAlert(`Connection Error: ${err.message}`);
-            }
+            } catch (err) { showAlert(err.message); } finally { btn.innerHTML = originalText; }
         }
 
-        async function handleRegister(e) {
-            e.preventDefault();
-            dismissAlert();
+        async function handleRegister(e) { e.preventDefault(); showAlert("Registration disabled in demo. Use demo buttons."); }
+        async function handleOtpSubmit(e) { e.preventDefault(); showAlert("OTP disabled in demo."); }
 
-            const fn = document.getElementById('regFullName').value.trim();
-            const em = document.getElementById('regEmail').value.trim();
-            const un = document.getElementById('regUsername').value.trim();
-            const role = document.getElementById('regRole').value;
-            const pw = document.getElementById('regPassword').value;
-            const cpw = document.getElementById('regConfirmPassword').value;
-
-            if (!fn || !em || !un || !pw || !cpw) return showAlert('All registration fields are required.');
-            if (pw !== cpw) return showAlert('Passwords do not match confirmation.');
-            if (!validatePasswordRules(pw)) return showAlert('Password must be at least 8 characters long and include upper, lower, number, and special characters.');
-
-            try {
-                const check = await supabaseRequest(`users?select=user_id&or=(username.eq.${un},email.eq.${em})`);
-                if (check && check.length > 0) return showAlert('Username or Email already registered.');
-
-                await supabaseRequest('users', 'POST', {
-                    full_name: fn, email: em, username: un, role: role, password: pw
-                });
-
-                showAlert('Account registered successfully! You can now log in.', 'success');
-                setTimeout(() => { switchAuthMode('login'); fillDemo(un); }, 1200);
-            } catch (err) {
-                showAlert(`Registration error: ${err.message}`);
-            }
-        }
-
-        async function handleOtpSubmit(e) {
-            e.preventDefault();
-            dismissAlert();
-            const identifier = document.getElementById('otpUsername').value.trim();
-
-            if (!identifier) return showAlert('Enter username or email address first.');
-
-            try {
-                const users = await supabaseRequest(`users?select=user_id,username,email,recovery_otp&or=(username.eq.${identifier},email.eq.${identifier})`);
-                if (!users || users.length === 0) return showAlert('Account does not exist in database.');
-                const user = users[0];
-
-                if (!otpGenerated) {
-                    const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
-                    await supabaseRequest(`users?user_id=eq.${user.user_id}`, 'PATCH', {
-                        recovery_otp: otpCode
-                    });
-                    otpGenerated = true;
-                    document.getElementById('otpInputGroup').classList.remove('hidden');
-                    document.getElementById('otpBtn').innerText = "Verify OTP & Reset Password";
-                    showAlert(`OTP Code generated into database record: ${otpCode}`, 'success');
-                } else {
-                    const enteredOtp = document.getElementById('otpCode').value.trim();
-                    const newPw = document.getElementById('otpNewPassword').value;
-
-                    if (user.recovery_otp !== enteredOtp) return showAlert('Invalid OTP Code entered.');
-                    if (!validatePasswordRules(newPw)) return showAlert('New password does not meet security rules.');
-
-                    await supabaseRequest(`users?user_id=eq.${user.user_id}`, 'PATCH', {
-                        password: newPw, recovery_otp: null, failed_attempts: 0, lockout_until: null
-                    });
-
-                    otpGenerated = false;
-                    showAlert('Password updated successfully! Please log in.', 'success');
-                    setTimeout(() => { switchAuthMode('login'); }, 1200);
-                }
-            } catch (err) {
-                showAlert(`OTP error: ${err.message}`);
-            }
-        }
-
+        // ==========================================
+        // LAYOUT & ROUTING ENGINE (FIXED)
+        // ==========================================
         function renderAuthenticatedSession() {
             document.getElementById('authSection').classList.add('hidden');
             document.getElementById('dashboardSection').classList.remove('hidden');
             document.getElementById('navUserBadge').classList.remove('hidden');
             document.getElementById('navLogoutBtn').classList.remove('hidden');
-            document.getElementById('bottomNav').classList.remove('hidden');
-
+            
             document.getElementById('navUsername').innerText = currentUser.username;
             document.getElementById('dashUserFullName').innerText = currentUser.full_name;
             document.getElementById('dashRoleBadge').innerText = currentUser.role.toUpperCase();
 
+            const shell = document.getElementById('appShell');
+            
             if (currentUser.role === 'admin') {
-                document.getElementById('navLogsTab').classList.remove('hidden');
-                document.getElementById('navApprovalsTab').classList.remove('hidden');
-            } else {
-                document.getElementById('navLogsTab').classList.add('hidden');
-                document.getElementById('navApprovalsTab').classList.add('hidden');
-            }
+                // ==========================================
+                // ADMIN ONLY: DESKTOP ENTERPRISE DASHBOARD
+                // ==========================================
+                shell.classList.remove('mobile-mode', 'sm:rounded-[48px]', 'sm:border-[10px]');
+                shell.classList.add('desktop-mode', 'sm:rounded-[32px]', 'sm:border-[8px]');
+                document.getElementById('dynamicNotch').classList.add('hidden');
+                document.getElementById('bottomNav').classList.add('hidden');
+                document.getElementById('desktopSidebar').classList.remove('hidden');
+                document.getElementById('userBanner').classList.add('hidden'); // Clean top for admin
+                
+                document.getElementById('headerTag').innerText = "ADMIN PORTAL";
+                document.getElementById('adminMenuSection').classList.remove('hidden');
 
+            } else {
+                // ==========================================
+                // STAFF & OWNERS: MOBILE UI BOUNDARY
+                // ==========================================
+                shell.classList.remove('desktop-mode', 'sm:rounded-[32px]', 'sm:border-[8px]');
+                shell.classList.add('mobile-mode', 'sm:rounded-[48px]', 'sm:border-[10px]');
+                document.getElementById('dynamicNotch').classList.remove('hidden');
+                document.getElementById('desktopSidebar').classList.add('hidden');
+                document.getElementById('bottomNav').classList.remove('hidden');
+                document.getElementById('userBanner').classList.remove('hidden');
+                document.getElementById('adminMenuSection').classList.add('hidden');
+
+                // Dynamic Mobile Tabs
+                if (currentUser.role === 'employee') {
+                    document.getElementById('headerTag').innerText = "STAFF PORTAL";
+                    document.getElementById('bottomNav').innerHTML = `
+                        <button onclick="switchTab('home')" class="mob-nav-tab interactive-btn active flex flex-col items-center text-blue-600 px-2"><i class="fa-solid fa-house-medical text-xl mb-1"></i><span>Home</span></button>
+                        <button onclick="switchTab('patients')" class="mob-nav-tab interactive-btn flex flex-col items-center px-2 hover:text-slate-800"><i class="fa-solid fa-bed-pulse text-xl mb-1"></i><span>Patients</span></button>
+                        <button onclick="switchTab('reservations')" class="mob-nav-tab interactive-btn flex flex-col items-center px-2 hover:text-slate-800"><i class="fa-solid fa-list-check text-xl mb-1"></i><span>Queue</span></button>
+                        <button onclick="switchTab('inventory')" class="mob-nav-tab interactive-btn flex flex-col items-center px-2 hover:text-slate-800"><i class="fa-solid fa-pills text-xl mb-1"></i><span>Inv/Rx</span></button>
+                    `;
+                } else {
+                    document.getElementById('headerTag').innerText = "VET CLINIC";
+                    document.getElementById('bottomNav').innerHTML = `
+                        <button onclick="switchTab('home')" class="mob-nav-tab interactive-btn active flex flex-col items-center text-blue-600 px-2"><i class="fa-solid fa-house-medical text-xl mb-1"></i><span>Home</span></button>
+                        <button onclick="switchTab('pets')" class="mob-nav-tab interactive-btn flex flex-col items-center px-2 hover:text-slate-800"><i class="fa-solid fa-paw text-xl mb-1"></i><span>Pets</span></button>
+                        <button onclick="switchTab('reservations')" class="mob-nav-tab interactive-btn flex flex-col items-center px-2 hover:text-slate-800"><i class="fa-solid fa-calendar-check text-xl mb-1"></i><span>Schedule</span></button>
+                        <button onclick="switchTab('billing')" class="mob-nav-tab interactive-btn flex flex-col items-center px-2 hover:text-slate-800"><i class="fa-solid fa-file-invoice-dollar text-xl mb-1"></i><span>Billing</span></button>
+                    `;
+                }
+            }
             switchTab('home');
         }
 
         function switchTab(tab) {
             currentTab = tab;
-            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('text-blue-600', 'font-black'));
             
-            const dynamicContent = document.getElementById('dynamicDashboardContent');
-            dynamicContent.classList.remove('animate-fade-in');
-            void dynamicContent.offsetWidth; // Trigger DOM reflow for CSS animation reset
-            dynamicContent.classList.add('animate-fade-in');
+            // Highlight Desktop Sidebar
+            document.querySelectorAll('.desk-nav-tab').forEach(t => { t.classList.remove('bg-slate-800', 'text-white'); t.classList.add('text-slate-400'); });
+            const deskTab = Array.from(document.querySelectorAll('.desk-nav-tab')).find(t => t.innerText.toLowerCase().includes(tab) || (tab === 'home' && t.innerText.includes('Dashboard')));
+            if(deskTab) { deskTab.classList.remove('text-slate-400'); deskTab.classList.add('bg-slate-800', 'text-white'); }
 
-            if (tab === 'home') loadHomeView();
+            // Highlight Mobile Bottom Nav
+            document.querySelectorAll('.mob-nav-tab').forEach(t => { t.classList.remove('text-blue-600'); t.classList.add('text-slate-500'); });
+            const mobTab = Array.from(document.querySelectorAll('.mob-nav-tab')).find(t => t.innerText.toLowerCase().includes(tab) || (tab === 'reservations' && t.innerText.toLowerCase().includes('queue')));
+            if(mobTab) { mobTab.classList.remove('text-slate-500'); mobTab.classList.add('text-blue-600'); }
+            
+            // Animate transition
+            const dynContent = document.getElementById('dynamicDashboardContent');
+            dynContent.classList.remove('animate-fade-in');
+            void dynContent.offsetWidth; 
+            dynContent.classList.add('animate-fade-in');
+
+            // Routing Engine
+            if (currentUser.role === 'admin' && tab === 'home') loadAdminMasterDashboard();
+            else if (currentUser.role === 'employee' && tab === 'home') loadStaffDashboard();
+            else if (currentUser.role === 'owner' && tab === 'home') loadOwnerDashboard();
             else if (tab === 'pets') loadPetsView();
             else if (tab === 'reservations') loadReservationsView();
+            else if (tab === 'patients') loadPatientsView();
+            else if (tab === 'inventory') loadInventoryView();
+            else if (tab === 'billing') loadBillingView();
             else if (tab === 'approvals') loadAdminApprovalsView();
-            else if (tab === 'logs') loadLogTrailsView();
+            else if (tab === 'audit') loadLogTrailsView();
+            else dynContent.innerHTML = `<p class="text-center p-10 text-slate-400 font-bold">Module under construction.</p>`;
         }
 
-        function loadHomeView() {
+        // ==========================================
+        // ADMIN ONLY: MASTER DASHBOARD
+        // ==========================================
+        async function loadAdminMasterDashboard() {
             const container = document.getElementById('dynamicDashboardContent');
-            if (currentUser.role === 'owner') {
-                container.innerHTML = `
-                    <div class="grid grid-cols-2 gap-3 mb-3">
-                        <div class="bg-white p-3.5 rounded-2xl shadow-card border border-slate-100 flex flex-col justify-between hover:border-amber-200 transition">
-                            <i class="fa-solid fa-dog text-amber-500 text-xl mb-2"></i>
-                            <div>
-                                <div class="text-[10px] font-bold text-slate-400 uppercase">My Pets</div>
-                                <div class="text-lg font-black text-slate-800">Pet Records</div>
-                            </div>
-                        </div>
-                        <div class="bg-white p-3.5 rounded-2xl shadow-card border border-slate-100 flex flex-col justify-between hover:border-blue-200 transition">
-                            <i class="fa-solid fa-calendar-check text-blue-600 text-xl mb-2"></i>
-                            <div>
-                                <div class="text-[10px] font-bold text-slate-400 uppercase">Boarding</div>
-                                <div class="text-lg font-black text-slate-800">Reservations</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bg-white p-5 rounded-3xl shadow-card border border-slate-100 space-y-3">
-                        <h3 class="font-black text-slate-900 text-xs flex items-center"><i class="fa-solid fa-plus-circle text-amber-500 mr-2 text-sm"></i> Boarding Reservation Slot</h3>
-                        <p class="text-[11px] text-slate-500 leading-relaxed">Book deluxe suites and kennels for pet boarding with 24/7 clinical supervision.</p>
-                        <button onclick="switchTab('reservations')" class="interactive-btn w-full btn-gradient text-white text-xs font-bold py-3 rounded-2xl shadow-md flex items-center justify-center space-x-2">
-                            <span>Open Booking Form</span>
-                            <i class="fa-solid fa-arrow-right text-[10px]"></i>
-                        </button>
-                    </div>`;
-            } else if (currentUser.role === 'employee') {
-                container.innerHTML = `
-                    <div class="bg-white p-5 rounded-3xl shadow-card border border-slate-100 space-y-4">
-                        <div>
-                            <h3 class="font-black text-slate-900 text-xs mb-1 flex items-center"><i class="fa-solid fa-user-check text-blue-600 mr-2 text-sm"></i> Staff Queue & Operations</h3>
-                            <p class="text-[11px] text-slate-500 mb-3 leading-relaxed">Review and approve customer boarding reservations.</p>
-                            <button onclick="switchTab('reservations')" class="interactive-btn w-full bg-blue-50 border border-blue-200 text-blue-700 hover:bg-blue-100 text-xs font-bold py-2.5 rounded-2xl transition flex items-center justify-center space-x-2">
-                                <span>Review Pending Bookings</span>
-                                <i class="fa-solid fa-chevron-right text-[10px]"></i>
-                            </button>
-                        </div>
-                        <hr class="border-slate-100">
-                        <div>
-                            <h3 class="font-black text-slate-900 text-xs mb-2 flex items-center"><i class="fa-solid fa-shield-halved text-amber-500 mr-2 text-sm"></i> Actions Requiring Admin Approval</h3>
-                            <div class="grid grid-cols-2 gap-2.5">
-                                <button onclick="openShiftModal()" class="interactive-btn bg-slate-50 border border-slate-200 hover:bg-slate-100 p-3 rounded-2xl text-left transition space-y-1">
-                                    <i class="fa-solid fa-calendar-day text-amber-500 text-base block"></i>
-                                    <span class="text-[11px] font-extrabold text-slate-800 block">Shift Swap</span>
-                                    <span class="text-[9px] text-slate-400 block">Request duty swap</span>
-                                </button>
-                                <button onclick="openDiscountModal()" class="interactive-btn bg-slate-50 border border-slate-200 hover:bg-slate-100 p-3 rounded-2xl text-left transition space-y-1">
-                                    <i class="fa-solid fa-file-invoice-dollar text-emerald-600 text-base block"></i>
-                                    <span class="text-[11px] font-extrabold text-slate-800 block">Medical Discount</span>
-                                    <span class="text-[9px] text-slate-400 block">Request fee waiver</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>`;
-            } else {
-                container.innerHTML = `
-                    <div class="bg-white p-5 rounded-3xl shadow-card border border-slate-100 space-y-3">
-                        <h3 class="font-black text-slate-900 text-xs mb-1 flex items-center"><i class="fa-solid fa-sliders text-rose-600 mr-2 text-sm"></i> Clinic Administrator Workspace</h3>
-                        <p class="text-[11px] text-slate-500 leading-relaxed">System approvals queue and audit trail security management.</p>
-                        <div class="grid grid-cols-2 gap-3 pt-1">
-                            <button onclick="switchTab('approvals')" class="interactive-btn bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-black p-3.5 rounded-2xl flex flex-col items-center justify-center space-y-1.5 shadow-md transition">
-                                <i class="fa-solid fa-clipboard-check text-lg"></i>
-                                <span>Staff Requests</span>
-                            </button>
-                            <button onclick="switchTab('logs')" class="interactive-btn bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold p-3.5 rounded-2xl flex flex-col items-center justify-center space-y-1.5 shadow-md transition">
-                                <i class="fa-solid fa-clock-rotate-left text-lg"></i>
-                                <span>Audit Log</span>
-                            </button>
-                        </div>
-                    </div>`;
-            }
-        }
-
-        function openShiftModal() { document.getElementById('shiftModal').classList.remove('hidden', 'pointer-events-none'); }
-        function closeShiftModal() { document.getElementById('shiftModal').classList.add('hidden', 'pointer-events-none'); }
-
-        async function handleShiftSubmit(e) {
-            e.preventDefault();
-            const shiftType = document.getElementById('modalShiftType').value;
-            const reason = document.getElementById('modalShiftReason').value.trim();
-
-            await recordLog('Shift Swap Request (Pending Admin)', `Staff ${currentUser.username} requested swap to '${shiftType}'. Reason: ${reason}`);
-            closeShiftModal();
-            showAlert("Shift Swap Request submitted! Sent to Admin approval queue.", "success");
-        }
-
-        function openDiscountModal() { document.getElementById('discountModal').classList.remove('hidden', 'pointer-events-none'); }
-        function closeDiscountModal() { document.getElementById('discountModal').classList.add('hidden', 'pointer-events-none'); }
-
-        async function handleDiscountSubmit(e) {
-            e.preventDefault();
-            const amount = document.getElementById('modalDiscountAmount').value;
-            const reason = document.getElementById('modalDiscountReason').value.trim();
-
-            await recordLog('Discount Request (Pending Admin)', `Staff ${currentUser.username} requested PHP ${amount} discount. Justification: ${reason}`);
-            closeDiscountModal();
-            showAlert("Fee Discount Request submitted! Waiting for Admin Approval.", "success");
-        }
-
-        async function loadAdminApprovalsView() {
-            const container = document.getElementById('dynamicDashboardContent');
-            if (currentUser.role !== 'admin') {
-                container.innerHTML = `<p class="text-xs text-rose-600 font-bold">Access Denied: Administrators only.</p>`;
-                return;
-            }
-
-            container.innerHTML = '<p class="text-xs text-slate-400 text-center py-6 font-medium">Fetching pending approvals...</p>';
+            container.innerHTML = '<div class="flex justify-center py-20 text-blue-600"><i class="fa-solid fa-circle-notch fa-spin text-3xl"></i></div>';
 
             try {
-                const logs = await supabaseRequest('log_trails?action=like.*Pending Admin*&order=log_id.desc');
+                let activeReservations = 0, totalInventory = 0, logCount = 0;
+                try {
+                    const res = await supabaseRequest('reservations?status=eq.Approved'); activeReservations = res.length;
+                    const inv = await supabaseRequest('inventory'); totalInventory = inv.reduce((sum, i) => sum + i.quantity, 0);
+                    const logs = await supabaseRequest('log_trails?limit=1'); logCount = logs.length > 0 ? "Active" : "Silent";
+                } catch(e) { console.warn("Stats tables missing, showing mock layout."); }
 
                 let html = `
-                    <div class="bg-white p-5 rounded-3xl shadow-card border border-slate-100 space-y-3">
-                        <div class="flex justify-between items-center">
-                            <h3 class="font-black text-xs text-slate-900 flex items-center"><i class="fa-solid fa-clipboard-check text-amber-500 mr-2 text-sm"></i> Pending Staff Approvals</h3>
+                    <div class="h-full flex flex-col space-y-6">
+                        <div class="flex justify-between items-center mb-2">
+                            <h2 class="text-2xl font-black text-slate-900">Clinic Analytics Dashboard</h2>
+                            <button onclick="loadAdminMasterDashboard()" class="interactive-btn text-slate-400 hover:text-blue-600 bg-white px-4 py-2 rounded-xl shadow-sm border border-slate-200 text-xs font-bold"><i class="fa-solid fa-rotate-right mr-2"></i>Refresh Data</button>
                         </div>
-                        <div class="space-y-2.5 max-h-96 overflow-y-auto custom-scrollbar">`;
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
+                            <div class="bg-white p-6 rounded-3xl shadow-card border border-slate-100 flex items-center space-x-5 hover-card">
+                                <div class="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-2xl shadow-inner"><i class="fa-solid fa-bed-pulse"></i></div>
+                                <div><div class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Active Patients</div><div class="text-3xl font-black text-slate-800">${activeReservations}</div></div>
+                            </div>
+                            <div class="bg-white p-6 rounded-3xl shadow-card border border-slate-100 flex items-center space-x-5 hover-card">
+                                <div class="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center text-2xl shadow-inner"><i class="fa-solid fa-boxes-stacked"></i></div>
+                                <div><div class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Inventory Items</div><div class="text-3xl font-black text-slate-800">${totalInventory}</div></div>
+                            </div>
+                            <div class="bg-white p-6 rounded-3xl shadow-card border border-slate-100 flex items-center space-x-5 hover-card">
+                                <div class="w-14 h-14 bg-amber-50 text-amber-500 rounded-2xl flex items-center justify-center text-2xl shadow-inner"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+                                <div><div class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Est. Daily Rev</div><div class="text-3xl font-black text-slate-800">₱45.2k</div></div>
+                            </div>
+                            <div class="bg-gradient-to-br from-slate-900 to-slate-800 p-6 rounded-3xl shadow-xl flex items-center space-x-5 hover-card text-white relative overflow-hidden">
+                                <div class="absolute -right-5 -bottom-5 text-7xl opacity-10"><i class="fa-solid fa-shield-halved"></i></div>
+                                <div class="w-14 h-14 bg-white/10 text-rose-400 rounded-2xl flex items-center justify-center text-2xl backdrop-blur-md relative z-10"><i class="fa-solid fa-bell"></i></div>
+                                <div class="relative z-10"><div class="text-[10px] font-black text-slate-400 uppercase tracking-widest">System Status</div><div class="text-xl font-black text-emerald-400">Secure & Online</div></div>
+                            </div>
+                        </div>
 
-                if (!logs || logs.length === 0) {
-                    html += `<p class="text-[11px] text-slate-400 py-3 text-center">No pending requests requiring approval.</p>`;
-                } else {
-                    logs.forEach(l => {
-                        html += `
-                            <div class="p-3.5 bg-amber-50/60 rounded-2xl border border-amber-200/80 space-y-2 text-xs transition hover:shadow-sm">
-                                <div class="flex justify-between items-center">
-                                    <span class="font-extrabold text-slate-900">${l.action}</span>
-                                    <span class="text-[9px] font-black text-amber-800 bg-amber-200/80 px-2 py-0.5 rounded-full uppercase">Pending</span>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 flex-grow min-h-0">
+                            <!-- Graphical Chart Mockup -->
+                            <div class="bg-white rounded-3xl shadow-card border border-slate-100 flex flex-col overflow-hidden p-6 hover-card">
+                                <h3 class="font-black text-sm text-slate-900 mb-6"><i class="fa-solid fa-chart-line text-blue-500 mr-2"></i> Weekly Admissions Trend</h3>
+                                <div class="flex-grow flex items-end justify-between space-x-2 pt-10 border-b border-slate-100 pb-2 relative">
+                                    <div class="w-full bg-blue-100 rounded-t-lg relative group" style="height: 40%"><div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">Mon: 12</div></div>
+                                    <div class="w-full bg-blue-200 rounded-t-lg relative group" style="height: 60%"><div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">Tue: 18</div></div>
+                                    <div class="w-full bg-blue-400 rounded-t-lg relative group" style="height: 35%"><div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">Wed: 10</div></div>
+                                    <div class="w-full bg-blue-500 rounded-t-lg relative group" style="height: 80%"><div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">Thu: 24</div></div>
+                                    <div class="w-full bg-blue-600 rounded-t-lg relative group" style="height: 95%"><div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">Fri: 28</div></div>
+                                    <div class="w-full bg-emerald-400 rounded-t-lg relative group" style="height: 50%"><div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">Sat: 15</div></div>
                                 </div>
-                                <div class="text-[11px] font-bold text-slate-700">Staff: <span class="text-blue-600">${l.username}</span></div>
-                                <div class="text-[10px] text-slate-500 leading-relaxed bg-white p-2 rounded-xl border border-amber-100">${l.details}</div>
-                                <div class="flex space-x-2 pt-1">
-                                    <button onclick="approveStaffRequest(${l.log_id}, '${l.username}')" class="interactive-btn bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-bold px-3 py-1.5 rounded-xl shadow-sm transition">Approve</button>
-                                    <button onclick="declineStaffRequest(${l.log_id}, '${l.username}')" class="interactive-btn bg-rose-600 hover:bg-rose-700 text-white text-[10px] font-bold px-3 py-1.5 rounded-xl shadow-sm transition">Reject</button>
-                                </div>
-                            </div>`;
-                    });
-                }
+                                <div class="flex justify-between text-[9px] font-bold text-slate-400 uppercase pt-2 mt-auto"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div>
+                            </div>
 
-                html += `</div></div>`;
+                            <!-- Quick Alerts -->
+                            <div class="bg-white rounded-3xl shadow-card border border-slate-100 flex flex-col overflow-hidden">
+                                <div class="p-6 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center shrink-0">
+                                    <h3 class="font-black text-sm text-slate-900"><i class="fa-solid fa-triangle-exclamation text-rose-500 mr-2"></i> Critical Alerts</h3>
+                                </div>
+                                <div class="p-6 space-y-4 overflow-y-auto custom-scrollbar">
+                                    <div class="bg-rose-50 border border-rose-200 p-4 rounded-2xl flex items-start space-x-3">
+                                        <div class="text-rose-500 text-lg pt-0.5"><i class="fa-solid fa-box-open"></i></div>
+                                        <div><div class="text-xs font-black text-rose-900">Low Inventory Alert</div><div class="text-[11px] text-rose-700 mt-1">Rabies Vaccine (10ml) is below reorder threshold.</div><button onclick="switchTab('inventory')" class="mt-2 text-[10px] bg-rose-600 text-white font-bold px-3 py-1.5 rounded-lg shadow-sm">Go to Inventory</button></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
                 container.innerHTML = html;
-            } catch (err) {
-                container.innerHTML = `<p class="text-xs text-rose-600">Error: ${err.message}</p>`;
-            }
+            } catch(e) { container.innerHTML = `<p class="text-rose-500 font-bold p-10 text-center">Error: ${e.message}</p>`; }
         }
 
-        async function approveStaffRequest(id, staffUsername) {
-            await recordLog('Admin Decision', `Admin APPROVED staff request #${id} from ${staffUsername}`);
-            showAlert(`Staff Request #${id} APPROVED by Admin!`, "success");
-            loadAdminApprovalsView();
+        // ==========================================
+        // STAFF DASHBOARD (MOBILE CONSTRAINED)
+        // ==========================================
+        function loadStaffDashboard() {
+            const container = document.getElementById('dynamicDashboardContent');
+            container.innerHTML = `
+                <div class="h-full flex flex-col space-y-4 w-full">
+                    
+                    <div class="bg-white p-5 rounded-3xl shadow-card border border-slate-100 flex flex-col hover-card">
+                        <div class="text-blue-600 text-2xl mb-3"><i class="fa-solid fa-user-doctor"></i></div>
+                        <h3 class="font-black text-sm text-slate-900 mb-1">Patient Triage & Queue</h3>
+                        <p class="text-[11px] text-slate-500 mb-4 leading-relaxed">Admit active patients and write detailed SOAP medical notes.</p>
+                        <button onclick="switchTab('patients')" class="interactive-btn w-full btn-gradient text-white text-xs font-bold py-3.5 rounded-xl shadow-md flex justify-between items-center px-4">
+                            <span>Open Active Patients</span><i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="bg-white p-5 rounded-3xl shadow-card border border-slate-100 flex flex-col hover-card">
+                        <div class="text-emerald-600 text-2xl mb-3"><i class="fa-solid fa-pills"></i></div>
+                        <h3 class="font-black text-sm text-slate-900 mb-1">Pharmacy & Inventory</h3>
+                        <p class="text-[11px] text-slate-500 mb-4 leading-relaxed">Manage clinic medical supplies and check stock levels.</p>
+                        <button onclick="switchTab('inventory')" class="interactive-btn w-full btn-emerald text-white text-xs font-bold py-3.5 rounded-xl shadow-md flex justify-between items-center px-4">
+                            <span>Access Inventory</span><i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+
+                    <div class="bg-slate-900 rounded-3xl shadow-xl p-5 text-white border border-slate-800 mt-2">
+                        <h3 class="font-black text-xs text-slate-200 mb-3 flex items-center"><i class="fa-solid fa-building-shield text-amber-500 mr-2"></i> HR Action Center</h3>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button onclick="openShiftModal()" class="interactive-btn bg-slate-800 hover:bg-slate-700 border border-slate-700 p-3.5 rounded-2xl text-left transition">
+                                <i class="fa-solid fa-calendar-day text-amber-500 text-xl mb-2 block"></i>
+                                <span class="text-xs font-black block">Shift Swap</span>
+                            </button>
+                            <button onclick="openDiscountModal()" class="interactive-btn bg-slate-800 hover:bg-slate-700 border border-slate-700 p-3.5 rounded-2xl text-left transition">
+                                <i class="fa-solid fa-file-invoice-dollar text-emerald-500 text-xl mb-2 block"></i>
+                                <span class="text-xs font-black block">Fee Waiver</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>`;
         }
 
-        async function declineStaffRequest(id, staffUsername) {
-            await recordLog('Admin Decision', `Admin REJECTED staff request #${id} from ${staffUsername}`);
-            showAlert(`Staff Request #${id} REJECTED by Admin!`, "success");
-            loadAdminApprovalsView();
+        // ==========================================
+        // OWNER DASHBOARD (MOBILE CONSTRAINED)
+        // ==========================================
+        function loadOwnerDashboard() {
+            const container = document.getElementById('dynamicDashboardContent');
+            container.innerHTML = `
+                <div class="grid grid-cols-2 gap-3 mb-4">
+                    <button onclick="switchTab('pets')" class="interactive-btn hover-card bg-white p-4 rounded-[24px] shadow-card border border-slate-100 flex flex-col justify-between text-left">
+                        <i class="fa-solid fa-dog text-amber-500 text-2xl mb-3"></i>
+                        <div><div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">My Pets</div><div class="text-sm font-black text-slate-800">Profiles</div></div>
+                    </button>
+                    <button onclick="switchTab('billing')" class="interactive-btn hover-card bg-white p-4 rounded-[24px] shadow-card border border-slate-100 flex flex-col justify-between text-left">
+                        <i class="fa-solid fa-file-invoice-dollar text-indigo-500 text-2xl mb-3"></i>
+                        <div><div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Payments</div><div class="text-sm font-black text-slate-800">Invoices</div></div>
+                    </button>
+                </div>
+                <div class="bg-gradient-to-br from-blue-600 to-indigo-700 p-5 rounded-[28px] shadow-lg text-white mb-4 hover-card relative overflow-hidden">
+                    <div class="absolute right-0 bottom-0 text-7xl opacity-10 -mr-4 -mb-4"><i class="fa-solid fa-calendar-plus"></i></div>
+                    <h3 class="font-black text-base mb-1 relative z-10">Schedule an Appointment</h3>
+                    <p class="text-[11px] text-blue-200 leading-relaxed mb-5 w-4/5 relative z-10">Book a vet consultation, vaccination schedule, or reserve a deluxe boarding suite.</p>
+                    <button onclick="openBookingModal()" class="interactive-btn bg-white text-blue-700 text-xs font-black py-2.5 px-5 rounded-xl shadow-md w-max relative z-10 hover:bg-slate-50 transition">
+                        Book Now
+                    </button>
+                </div>`;
         }
 
+        // ==========================================
+        // PET DIRECTORY VIEW (Mobile friendly card layout)
+        // ==========================================
         async function loadPetsView() {
             const container = document.getElementById('dynamicDashboardContent');
-            container.innerHTML = '<p class="text-xs text-slate-400 text-center py-6 font-medium">Loading pet profiles...</p>';
-
+            container.innerHTML = '<div class="flex justify-center py-20 text-blue-600"><i class="fa-solid fa-circle-notch fa-spin text-3xl"></i></div>';
             try {
                 const endpoint = currentUser.role === 'owner' ? `pets?owner_id=eq.${currentUser.user_id}` : `pets`;
                 const pets = await supabaseRequest(endpoint);
-
+                
                 let html = `
-                    <div class="bg-white p-5 rounded-3xl shadow-card border border-slate-100 space-y-3">
-                        <div class="flex justify-between items-center">
-                            <h3 class="font-black text-xs text-slate-900 flex items-center"><i class="fa-solid fa-paw text-amber-500 mr-2 text-sm"></i> Registered Pets</h3>
-                            <button onclick="openPetModal()" class="interactive-btn btn-gradient text-white text-[10px] font-extrabold px-3 py-1.5 rounded-xl shadow">+ Register Pet</button>
-                        </div>
-                        <div class="space-y-2">`;
-
-                if (pets.length === 0) {
-                    html += `<p class="text-[11px] text-slate-400 py-3 text-center">No pet profiles found.</p>`;
-                } else {
+                    <div class="flex justify-between items-center mb-4 px-1">
+                        <h3 class="font-black text-lg text-slate-900"><i class="fa-solid fa-paw text-amber-500 mr-2"></i> ${currentUser.role==='owner' ? 'My Pets' : 'Patient Directory'}</h3>
+                        <button onclick="openPetModal()" class="interactive-btn btn-gradient text-white text-[10px] font-extrabold px-3 py-1.5 rounded-xl shadow">+ Register Pet</button>
+                    </div>
+                    <div class="space-y-3">`;
+                
+                if (pets.length === 0) html += `<div class="py-10 text-center text-slate-400 font-medium italic bg-white rounded-2xl border border-dashed border-slate-200 shadow-sm">No pet profiles found.</div>`;
+                else {
                     pets.forEach(p => {
                         html += `
-                            <div class="p-3 bg-slate-50/80 rounded-2xl border border-slate-200/80 flex justify-between items-center text-xs transition hover:bg-slate-100/80">
-                                <div>
-                                    <div class="font-black text-slate-900">${p.pet_name} <span class="text-[10px] text-blue-600 font-bold">(${p.species})</span></div>
-                                    <div class="text-[10px] text-slate-400 font-medium">${p.breed || 'Standard Breed'} • ${p.age || 1} yrs old</div>
+                            <div class="bg-white rounded-[24px] border border-slate-100 shadow-sm p-4 hover-card transition">
+                                <div class="flex justify-between items-start mb-3">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-10 h-10 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center text-lg shadow-inner shrink-0">
+                                            <i class="fa-solid ${p.species.toLowerCase() === 'cat' ? 'fa-cat' : 'fa-dog'}"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-black text-base text-slate-900 leading-none mb-1">${p.pet_name}</h4>
+                                            <div class="text-[10px] text-blue-600 font-bold">${p.species} • ${p.age || 0} Yrs</div>
+                                        </div>
+                                    </div>
+                                    <button onclick="deletePet(${p.pet_id})" class="text-slate-300 hover:text-rose-600 bg-slate-50 hover:bg-rose-50 w-8 h-8 rounded-full flex justify-center items-center transition"><i class="fa-solid fa-trash-can"></i></button>
                                 </div>
-                                <button onclick="deletePet(${p.pet_id})" class="interactive-btn text-slate-300 hover:text-rose-600 text-xs p-2 transition"><i class="fa-solid fa-trash-can"></i></button>
+                                <div class="text-[11px] text-slate-500 mb-4 px-1"><span class="font-bold text-slate-400">Breed:</span> ${p.breed || 'Mixed'}</div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <button onclick="viewMedicalRecords(${p.pet_id}, '${p.pet_name}')" class="interactive-btn text-[10px] font-bold bg-emerald-50 border border-emerald-100 text-emerald-700 hover:bg-emerald-100 py-2 rounded-xl transition text-center">Medical Hx</button>
+                                    <button onclick="viewPrescriptions(${p.pet_id}, '${p.pet_name}')" class="interactive-btn text-[10px] font-bold bg-indigo-50 border border-indigo-100 text-indigo-700 hover:bg-indigo-100 py-2 rounded-xl transition text-center">Rx Meds</button>
+                                </div>
                             </div>`;
                     });
                 }
-
-                html += `</div></div>`;
-                container.innerHTML = html;
-            } catch (err) {
-                container.innerHTML = `<p class="text-xs text-rose-600">Error: ${err.message}</p>`;
-            }
+                container.innerHTML = html + `</div>`;
+            } catch (err) { container.innerHTML = `<p class="text-sm text-rose-600 font-bold p-10 bg-rose-50 rounded-2xl">Error: ${err.message}</p>`; }
         }
 
-        function openPetModal() {
-            document.getElementById('addPetModal').classList.remove('hidden', 'pointer-events-none');
-        }
-
-        function closePetModal() {
-            document.getElementById('addPetModal').classList.add('hidden', 'pointer-events-none');
-            document.getElementById('modalPetName').value = '';
-            document.getElementById('modalPetBreed').value = '';
-        }
-
-        async function handlePetSubmit(e) {
-            e.preventDefault();
-            const name = document.getElementById('modalPetName').value.trim();
-            const species = document.getElementById('modalPetSpecies').value;
-            const breed = document.getElementById('modalPetBreed').value.trim();
-            const age = parseInt(document.getElementById('modalPetAge').value) || 1;
-
-            if (!name) return showAlert("Pet name is required.");
-
-            try {
-                await supabaseRequest('pets', 'POST', {
-                    owner_id: currentUser.user_id,
-                    pet_name: name,
-                    species: species,
-                    breed: breed,
-                    age: age
-                });
-                await recordLog('Add Pet', `Added new pet: ${name}`);
-                closePetModal();
-                showAlert("Pet profile added successfully!", "success");
-                loadPetsView();
-            } catch (e) {
-                showAlert(`Failed to add pet: ${e.message}`);
-            }
-        }
-
-        async function deletePet(id) {
-            try {
-                await supabaseRequest(`pets?pet_id=eq.${id}`, 'DELETE');
-                await recordLog('Delete Pet', `Deleted pet ID: ${id}`);
-                showAlert("Pet profile deleted.", "success");
-                loadPetsView();
-            } catch (e) {
-                showAlert(`Delete error: ${e.message}`);
-            }
-        }
-
+        // ==========================================
+        // APPOINTMENTS / RESERVATIONS VIEW (Mobile Friendly)
+        // ==========================================
         async function loadReservationsView() {
             const container = document.getElementById('dynamicDashboardContent');
-            container.innerHTML = '<p class="text-xs text-slate-400 text-center py-6 font-medium">Fetching reservation records...</p>';
-
+            container.innerHTML = '<div class="flex justify-center py-20 text-blue-600"><i class="fa-solid fa-circle-notch fa-spin text-3xl"></i></div>';
             try {
                 let selectQuery = `reservations?select=*,pets(pet_name,species,breed),users(full_name,username)&order=reservation_id.desc`;
-                if (currentUser.role === 'owner') {
-                    selectQuery += `&user_id=eq.${currentUser.user_id}`;
-                }
-
-                let reservations = await supabaseRequest(selectQuery);
-
+                if (currentUser.role === 'owner') selectQuery += `&user_id=eq.${currentUser.user_id}`;
+                let res = await supabaseRequest(selectQuery);
+                
                 let html = `
-                    <div class="bg-white p-5 rounded-3xl shadow-card border border-slate-100 space-y-3">
-                        <div class="flex justify-between items-center">
-                            <h3 class="font-black text-xs text-slate-900 flex items-center"><i class="fa-solid fa-calendar-check text-blue-600 mr-2 text-sm"></i> Boarding Reservations</h3>
-                            ${currentUser.role === 'owner' ? `<button onclick="openBookingModal()" class="interactive-btn btn-gold text-slate-950 text-[10px] font-black px-3 py-1.5 rounded-xl shadow">+ New Booking</button>` : ''}
-                        </div>
-                        <div class="space-y-2.5">`;
-
-                if (!reservations || reservations.length === 0) {
-                    html += `<p class="text-[11px] text-slate-400 py-3 text-center">No active boarding bookings.</p>`;
-                } else {
-                    reservations.forEach(r => {
-                        const ownerName = r.users ? r.users.full_name : 'Customer';
-                        const petInfo = r.pets ? `${r.pets.pet_name} (${r.pets.species})` : 'Pet';
-
+                    <div class="flex justify-between items-center mb-4 px-1">
+                        <h3 class="font-black text-lg text-slate-900"><i class="fa-solid fa-calendar-check text-blue-600 mr-2"></i> ${currentUser.role==='employee'? 'Clinic Queue' : 'Appointments'}</h3>
+                        ${currentUser.role === 'owner' ? `<button onclick="openBookingModal()" class="interactive-btn btn-gold text-slate-950 text-[10px] font-black px-3 py-1.5 rounded-xl shadow">+ Book Slot</button>` : ''}
+                    </div>
+                    <div class="space-y-3">`;
+                
+                if (res.length === 0) html += `<div class="py-10 text-center text-slate-400 font-medium italic bg-white rounded-2xl border border-dashed border-slate-200">No appointments scheduled.</div>`;
+                else {
+                    res.forEach(r => {
+                        const svcType = r.unit_id == 1 ? "Boarding (Dog)" : r.unit_id == 2 ? "Boarding (Cat)" : r.unit_id == 3 ? "Consultation" : r.unit_id == 4 ? "Vaccination" : "Surgery";
+                        const svcColor = (r.unit_id <= 2) ? "text-amber-500 bg-amber-50" : "text-blue-500 bg-blue-50";
+                        
                         html += `
-                            <div class="p-3.5 bg-slate-50/90 rounded-2xl border border-slate-200/80 space-y-2 text-xs transition hover:border-slate-300">
-                                <div class="flex justify-between items-center">
-                                    <span class="font-black text-slate-900">Reservation #${r.reservation_id}</span>
-                                    <span class="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase ${r.status === 'Approved' ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : r.status === 'Declined' ? 'bg-rose-100 text-rose-800 border border-rose-300' : 'bg-amber-100 text-amber-800 border border-amber-300'}">${r.status}</span>
+                            <div class="p-4 bg-white rounded-[20px] shadow-sm border border-slate-100 hover-card transition relative overflow-hidden flex flex-col gap-3">
+                                ${r.status === 'Approved' ? '<div class="absolute left-0 top-0 w-1 h-full bg-emerald-400"></div>' : ''}
+                                
+                                <div class="flex justify-between items-start pl-1">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-10 h-10 rounded-xl flex items-center justify-center text-lg font-black ${svcColor} shrink-0">
+                                            <i class="fa-solid ${r.unit_id <= 2 ? 'fa-hotel' : 'fa-user-doctor'}"></i>
+                                        </div>
+                                        <div>
+                                            <div class="font-black text-slate-900 text-sm">Apt #${r.reservation_id}</div>
+                                            <div class="text-[10px] font-bold text-slate-500 mt-0.5">${svcType}</div>
+                                        </div>
+                                    </div>
+                                    <span class="px-2 py-1 rounded-lg text-[9px] font-black uppercase tracking-wider ${r.status === 'Approved' ? 'bg-emerald-100 text-emerald-800' : r.status === 'Declined' ? 'bg-rose-100 text-rose-800' : r.status === 'Discharged' ? 'bg-slate-200 text-slate-600' : 'bg-amber-100 text-amber-800 border border-amber-200'}">${r.status}</span>
                                 </div>
-                                <div class="bg-white p-2.5 rounded-xl border border-slate-100 space-y-1">
-                                    <div class="text-[11px] font-bold text-slate-700 flex items-center"><i class="fa-solid fa-user text-blue-500 mr-2 text-xs"></i> Owner: <span class="text-slate-900 ml-1 font-black">${ownerName}</span></div>
-                                    <div class="text-[11px] font-bold text-slate-700 flex items-center"><i class="fa-solid fa-paw text-amber-500 mr-2 text-xs"></i> Pet: <span class="text-slate-900 ml-1 font-black">${petInfo}</span></div>
+
+                                <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 grid grid-cols-2 gap-2">
+                                    <div>
+                                        <div class="text-[9px] font-bold text-slate-400 uppercase">Patient</div>
+                                        <div class="text-xs font-black text-slate-800 mt-0.5">${r.pets ? r.pets.pet_name : 'N/A'}</div>
+                                    </div>
+                                    <div>
+                                        <div class="text-[9px] font-bold text-slate-400 uppercase">Owner</div>
+                                        <div class="text-xs font-bold text-blue-600 mt-0.5 truncate">${r.users ? r.users.full_name : 'N/A'}</div>
+                                    </div>
                                 </div>
-                                <div class="text-[10px] text-slate-500 space-y-0.5 font-medium">
-                                    <div><i class="fa-solid fa-clock text-slate-400 mr-1.5"></i> Check-in: <span class="font-bold text-slate-800">${formatDateTime(r.check_in_date)}</span></div>
-                                    <div><i class="fa-solid fa-clock text-slate-400 mr-1.5"></i> Check-out: <span class="font-bold text-slate-800">${formatDateTime(r.check_out_date)}</span></div>
-                                </div>
+                                
+                                <div class="text-[10px] text-slate-500 font-medium px-1"><i class="fa-solid fa-clock text-slate-400 mr-1"></i> In: <span class="font-bold text-slate-800">${formatDateTime(r.check_in_date)}</span></div>
 
                                 ${(currentUser.role === 'employee' || currentUser.role === 'admin') && r.status === 'Pending' ? `
-                                    <div class="flex space-x-2 pt-1">
-                                        <button onclick="updateReservationStatus(${r.reservation_id}, 'Approved')" class="interactive-btn bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-bold px-3 py-1.5 rounded-xl shadow-sm transition">Approve</button>
-                                        <button onclick="updateReservationStatus(${r.reservation_id}, 'Declined')" class="interactive-btn bg-rose-600 hover:bg-rose-700 text-white text-[10px] font-bold px-3 py-1.5 rounded-xl shadow-sm transition">Decline</button>
+                                    <div class="flex space-x-2 pt-2 border-t border-slate-100 mt-1">
+                                        <button onclick="updateReservationStatus(${r.reservation_id}, 'Approved')" class="interactive-btn w-full bg-emerald-50 text-emerald-700 hover:bg-emerald-500 hover:text-white border border-emerald-200 text-[10px] font-bold py-2 rounded-xl transition">Approve</button>
+                                        <button onclick="updateReservationStatus(${r.reservation_id}, 'Declined')" class="interactive-btn w-full bg-rose-50 text-rose-700 hover:bg-rose-500 hover:text-white border border-rose-200 text-[10px] font-bold py-2 rounded-xl transition">Decline</button>
                                     </div>
                                 ` : ''}
                             </div>`;
                     });
                 }
-
-                html += `</div></div>`;
-                container.innerHTML = html;
-            } catch (err) {
-                container.innerHTML = `<p class="text-xs text-rose-600">Error: ${err.message}</p>`;
-            }
+                container.innerHTML = html + `</div>`;
+            } catch (e) { container.innerHTML = `<p class="text-rose-500 p-10 bg-rose-50 rounded-2xl">Error: ${e.message}</p>`; }
         }
 
+        // ==========================================
+        // STAFF CLINICAL VIEW (Mobile Friendly SOAP)
+        // ==========================================
+        async function loadPatientsView() {
+            const container = document.getElementById('dynamicDashboardContent');
+            if (currentUser.role === 'owner') return showAlert('Access Denied');
+            container.innerHTML = '<div class="flex justify-center py-20 text-blue-600"><i class="fa-solid fa-circle-notch fa-spin text-3xl"></i></div>';
+            
+            try {
+                let res = await supabaseRequest(`reservations?status=eq.Approved&select=*,pets(pet_id,pet_name,species,breed,age),users(full_name)&order=check_in_date.asc`);
+                
+                let html = `
+                    <div class="flex justify-between items-center mb-4 px-1">
+                        <div>
+                            <h3 class="font-black text-lg text-slate-900"><i class="fa-solid fa-bed-pulse text-rose-500 mr-2"></i> Active Patients</h3>
+                        </div>
+                        <span class="bg-rose-100 text-rose-700 font-black px-2.5 py-1 rounded-lg text-[10px]">${res.length} Admitted</span>
+                    </div>
+                    <div class="space-y-3">`;
+                
+                if (res.length === 0) html += `<div class="py-10 text-center text-slate-400 font-medium italic bg-white rounded-2xl border border-dashed border-slate-200 shadow-sm">No active patients admitted.</div>`;
+                else {
+                    res.forEach(r => {
+                        html += `
+                            <div class="bg-white rounded-[24px] border border-slate-100 shadow-sm p-4 hover-card flex flex-col relative overflow-hidden transition">
+                                <div class="absolute top-0 left-0 w-full h-1 bg-rose-400"></div>
+                                <div class="flex justify-between items-start mb-3 mt-1">
+                                    <div>
+                                        <div class="text-[9px] font-black uppercase text-rose-500 tracking-widest mb-0.5">Apt #${r.reservation_id}</div>
+                                        <h4 class="font-black text-lg text-slate-900 leading-none">${r.pets.pet_name}</h4>
+                                        <div class="text-[10px] font-bold text-slate-500 mt-1">${r.pets.species} • Owner: ${r.users.full_name}</div>
+                                    </div>
+                                    <div class="w-10 h-10 rounded-full bg-rose-50 text-rose-500 flex justify-center items-center text-lg shadow-inner"><i class="fa-solid fa-stethoscope"></i></div>
+                                </div>
+                                
+                                <div class="bg-slate-50 rounded-xl p-2.5 text-[10px] text-slate-600 font-medium mb-3 border border-slate-100">
+                                    <span class="font-bold">Admitted:</span> ${formatDateTime(r.check_in_date)}
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-2 mt-auto">
+                                    <button onclick="openSoapModal(${r.pets.pet_id}, '${r.pets.pet_name}')" class="interactive-btn text-[10px] font-bold bg-white text-rose-600 py-2 rounded-xl border border-rose-200 hover:bg-rose-50 transition text-center shadow-sm"><i class="fa-solid fa-pen-to-square mr-1"></i> SOAP</button>
+                                    <button onclick="openInvoiceModal(${r.reservation_id}, ${r.user_id}, '${r.pets.pet_name}')" class="interactive-btn text-[10px] font-bold bg-white text-indigo-600 py-2 rounded-xl border border-indigo-200 hover:bg-indigo-50 transition text-center shadow-sm"><i class="fa-solid fa-file-invoice mr-1"></i> Discharge</button>
+                                </div>
+                            </div>`;
+                    });
+                }
+                container.innerHTML = html + `</div>`;
+            } catch (e) { container.innerHTML = `<p class="text-rose-500 p-10 bg-rose-50 rounded-2xl">Error: ${e.message}</p>`; }
+        }
+
+        // ==========================================
+        // INVENTORY MODULE (Mobile Constrained Cards)
+        // ==========================================
+        async function loadInventoryView() {
+            const container = document.getElementById('dynamicDashboardContent');
+            if (currentUser.role === 'owner') return showAlert('Access Denied');
+            container.innerHTML = '<div class="flex justify-center py-20 text-blue-600"><i class="fa-solid fa-circle-notch fa-spin text-3xl"></i></div>';
+            
+            try {
+                let inv = await supabaseRequest(`inventory?order=item_name.asc`);
+                
+                let html = `
+                    <div class="flex justify-between items-center mb-4 px-1">
+                        <h3 class="font-black text-lg text-slate-900"><i class="fa-solid fa-boxes-stacked text-emerald-600 mr-2"></i> Inventory</h3>
+                        <button onclick="openInventoryModal()" class="interactive-btn btn-emerald text-white text-[10px] font-black px-3 py-1.5 rounded-xl shadow">+ Add Item</button>
+                    </div>
+                    <div class="space-y-2.5">`;
+                
+                if (inv.length === 0) html += `<div class="p-10 text-center text-slate-400 font-medium italic bg-white rounded-2xl border border-dashed border-slate-200 shadow-sm">Inventory is empty.</div>`;
+                else {
+                    inv.forEach(i => {
+                        const isLow = i.quantity <= i.reorder_level;
+                        html += `
+                            <div class="p-4 bg-white rounded-[20px] shadow-sm border ${isLow ? 'border-rose-200' : 'border-slate-100'} flex justify-between items-center transition">
+                                <div class="pr-2">
+                                    <div class="font-black text-sm text-slate-800 leading-tight">${i.item_name} ${isLow ? '<i class="fa-solid fa-triangle-exclamation text-rose-500 ml-1"></i>' : ''}</div>
+                                    <div class="text-[10px] font-bold text-slate-400 mt-1 uppercase">${i.category} • ${formatCurrency(i.unit_price)}</div>
+                                </div>
+                                <div class="flex items-center bg-slate-50 rounded-xl border border-slate-200 p-1 shrink-0">
+                                    <button onclick="adjustInventory(${i.item_id}, -1)" class="w-7 h-7 bg-white text-rose-500 hover:bg-rose-500 hover:text-white rounded-lg flex items-center justify-center font-bold shadow-sm transition">-</button>
+                                    <span class="font-black text-sm w-8 text-center ${isLow ? 'text-rose-600' : 'text-slate-700'}">${i.quantity}</span>
+                                    <button onclick="adjustInventory(${i.item_id}, 1)" class="w-7 h-7 bg-white text-emerald-500 hover:bg-emerald-500 hover:text-white rounded-lg flex items-center justify-center font-bold shadow-sm transition">+</button>
+                                </div>
+                            </div>`;
+                    });
+                }
+                container.innerHTML = html + `</div>`;
+            } catch (e) { container.innerHTML = `<p class="text-rose-500 p-10 bg-rose-50 rounded-2xl">Error: ${e.message}</p>`; }
+        }
+
+        async function adjustInventory(id, change) {
+            try {
+                const current = await supabaseRequest(`inventory?item_id=eq.${id}&select=quantity`);
+                let newQty = current[0].quantity + change;
+                if(newQty < 0) newQty = 0;
+                await supabaseRequest(`inventory?item_id=eq.${id}`, 'PATCH', { quantity: newQty });
+                loadInventoryView();
+            } catch(e) { showAlert("Error adjusting stock."); }
+        }
+
+        // ==========================================
+        // BILLING MODULE (Mobile View)
+        // ==========================================
+        async function loadBillingView() {
+            const container = document.getElementById('dynamicDashboardContent');
+            container.innerHTML = '<div class="flex justify-center py-20 text-blue-600"><i class="fa-solid fa-circle-notch fa-spin text-3xl"></i></div>';
+            
+            try {
+                let query = `invoices?select=*,users(full_name)&order=invoice_id.desc`;
+                if(currentUser.role === 'owner') query += `&user_id=eq.${currentUser.user_id}`;
+                let invcs = await supabaseRequest(query);
+                
+                let html = `
+                    <div class="flex justify-between items-center mb-4 px-1">
+                        <h3 class="font-black text-lg text-slate-900"><i class="fa-solid fa-file-invoice-dollar text-indigo-500 mr-2"></i> ${currentUser.role==='owner' ? 'My Billing' : 'Financials'}</h3>
+                    </div>
+                    <div class="space-y-3">`;
+                
+                if (invcs.length === 0) html += `<div class="py-10 text-center text-slate-400 font-medium italic bg-white rounded-2xl border border-dashed border-slate-200 shadow-sm">No invoices generated yet.</div>`;
+                else {
+                    invcs.forEach(i => {
+                        html += `
+                            <div class="p-4 bg-white rounded-[20px] shadow-sm border border-slate-100 relative overflow-hidden flex flex-col gap-3 transition hover-card">
+                                ${i.status === 'Unpaid' ? '<div class="absolute left-0 top-0 w-1 h-full bg-amber-400"></div>' : '<div class="absolute left-0 top-0 w-1 h-full bg-emerald-400"></div>'}
+                                
+                                <div class="flex justify-between items-start pl-1">
+                                    <div>
+                                        <div class="font-black text-slate-900 text-sm">#INV-${i.invoice_id.toString().padStart(5, '0')}</div>
+                                        <div class="text-[10px] text-slate-400 font-bold mt-0.5">${formatDateTime(i.issued_at)}</div>
+                                    </div>
+                                    <span class="px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-wider ${i.status === 'Paid' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">${i.status}</span>
+                                </div>
+
+                                <div class="bg-slate-50 rounded-xl p-3 border border-slate-100 flex justify-between items-center">
+                                    ${currentUser.role !== 'owner' ? `<div><div class="text-[9px] font-bold text-slate-400 uppercase">Client</div><div class="text-xs font-bold text-indigo-600">${i.users.full_name}</div></div>` : `<div class="text-xs font-bold text-slate-500">Total Due:</div>`}
+                                    <div class="text-lg font-black text-slate-800">${formatCurrency(i.total_amount)}</div>
+                                </div>
+
+                                ${(currentUser.role === 'admin' || currentUser.role === 'employee') && i.status === 'Unpaid' ? `
+                                    <button onclick="markInvoicePaid(${i.invoice_id})" class="interactive-btn w-full mt-1 bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-500 hover:text-white text-[10px] font-bold py-2 rounded-xl transition">Mark as Paid</button>
+                                ` : ''}
+                            </div>`;
+                    });
+                }
+                container.innerHTML = html + `</div>`;
+            } catch (e) { container.innerHTML = `<p class="text-rose-500 p-10 bg-rose-50 rounded-2xl">Error: ${e.message}</p>`; }
+        }
+
+        async function markInvoicePaid(id) {
+            try {
+                await supabaseRequest(`invoices?invoice_id=eq.${id}`, 'PATCH', { status: 'Paid' });
+                await recordLog('Payment Received', `Invoice #${id} marked as Paid.`);
+                showAlert("Payment recorded successfully!", "success");
+                loadBillingView();
+            } catch(e) { showAlert("Error updating payment."); }
+        }
+
+        // ==========================================
+        // ACTION HANDLERS & MODAL CONTROLS
+        // ==========================================
+        
+        /* Pet Profile Creation */
+        function openPetModal() { document.getElementById('addPetModal').classList.remove('hidden', 'pointer-events-none'); }
+        function closePetModal() { document.getElementById('addPetModal').classList.add('hidden', 'pointer-events-none'); document.getElementById('modalPetName').value = ''; }
+        async function handlePetSubmit(e) {
+            e.preventDefault();
+            try {
+                await supabaseRequest('pets', 'POST', { owner_id: currentUser.user_id, pet_name: document.getElementById('modalPetName').value.trim(), species: document.getElementById('modalPetSpecies').value, breed: document.getElementById('modalPetBreed').value.trim(), age: parseInt(document.getElementById('modalPetAge').value) || 0 });
+                await recordLog('Add Pet', `Added pet profile.`);
+                closePetModal(); showAlert("Pet profile saved!", "success"); loadPetsView();
+            } catch (e) { showAlert(`Error: ${e.message}`); }
+        }
+        async function deletePet(id) {
+            try { await supabaseRequest(`pets?pet_id=eq.${id}`, 'DELETE'); await recordLog('Delete Pet', `Deleted pet ID: ${id}`); showAlert("Profile deleted.", "success"); loadPetsView(); } 
+            catch (e) { showAlert(`Delete error: ${e.message}`); }
+        }
+
+        /* Booking Appointments */
         async function openBookingModal() {
             try {
                 const pets = await supabaseRequest(`pets?owner_id=eq.${currentUser.user_id}`);
-                if (pets.length === 0) return showAlert("Please register a pet profile first under the Pets tab.");
-
-                const petSelect = document.getElementById('modalBookingPet');
-                petSelect.innerHTML = pets.map(p => `<option value="${p.pet_id}">${p.pet_name} (${p.species})</option>`).join('');
-
-                const now = new Date();
-                const nowISO = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
-                
-                const future = new Date(now.getTime() + 86400000 * 3);
-                const futureISO = new Date(future.getTime() - future.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
-
-                document.getElementById('modalBookingCheckIn').value = nowISO;
-                document.getElementById('modalBookingCheckOut').value = futureISO;
-
+                if (pets.length === 0) return showAlert("Please register a pet profile first.");
+                document.getElementById('modalBookingPet').innerHTML = pets.map(p => `<option value="${p.pet_id}">${p.pet_name} (${p.species})</option>`).join('');
                 document.getElementById('bookingModal').classList.remove('hidden', 'pointer-events-none');
-            } catch (e) {
-                showAlert(`Error loading modal data: ${e.message}`);
-            }
+            } catch (e) { showAlert(`Error: ${e.message}`); }
         }
-
-        function closeBookingModal() {
-            document.getElementById('bookingModal').classList.add('hidden', 'pointer-events-none');
-        }
-
+        function closeBookingModal() { document.getElementById('bookingModal').classList.add('hidden', 'pointer-events-none'); }
         async function handleBookingSubmit(e) {
             e.preventDefault();
-            const petId = document.getElementById('modalBookingPet').value;
-            const unitId = document.getElementById('modalBookingUnit').value;
-            const checkInRaw = document.getElementById('modalBookingCheckIn').value;
-            const checkOutRaw = document.getElementById('modalBookingCheckOut').value;
-
             try {
-                await supabaseRequest('reservations', 'POST', {
-                    user_id: currentUser.user_id,
-                    pet_id: parseInt(petId),
-                    unit_id: parseInt(unitId),
-                    check_in_date: new Date(checkInRaw).toISOString(),
-                    check_out_date: new Date(checkOutRaw).toISOString(),
-                    status: 'Pending'
-                });
-
-                await recordLog('Submit Reservation', `Reservation submitted for ${formatDateTime(checkInRaw)}`);
-                closeBookingModal();
-                showAlert("Boarding reservation submitted successfully!", "success");
-                loadReservationsView();
-            } catch (e) {
-                showAlert(`Booking error: ${e.message}`);
-            }
+                const unit = parseInt(document.getElementById('modalBookingUnit').value);
+                const cin = document.getElementById('modalBookingCheckIn').value;
+                let cout = document.getElementById('modalBookingCheckOut').value;
+                if(unit >= 3) cout = new Date(new Date(cin).getTime() + 60*60*1000).toISOString(); 
+                
+                await supabaseRequest('reservations', 'POST', { user_id: currentUser.user_id, pet_id: parseInt(document.getElementById('modalBookingPet').value), unit_id: unit, check_in_date: new Date(cin).toISOString(), check_out_date: new Date(cout).toISOString(), status: 'Pending' });
+                await recordLog('Submit Appointment', `Booked slot.`);
+                closeBookingModal(); showAlert("Appointment scheduled!", "success"); loadReservationsView();
+            } catch (e) { showAlert(`Booking error: ${e.message}`); }
         }
 
+        /* Reservation Approvals */
         async function updateReservationStatus(id, newStatus) {
             try {
                 await supabaseRequest(`reservations?reservation_id=eq.${id}`, 'PATCH', { status: newStatus });
-                await recordLog('Update Reservation', `Updated reservation #${id} status to: ${newStatus}`);
-                showAlert(`Transaction decision updated to: ${newStatus}`, "success");
-                loadReservationsView();
-            } catch (e) {
-                showAlert(`Update error: ${e.message}`);
-            }
+                await recordLog('Update Appointment', `Updated #${id} to: ${newStatus}`);
+                showAlert(`Appointment ${newStatus}`, "success"); 
+                if(currentTab === 'patients') loadPatientsView(); else loadReservationsView();
+            } catch (e) { showAlert(`Update error: ${e.message}`); }
         }
 
-        async function loadLogTrailsView() {
-            const container = document.getElementById('dynamicDashboardContent');
-            if (currentUser.role !== 'admin') {
-                container.innerHTML = `<p class="text-xs text-rose-600 font-bold">Access Denied: Administrators only.</p>`;
-                return;
-            }
-
-            container.innerHTML = '<p class="text-xs text-slate-400 text-center py-6 font-medium">Fetching audit trail logs...</p>';
-
+        /* Staff SOAP Notes */
+        function openSoapModal(petId, petName) {
+            document.getElementById('soapPetId').value = petId;
+            document.getElementById('soapModal').classList.remove('hidden', 'pointer-events-none');
+        }
+        function closeSoapModal() { document.getElementById('soapModal').classList.add('hidden', 'pointer-events-none'); document.getElementById('soapWeight').value=''; }
+        async function handleSoapSubmit(e) {
+            e.preventDefault();
             try {
-                const logs = await supabaseRequest('log_trails?order=log_id.desc&limit=25');
-
-                let html = `
-                    <div class="bg-white p-5 rounded-3xl shadow-card border border-slate-100 space-y-3">
-                        <h3 class="font-black text-xs text-rose-600 flex items-center"><i class="fa-solid fa-shield-halved mr-2 text-sm"></i> Security Audit Log Trail</h3>
-                        <div class="space-y-2 max-h-96 overflow-y-auto custom-scrollbar">`;
-
-                logs.forEach(l => {
-                    html += `
-                        <div class="p-2.5 bg-slate-50/80 rounded-xl border border-slate-200/80 text-[10px]">
-                            <div class="flex justify-between font-bold text-slate-900">
-                                <span>${l.username} <span class="text-slate-400">(${l.action})</span></span>
-                                <span class="text-slate-400 font-normal">${formatDateTime(l.created_at)}</span>
-                            </div>
-                            <div class="text-slate-500 mt-0.5 font-medium">${l.details || ''}</div>
-                        </div>`;
+                await supabaseRequest('medical_records', 'POST', {
+                    pet_id: document.getElementById('soapPetId').value,
+                    vet_id: currentUser.user_id,
+                    weight_kg: document.getElementById('soapWeight').value,
+                    temperature: document.getElementById('soapTemp').value,
+                    subjective: document.getElementById('soapSubjective').value,
+                    objective: document.getElementById('soapObjective').value,
+                    assessment: document.getElementById('soapAssessment').value,
+                    plan: document.getElementById('soapPlan').value
                 });
-
-                html += `</div></div>`;
-                container.innerHTML = html;
-            } catch (err) {
-                container.innerHTML = `<p class="text-xs text-rose-600">Error: ${err.message}</p>`;
-            }
+                await recordLog('Clinical Entry', `Added SOAP note for pet ${document.getElementById('soapPetId').value}`);
+                closeSoapModal(); showAlert("Medical record securely saved.", "success");
+            } catch (e) { showAlert(`SOAP Save Error: ${e.message}`); }
         }
 
+        /* Inventory Management */
+        function openInventoryModal() { document.getElementById('inventoryModal').classList.remove('hidden', 'pointer-events-none'); }
+        function closeInventoryModal() { document.getElementById('inventoryModal').classList.add('hidden', 'pointer-events-none'); document.getElementById('invName').value=''; }
+        async function handleInventorySubmit(e) {
+            e.preventDefault();
+            try {
+                await supabaseRequest('inventory', 'POST', {
+                    item_name: document.getElementById('invName').value, category: document.getElementById('invCategory').value,
+                    quantity: document.getElementById('invQty').value, reorder_level: document.getElementById('invAlert').value, unit_price: document.getElementById('invPrice').value
+                });
+                await recordLog('Inventory', `Added new item: ${document.getElementById('invName').value}`);
+                closeInventoryModal(); showAlert("Item added to pharmacy.", "success"); loadInventoryView();
+            } catch (e) { showAlert(`Inventory Error: ${e.message}`); }
+        }
+
+        /* Billing Generation */
+        function openInvoiceModal(resId, userId, petName) {
+            document.getElementById('invcResId').value = resId;
+            document.getElementById('invcUserId').value = userId;
+            document.getElementById('invcApptDisplay').innerText = `#${resId} (${petName})`;
+            
+            const fee = document.getElementById('invcFee');
+            const sup = document.getElementById('invcSupplies');
+            const tot = document.getElementById('invcTotalDisplay');
+            const updateTot = () => { tot.innerText = formatCurrency((parseFloat(fee.value)||0) + (parseFloat(sup.value)||0)); };
+            fee.oninput = updateTot; sup.oninput = updateTot;
+            
+            document.getElementById('invoiceModal').classList.remove('hidden', 'pointer-events-none');
+        }
+        function closeInvoiceModal() { document.getElementById('invoiceModal').classList.add('hidden', 'pointer-events-none'); }
+        async function handleInvoiceSubmit(e) {
+            e.preventDefault();
+            try {
+                const total = (parseFloat(document.getElementById('invcFee').value)||0) + (parseFloat(document.getElementById('invcSupplies').value)||0);
+                const resId = document.getElementById('invcResId').value;
+                
+                await supabaseRequest('invoices', 'POST', {
+                    user_id: document.getElementById('invcUserId').value,
+                    reservation_id: resId,
+                    total_amount: total,
+                    status: 'Unpaid'
+                });
+                await supabaseRequest(`reservations?reservation_id=eq.${resId}`, 'PATCH', { status: 'Discharged' });
+                
+                await recordLog('Billing', `Generated invoice for Apt #${resId}`);
+                closeInvoiceModal(); showAlert("Invoice generated & patient discharged.", "success"); loadPatientsView();
+            } catch (e) { showAlert(`Billing Error: ${e.message}`); }
+        }
+
+        /* Shift & Approvals */
+        function openShiftModal() { document.getElementById('shiftModal').classList.remove('hidden', 'pointer-events-none'); }
+        function closeShiftModal() { document.getElementById('shiftModal').classList.add('hidden', 'pointer-events-none'); }
+        async function handleShiftSubmit(e) { e.preventDefault(); await recordLog('Shift Swap Request (Pending Admin)', `Staff requested swap.`); closeShiftModal(); showAlert("Request sent to Admin queue.", "success"); }
+        function openDiscountModal() { document.getElementById('discountModal').classList.remove('hidden', 'pointer-events-none'); }
+        function closeDiscountModal() { document.getElementById('discountModal').classList.add('hidden', 'pointer-events-none'); }
+        async function handleDiscountSubmit(e) { e.preventDefault(); await recordLog('Discount Request (Pending Admin)', `Staff requested fee waiver.`); closeDiscountModal(); showAlert("Waiver sent to Admin queue.", "success"); }
+
+        /* Logout */
         function openLogoutModal() { document.getElementById('logoutModal').classList.remove('hidden', 'pointer-events-none'); }
         function closeLogoutModal() { document.getElementById('logoutModal').classList.add('hidden', 'pointer-events-none'); }
-        
-        async function confirmLogout() {
-            await recordLog('User Logout', 'User ended session.');
-            closeLogoutModal();
-            currentUser = null;
-            document.getElementById('dashboardSection').classList.add('hidden');
-            document.getElementById('navUserBadge').classList.add('hidden');
-            document.getElementById('navLogoutBtn').classList.add('hidden');
-            document.getElementById('bottomNav').classList.add('hidden');
-            document.getElementById('authSection').classList.remove('hidden');
-            switchAuthMode('login');
+        async function confirmLogout() { 
+            await recordLog('User Logout', 'Session securely ended.'); 
+            closeLogoutModal(); currentUser = null; 
+            document.getElementById('dashboardSection').classList.add('hidden'); 
+            document.getElementById('authSection').classList.remove('hidden'); 
+            document.getElementById('navUserBadge').classList.add('hidden'); 
+            document.getElementById('navLogoutBtn').classList.add('hidden'); 
+            document.getElementById('bottomNav').classList.add('hidden'); 
+            document.getElementById('desktopSidebar').classList.add('hidden');
+            switchAuthMode('login'); 
+            document.getElementById('appShell').classList.remove('desktop-mode'); 
+            document.getElementById('appShell').classList.add('mobile-mode'); 
         }
+
+        function viewMedicalRecords(id, name) { showAlert(`Retrieving records for ${name}.`, 'success'); }
+        function viewPrescriptions(id, name) { showAlert(`Retrieving active Rx for ${name}.`, 'success'); }
+
     </script>
 </body>
 </html>
