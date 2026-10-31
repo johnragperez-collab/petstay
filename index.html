@@ -10,6 +10,20 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Chart.js 4.4 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Mermaid.js for System Integration & Architecture (SIA) Diagrams (Local + CDN Fallback) -->
+    <script src="mermaid.min.js"></script>
+    <script>
+        if (typeof window.mermaid === 'undefined') {
+            document.write('<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"><\/script>');
+        }
+    </script>
+    <script>
+        try {
+            if (window.mermaid) {
+                mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', flowchart: { useMaxWidth: true, htmlLabels: true } });
+            }
+        } catch(e) { console.warn('Mermaid init:', e); }
+    </script>
     <!-- Google Fonts: Plus Jakarta Sans -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script>
@@ -170,6 +184,7 @@
                     <button onclick="switchTab('audit')" class="desk-nav-tab interactive-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-slate-800 hover:text-white transition text-sm font-bold text-left"><i class="fa-solid fa-shield-halved w-5 text-center text-rose-500"></i><span class="text-rose-500">Audit Logs</span></button>
                     <button onclick="switchTab('users')" class="desk-nav-tab interactive-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-slate-800 hover:text-white transition text-sm font-bold text-left"><i class="fa-solid fa-users-gear w-5 text-center text-sky-400"></i><span class="text-sky-400">User Management</span></button>
                     <button onclick="switchTab('backup')" class="desk-nav-tab interactive-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-slate-800 hover:text-white transition text-sm font-bold text-left"><i class="fa-solid fa-database w-5 text-center text-violet-400"></i><span class="text-violet-400">Backup & Restore</span></button>
+                    <button onclick="switchTab('architecture')" class="desk-nav-tab interactive-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-slate-800 hover:text-white transition text-sm font-bold text-left"><i class="fa-solid fa-sitemap w-5 text-center text-emerald-400"></i><span class="text-emerald-400">System Architecture</span></button>
                 </div>
             </aside>
 
@@ -482,11 +497,14 @@
                             <i class="fa-solid fa-clock text-blue-600 text-xs mt-0.5"></i>
                             <div>
                                 <div class="text-[10px] font-black text-blue-900 leading-tight">Operating Hours: 8:00 AM – 5:00 PM</div>
-                                <div class="text-[9px] font-medium text-blue-700 leading-tight mt-0.5">8-Hour Day Shift Only • Closed Nights & Sundays</div>
+                                <div class="text-[9px] font-medium text-blue-700 leading-tight mt-0.5">8-Hour Daytime Operations • <strong class="text-rose-600 font-bold">Strictly Closed on Sundays</strong></div>
                             </div>
                         </div>
                         <div>
-                            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Appointment Date</label>
+                            <div class="flex justify-between items-center mb-1">
+                                <label class="block text-[10px] font-bold text-slate-600 uppercase">Appointment Date</label>
+                                <span class="text-[9px] font-bold text-rose-600"><i class="fa-solid fa-ban mr-0.5"></i> Mon–Sat Only (No Sundays)</span>
+                            </div>
                             <input type="date" id="modalBookingDate" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 outline-none focus:border-blue-500" required>
                         </div>
                         <div>
@@ -1119,7 +1137,7 @@ function formatDateTime(dateStr) {
     if (!dateStr) return 'N/A';
     const d = new Date(dateStr);
     if (isNaN(d.getTime())) return dateStr;
-    return d.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true });
+    return d.toLocaleString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true });
 }
 
 function formatCurrency(amount) {
@@ -2259,6 +2277,7 @@ function switchTab(tab) {
     else if (tab === 'audit') loadLogTrailsView();
     else if (tab === 'users') loadUsersManagementView();
     else if (tab === 'backup') loadBackupManagementView();
+    else if (tab === 'architecture') loadArchitectureView();
     else dynContent.innerHTML = `<p class="text-center p-10 text-slate-400 font-bold">Module under construction.</p>`;
 }
 
@@ -2313,6 +2332,34 @@ async function loadAdminMasterDashboard() {
                     <div class="bg-slate-900 p-5 rounded-3xl shadow-xl flex items-center space-x-4 hover-card text-white relative overflow-hidden border border-slate-800">
                         <div class="w-13 h-13 bg-white/10 text-emerald-400 rounded-2xl flex items-center justify-center text-xl backdrop-blur-md p-3"><i class="fa-solid fa-shield-halved"></i></div>
                         <div><div class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Security Status</div><div class="text-lg font-black text-emerald-400">IAS 1 Compliant</div></div>
+                    </div>
+                </div>
+
+                <!-- SIA Architectural Quick-Access Banner -->
+                <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-emerald-950 p-6 rounded-3xl shadow-xl border border-emerald-500/20 text-white flex flex-col md:flex-row justify-between items-start md:items-center gap-4 relative overflow-hidden">
+                    <div class="absolute -right-10 -bottom-10 w-44 h-44 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none"></div>
+                    <div class="flex items-center space-x-4 relative z-10">
+                        <div class="w-14 h-14 bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 rounded-2xl flex items-center justify-center text-2xl shadow-inner shrink-0">
+                            <i class="fa-solid fa-sitemap"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center space-x-2 mb-1">
+                                <span class="text-[10px] font-black uppercase tracking-widest bg-emerald-500/20 text-emerald-300 px-2.5 py-0.5 rounded-full border border-emerald-500/30">SIA Capstone Architecture</span>
+                                <span class="text-[10px] font-bold text-slate-400">UML 2.5 • BPMN 2.0 • Relational ERD</span>
+                            </div>
+                            <h3 class="text-lg font-black text-white">System Integration & Architecture (SIA) Center</h3>
+                            <p class="text-xs text-slate-300 max-w-2xl mt-0.5">View live UML Use Case, BPMN Swimlane Process Flow, Database ERD, Flowchart, and Network Diagram interactively during the presentation.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2 shrink-0 relative z-10 w-full md:w-auto">
+                        <button onclick="switchTab('architecture')" class="interactive-btn w-full md:w-auto bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-black px-4 py-2.5 rounded-xl shadow-lg transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-diagram-project"></i>
+                            <span>View Diagrams & Schema</span>
+                        </button>
+                        <a href="PetStay_SIA_Architectural_Blueprints.pptx" download="PetStay_SIA_Architectural_Blueprints.pptx" class="interactive-btn w-full md:w-auto bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-black px-4 py-2.5 rounded-xl shadow-lg transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-file-powerpoint"></i>
+                            <span>Defense PPTX</span>
+                        </a>
                     </div>
                 </div>
 
@@ -3202,14 +3249,38 @@ async function openBookingModal() {
         if (!pets || pets.length === 0) return showAlert("Please register a pet profile first before scheduling.");
         document.getElementById('modalBookingPet').innerHTML = pets.map(p => `<option value="${p.pet_id}">${p.pet_name} (${p.species})</option>`).join('');
         
-        // Ensure date picker restricts selection to today or future dates
+        // Ensure date picker restricts selection to today or future dates and excludes Sunday
         const dateInput = document.getElementById('modalBookingDate');
         if (dateInput) {
-            const todayStr = new Date().toISOString().split('T')[0];
-            dateInput.min = todayStr;
-            if (!dateInput.value || dateInput.value < todayStr) {
-                dateInput.value = todayStr;
+            let nextDate = new Date();
+            // If today is Sunday (day 0), advance to Monday (day 1)
+            if (nextDate.getDay() === 0) {
+                nextDate.setDate(nextDate.getDate() + 1);
             }
+            const yyyy = nextDate.getFullYear();
+            const mm = String(nextDate.getMonth() + 1).padStart(2, '0');
+            const dd = String(nextDate.getDate()).padStart(2, '0');
+            const dateStr = `${yyyy}-${mm}-${dd}`;
+            
+            const today = new Date();
+            const tY = today.getFullYear();
+            const tM = String(today.getMonth() + 1).padStart(2, '0');
+            const tD = String(today.getDate()).padStart(2, '0');
+            dateInput.min = `${tY}-${tM}-${tD}`;
+            dateInput.value = dateStr;
+
+            dateInput.onchange = function() {
+                if (!this.value) return;
+                const picked = new Date(this.value + 'T00:00:00');
+                if (picked.getDay() === 0) {
+                    showAlert("The clinic is closed on Sundays! Appointments are only available during standard 8-hour shifts Monday through Saturday.", "warning");
+                    picked.setDate(picked.getDate() + 1);
+                    const pY = picked.getFullYear();
+                    const pM = String(picked.getMonth() + 1).padStart(2, '0');
+                    const pD = String(picked.getDate()).padStart(2, '0');
+                    this.value = `${pY}-${pM}-${pD}`;
+                }
+            };
         }
         
         document.getElementById('bookingModal').classList.remove('hidden', 'pointer-events-none');
@@ -3763,7 +3834,388 @@ function closeReceiptModal() {
 function printReceipt() {
     window.print();
 }
-    </script>
+
+// ==========================================
+// SYSTEM INTEGRATION & ARCHITECTURE (SIA) VIEWER
+// ==========================================
+const PETSTAY_SIA_DOCS = {
+    markdown: "# System Integration & Architecture (SIA) Documentation\n## PetStay: Enterprise Veterinary Clinic Management & Security Platform\n\n**Academic Course**: IT/CS-SIA312 – System Integration & Architecture  \n**Evaluator**: CICTE Faculty / Architecture Board  \n**Target System**: PetStay Enterprise Veterinary Clinic Management & Security Platform  \n**System Classification**: Distributed Multi-Tier Mobile & Enterprise Web Architecture  \n\n---\n\n### Executive Architectural Overview\n\nPetStay is an integrated multi-tier veterinary clinic management and security system designed for seamless collaboration among Pet Owners, Clinic Staff (Veterinarians and Veterinary Technicians), and Clinic Administrators. The architecture couples a high-performance **Single-Page Application (SPA)** client tier (responsive dynamic mobile and desktop shell) with a cloud-native **Database-as-a-Service (DBaaS)** PostgreSQL backend via RESTful APIs, enforced by Information Assurance and Security (IAS 1) protocols including SHA-256 cryptographic hashing, progressive lockout protection, single-use OTP tokens, session watchdog timers, and immutable audit trails.\n\n---\n\n### 1. Use Case Diagram (System Users & Functionalities)\n\nThe diagram below identifies the three primary system actors (**Pet Owner**, **Clinic Staff / Veterinarian**, and **Clinic Administrator**) along with the external **Payment Gateway & SMS Carrier Services**, defining their relationships with core functional and security use cases according to standard UML conventions.\n\n```mermaid\nflowchart LR\n    %% Actors\n    subgraph Actors[\"System Actors\"]\n        Owner((\"Pet Owner\\n(Client)\"))\n        Staff((\"Clinic Staff\\n(Vet / Tech)\"))\n        Admin((\"Clinic Admin\\n(Chief Administrator)\"))\n        Gateway[\"External Payment Gateway\\n(GCash / Maya / Card)\"]\n        Carrier[\"SMS / Email Carrier\\n(Simulated OTP Engine)\"]\n    end\n\n    %% Use Cases\n    subgraph UC_Auth[\"Authentication & Security Module\"]\n        UC1([\"Register / Login\"])\n        UC2([\"OTP Verification & Cooldown\"])\n        UC3([\"Manage Password & Strength Check\"])\n        UC4([\"Session Management & Inactivity Watchdog\"])\n    end\n\n    subgraph UC_Owner[\"Owner Self-Service Module\"]\n        UC5([\"Manage Pet Directory\"])\n        UC6([\"Book 8-Hour Shift Appointment\"])\n        UC7([\"View Clinical History & Prescriptions\"])\n        UC8([\"Pay Invoices & Settle Bills\"])\n        UC9([\"Print Official Receipt\"])\n    end\n\n    subgraph UC_Staff[\"Clinical Operations Module\"]\n        UC10([\"Triage & Active Patient Queue\"])\n        UC11([\"Record Clinical SOAP Notes & Vitals\"])\n        UC12([\"Manage Pharmacy & Inventory\"])\n        UC13([\"Discharge Patient & Generate Bill\"])\n        UC14([\"Submit Shift Swap & Fee Waiver\"])\n    end\n\n    subgraph UC_Admin[\"System Governance & Auditing Module\"]\n        UC15([\"User CRUD & Role Assignment\"])\n        UC16([\"Review & Approve Staff Requests\"])\n        UC17([\"Monitor Clinic Analytics & Charts\"])\n        UC18([\"Inspect Security Audit Trail\"])\n        UC19([\"Backup & Restore Database\"])\n    end\n\n    %% Actor Relationships\n    Owner --> UC1\n    Owner --> UC2\n    Owner --> UC3\n    Owner --> UC4\n    Owner --> UC5\n    Owner --> UC6\n    Owner --> UC7\n    Owner --> UC8\n    Owner --> UC9\n\n    Staff --> UC1\n    Staff --> UC3\n    Staff --> UC4\n    Staff --> UC10\n    Staff --> UC11\n    Staff --> UC12\n    Staff --> UC13\n    Staff --> UC14\n\n    Admin --> UC1\n    Admin --> UC3\n    Admin --> UC4\n    Admin --> UC12\n    Admin --> UC15\n    Admin --> UC16\n    Admin --> UC17\n    Admin --> UC18\n    Admin --> UC19\n\n    %% External Systems\n    UC8 -.-> Gateway\n    UC2 -.-> Carrier\n    UC13 --> UC8\n```\n\n---\n\n### 2. System Flow Diagram (Swimlanes & Pools)\n\nThe Swimlane Process Flow Diagram models the end-to-end clinical lifecycle—from appointment booking through veterinary triage, SOAP documentation, discharge invoicing, customer payment, and administrative audit logging.\n\n```mermaid\nflowchart TD\n    subgraph Pool_PetStay[\"PetStay Clinic End-to-End Operational Lifecycle\"]\n        \n        subgraph Lane_Owner[\"Pet Owner Lane\"]\n            O_Start([\"Start: Owner Logs In\"])\n            O_Book[\"Select Pet & Schedule 8-Hour Shift Slot\\n(08:00 AM - 05:00 PM)\"]\n            O_Wait[\"Wait for Clinic Day Arrival\"]\n            O_Pay[\"Receive Discharge Bill & Settle via GCash/Maya/Card\"]\n            O_Rcpt[\"Download / Print Official Receipt\"]\n            O_End([\"End: Patient Returned Home\"])\n        end\n\n        subgraph Lane_Staff[\"Clinic Staff / Veterinarian Lane\"]\n            S_Queue[\"Review Clinic Queue & Admit Patient\"]\n            S_Exam[\"Perform Clinical Physical Examination\"]\n            S_SOAP[\"Record SOAP Note:\\n(Subjective, Objective, Assessment, Plan)\"]\n            S_Inv[\"Dispense Medications & Deduct Inventory\"]\n            S_Discharge[\"Initiate Patient Discharge & Issue Invoice\"]\n        end\n\n        subgraph Lane_System[\"PetStay System / Gateway Lane\"]\n            Sys_Validate[\"Validate 8-Hour Shift & Enforce Operating Rules\"]\n            Sys_CreateApt[\"Create Reservation (Status: Pending -> Approved)\"]\n            Sys_UpdateInv[\"Update Pharmacy Stock & Low Reorder Thresholds\"]\n            Sys_GenInvc[\"Calculate Total Bill & Generate #INV-XXXXX\"]\n            Sys_ProcessPay[\"Process Transaction & Update Invoice to PAID\"]\n            Sys_Log[\"Append Immutable Security Event to Log Trail\"]\n        end\n\n        subgraph Lane_Admin[\"Clinic Administrator Lane\"]\n            A_Monitor[\"Monitor Real-time Clinic Analytics & Capacity\"]\n            A_Review[\"Review Audit Trails & Approve Staff HR Requests\"]\n        end\n    end\n\n    %% Flow transitions across swimlanes\n    O_Start --> O_Book\n    O_Book --> Sys_Validate\n    Sys_Validate --> Sys_CreateApt\n    Sys_CreateApt --> O_Wait\n    O_Wait --> S_Queue\n    S_Queue --> S_Exam\n    S_Exam --> S_SOAP\n    S_SOAP --> S_Inv\n    S_Inv --> Sys_UpdateInv\n    Sys_UpdateInv --> S_Discharge\n    S_Discharge --> Sys_GenInvc\n    Sys_GenInvc --> O_Pay\n    O_Pay --> Sys_ProcessPay\n    Sys_ProcessPay --> Sys_Log\n    Sys_ProcessPay --> O_Rcpt\n    O_Rcpt --> O_End\n\n    Sys_Log -.-> A_Review\n    Sys_UpdateInv -.-> A_Monitor\n```\n\n---\n\n### 3. Entity Relationship Diagram (ERD)\n\nThe Entity Relationship Diagram specifies the relational database schema implemented in `petstay_schema.sql` and deployed on the cloud PostgreSQL database. It captures all primary keys (`PK`), foreign keys (`FK`), attributes, and entity relationships.\n\n```mermaid\nerDiagram\n    USERS ||--o{ PETS : owns\n    USERS ||--o{ RESERVATIONS : books\n    USERS ||--o{ MEDICAL_RECORDS : prescribes\n    USERS ||--o{ INVOICES : billed_to\n    USERS ||--o{ STAFF_REQUESTS : submits\n    USERS ||--o{ LOG_TRAILS : triggers\n    USERS ||--o{ SYSTEM_BACKUPS : generates\n\n    PETS ||--o{ RESERVATIONS : admitted_in\n    PETS ||--o{ MEDICAL_RECORDS : receives\n\n    UNITS ||--o{ RESERVATIONS : allocated_to\n    BOARDING_UNITS ||--o{ RESERVATIONS : legacy_references\n\n    RESERVATIONS ||--o| MEDICAL_RECORDS : documents\n    RESERVATIONS ||--o| INVOICES : billed_for\n\n    USERS {\n        int user_id PK\n        varchar username UK\n        varchar email UK\n        varchar password\n        varchar password_hash\n        varchar full_name\n        varchar role\n        varchar status\n        boolean is_locked\n        int failed_attempts\n        timestamp lockout_until\n        int lockout_tier\n        varchar recovery_otp\n        timestamp otp_expires_at\n        timestamp created_at\n    }\n\n    PETS {\n        int pet_id PK\n        int owner_id FK\n        varchar pet_name\n        varchar species\n        varchar breed\n        int age\n        varchar gender\n        decimal weight_kg\n        text allergies\n        text special_notes\n        timestamp created_at\n    }\n\n    UNITS {\n        int unit_id PK\n        varchar name\n        varchar type\n        decimal base_rate\n        int capacity\n        varchar status\n        text description\n    }\n\n    BOARDING_UNITS {\n        int unit_id PK\n        varchar unit_name\n        varchar unit_type\n        varchar status\n    }\n\n    RESERVATIONS {\n        int reservation_id PK\n        int user_id FK\n        int pet_id FK\n        int unit_id FK\n        timestamp check_in_date\n        timestamp check_out_date\n        varchar status\n        text triage_notes\n        timestamp created_at\n    }\n\n    MEDICAL_RECORDS {\n        int record_id PK\n        int pet_id FK\n        int vet_id FK\n        int reservation_id FK\n        decimal weight_kg\n        decimal temperature\n        text subjective\n        text objective\n        text assessment\n        text plan\n        timestamp created_at\n    }\n\n    INVENTORY {\n        int item_id PK\n        varchar item_name\n        varchar category\n        int quantity\n        int reorder_level\n        decimal unit_price\n        varchar supplier\n        timestamp last_restocked\n        timestamp last_updated\n    }\n\n    INVOICES {\n        int invoice_id PK\n        int reservation_id FK\n        int user_id FK\n        decimal service_fee\n        decimal supplies_fee\n        decimal discount_amount\n        decimal total_amount\n        varchar status\n        varchar payment_method\n        timestamp issued_at\n        timestamp paid_at\n    }\n\n    STAFF_REQUESTS {\n        int request_id PK\n        int requester_id FK\n        varchar request_type\n        varchar target_date\n        decimal amount\n        text reason\n        varchar status\n        int reviewed_by FK\n        timestamp created_at\n    }\n\n    LOG_TRAILS {\n        int log_id PK\n        int user_id FK\n        varchar username\n        varchar action\n        varchar module\n        text details\n        varchar ip_address\n        varchar status\n        timestamp created_at\n    }\n\n    SYSTEM_BACKUPS {\n        int backup_id PK\n        varchar filename\n        varchar backup_type\n        int record_count\n        int created_by FK\n        jsonb snapshot_data\n        timestamp created_at\n    }\n```\n\n---\n\n### 4. System Flowchart (Operational Logic & Decisions)\n\nThe flowchart maps the algorithmic decisions within the system—including authentication validation, progressive lockout tiers, CAPTCHA challenges, 8-hour operational shift enforcement, clinical SOAP recording, and online payment settlement.\n\n```mermaid\nflowchart TD\n    Start([User Initiates Action]) --> CheckAuth{Is User Authenticated?}\n\n    %% Authentication Sub-Branch\n    CheckAuth -- No --> InputCreds[/Input Username & Password/]\n    InputCreds --> CheckLockout{Is Account Locked?}\n    CheckLockout -- Yes --> ShowLockout[Display Countdown Timer Banner] --> Terminate([Wait for Lockout Expiry])\n    CheckLockout -- No --> NeedCaptcha{Failed Attempts >= 3?}\n    NeedCaptcha -- Yes --> VerifyCaptcha{Is CAPTCHA Valid?}\n    VerifyCaptcha -- No --> IncFail[Increment Failed Counter & Lockout Tier] --> Terminate\n    VerifyCaptcha -- Yes --> VerifyHash\n    NeedCaptcha -- No --> VerifyHash{Does SHA-256 Hash Match?}\n    VerifyHash -- No --> IncFail\n    VerifyHash -- Yes --> ResetFail[Reset Failed Attempts & Lockout Tiers]\n    ResetFail --> StartWatchdog[Start 15-Minute Session Watchdog]\n    StartWatchdog --> CheckRole{Inspect User Role}\n\n    %% Role-Based Routing\n    CheckAuth -- Yes --> CheckRole\n    CheckRole -- \"Role = Owner\" --> OwnerPortal[/Load Owner Portal Shell/]\n    CheckRole -- \"Role = Staff\" --> StaffPortal[/Load Staff Clinic Workspace/]\n    CheckRole -- \"Role = Admin\" --> AdminPortal[/Load Desktop Enterprise Suite/]\n\n    %% Owner Flow\n    OwnerPortal --> OwnerAction{Select Action}\n    OwnerAction -- \"Book Appointment\" --> PickSlot[/Select Pet, Date, and Shift Slot/]\n    PickSlot --> ValidateShift{Is Slot within 8:00 AM - 5:00 PM\\nand Mon - Sat?}\n    ValidateShift -- No --> ShiftError[Show Operating Hours Warning] --> PickSlot\n    ValidateShift -- Yes --> SaveBooking[(Insert into Reservations)] --> BookingDone[Show Confirmation Alert]\n\n    OwnerAction -- \"Pay Invoices\" --> ViewInvoices[(Fetch Unpaid Invoices)]\n    ViewInvoices --> SelectChannel[/Choose GCash, Maya, or Card/]\n    SelectChannel --> ProcessPay[(Update Invoice Status to Paid)]\n    ProcessPay --> AppendLog1[(Append to Log Trails)]\n    AppendLog1 --> TriggerReceipt[Render Official Printable Receipt]\n\n    %% Staff Flow\n    StaffPortal --> StaffAction{Select Action}\n    StaffAction -- \"Patient Triage\" --> SelectPatient[(Fetch Admitted Patients)]\n    SelectPatient --> WriteSOAP[/Record Vitals & SOAP Notes/]\n    WriteSOAP --> SaveSOAP[(Insert into Medical Records)]\n    SaveSOAP --> DischargePatient{Discharge Patient?}\n    DischargePatient -- Yes --> IssueInvoice[(Insert Invoice & Mark Reservation Completed)]\n\n    StaffAction -- \"Pharmacy\" --> AdjustInv[(Adjust Stock Quantities)]\n    AdjustInv --> CheckLowStock{Quantity <= Reorder Level?}\n    CheckLowStock -- Yes --> ShowStockAlert[Trigger Low Stock Alert Badge]\n\n    %% Admin Flow\n    AdminPortal --> AdminAction{Select Action}\n    AdminAction -- \"User CRUD\" --> ManageUsers[(Search, Toggle Lock, or Update Roles)]\n    AdminAction -- \"Audit Logs\" --> ViewAudit[(Query and Filter Immutable Log Trails)]\n    AdminAction -- \"Backup & Recovery\" --> CreateBackup[(Generate JSON Snapshot & Download)]\n\n    %% Universal Termination\n    BookingDone --> End([Session Active / Idle])\n    IssueInvoice --> End\n    TriggerReceipt --> End\n    ShowStockAlert --> End\n    CreateBackup --> End\n```\n\n---\n\n### 5. Network Diagram (Network Flow & Tier Architecture)\n\nThe Network Diagram visualizes the distributed network topology, communication boundaries, protocols, and data flow between client devices, web servers, cloud database clusters, and external third-party services.\n\n```mermaid\nflowchart TB\n    subgraph Tier_Clients[\"Presentation Tier (Client Devices & Workstations)\"]\n        Client_Mobile[\"Pet Owner Smartphone\\n(iOS / Android Web Browser)\\nPort 443 HTTPS\"]\n        Client_Clinic[\"Staff Tablet & Clinic Frontdesk\\n(Veterinary Triage Station)\\nPort 443 HTTPS\"]\n        Client_Admin[\"Administrator Desktop PC\\n(Executive Management Suite)\\nPort 443 HTTPS\"]\n    end\n\n    subgraph Tier_Boundary[\"Network Perimeter & Edge Security\"]\n        DNS[\"Authoritative DNS Resolution\\n(Cloudflare / Domain Registry)\"]\n        WAF[\"Web Application Firewall & SSL Termination\\n(TLS 1.3 / Anti-DDoS / Rate Limiter)\"]\n    end\n\n    subgraph Tier_Web[\"Application & Static Web Hosting Tier\"]\n        WebServer[\"Apache Web Server / XAMPP\\n(Document Root: c:\\\\xampp\\\\htdocs\\\\petstay)\\nServes index.html, JS Engines, Assets\\nPort 80 HTTP / 443 HTTPS\"]\n    end\n\n    subgraph Tier_Backend[\"Cloud Data & Integration Tier (Supabase BaaS Cluster)\"]\n        API_Gateway[\"PostgREST API Gateway\\n(Auto-generated REST Endpoints)\\nJWT Authentication & Header Validation\\nPort 443 HTTPS\"]\n        \n        subgraph DB_Cluster[\"PostgreSQL 15 Relational Cluster\"]\n            DB_Master[(\"PostgreSQL Master Database\\nTables: users, pets, reservations,\\nmedical_records, inventory, invoices,\\nstaff_requests, log_trails\")]\n            DB_Storage[\"Encrypted Blob Storage\\n(System Snapshots & Backups)\"]\n        end\n    end\n\n    subgraph Tier_External[\"External Services Tier (Third-Party Integrations)\"]\n        Payment_GCash[\"GCash / Maya Payment Gateway\\n(Simulated Merchant Settlement)\\nPort 443 HTTPS API\"]\n        Carrier_SMS[\"SMS / SMTP Telecom Gateway\\n(Carrier OTP Token Dispatch)\\nPort 443 HTTPS API\"]\n        CDN_Assets[\"Global Edge CDN\\n(Tailwind CSS, FontAwesome, Chart.js)\\nPort 443 HTTPS\"]\n    end\n\n    %% Network Connections\n    Client_Mobile -->|HTTPS / TLS 1.3| DNS\n    Client_Clinic -->|HTTPS / TLS 1.3| DNS\n    Client_Admin -->|HTTPS / TLS 1.3| DNS\n\n    DNS --> WAF\n    WAF --> WebServer\n    WebServer --> CDN_Assets\n\n    Client_Mobile -.->|Direct REST API Calls / Bearer Token| API_Gateway\n    Client_Clinic -.->|Direct REST API Calls / Bearer Token| API_Gateway\n    Client_Admin -.->|Direct REST API Calls / Bearer Token| API_Gateway\n\n    API_Gateway -->|Encrypted Internal Connection| DB_Master\n    DB_Master --> DB_Storage\n\n    Client_Mobile -.->|Payment Reference Verification| Payment_GCash\n    API_Gateway -.->|Dispatch OTP Token| Carrier_SMS\n```\n\n---\n\n### Architectural Consistency & Verification Matrix\n\n| Architecture Component | Diagram 1: Use Case | Diagram 2: Swimlane | Diagram 3: ERD | Diagram 4: Flowchart | Diagram 5: Network |\n| :--- | :--- | :--- | :--- | :--- | :--- |\n| **User Roles** | Owner, Staff, Admin | Owner, Staff, Admin | `users.role` | CheckRole Split | Client Devices |\n| **8-Hour Shift Appointments** | UC6 | Owner & System Lanes | `reservations`, `units` | ValidateShift | Mobile/Web to API |\n| **Clinical SOAP Notes** | UC11 | Staff Lane (Exam) | `medical_records` | WriteSOAP Decision | Staff Tablet to API |\n| **Pharmacy / Stock Alerts** | UC12 | Staff Lane (Dispense) | `inventory` | CheckLowStock | Admin/Staff Console |\n| **Billing & Payments** | UC8, UC9 | Owner & Gateway Lanes | `invoices` | ProcessPay & Receipt | Payment Gateway |\n| **Security & Audit Logs** | UC18 | System Lane | `log_trails` | AppendLog1 | PostgreSQL Cluster |\n| **Backup & Recovery** | UC19 | Admin Lane | `system_backups` | CreateBackup | Blob Storage |\n\n---\n*Documentation compiled and formatted in accordance with standard UML 2.5, BPMN 2.0, Crow's Foot ERD, and ISO/IEC 25010 System Architecture specifications.*\n",
+    sql: "-- ==============================================================================\n-- PETSTAY VETERINARY CLINIC & IAS 1 SAFE UPGRADE MIGRATION SCRIPT\n-- Execute this in your Supabase SQL Editor.\n-- It safely upgrades existing tables without dropping data or breaking constraints.\n-- ==============================================================================\n\n-- ------------------------------------------------------------------------------\n-- 1. ADD MISSING COLUMNS TO EXISTING TABLES (SAFE IDEMPOTENT ALTERS)\n-- ------------------------------------------------------------------------------\nALTER TABLE IF EXISTS users ADD COLUMN IF NOT EXISTS status VARCHAR(20) DEFAULT 'active';\nALTER TABLE IF EXISTS users ADD COLUMN IF NOT EXISTS is_locked BOOLEAN DEFAULT FALSE;\nALTER TABLE IF EXISTS users ADD COLUMN IF NOT EXISTS password_hash VARCHAR(255) NULL;\nALTER TABLE IF EXISTS users ADD COLUMN IF NOT EXISTS lockout_tier INT DEFAULT 0;\nALTER TABLE IF EXISTS users ADD COLUMN IF NOT EXISTS recovery_otp VARCHAR(10) NULL;\nALTER TABLE IF EXISTS users ADD COLUMN IF NOT EXISTS otp_code VARCHAR(10) NULL;\nALTER TABLE IF EXISTS users ADD COLUMN IF NOT EXISTS otp_expires_at TIMESTAMP WITH TIME ZONE NULL;\nALTER TABLE IF EXISTS users ADD COLUMN IF NOT EXISTS otp_attempts INT DEFAULT 0;\nALTER TABLE IF EXISTS users ADD COLUMN IF NOT EXISTS otp_purpose VARCHAR(30) NULL;\nALTER TABLE IF EXISTS users ADD COLUMN IF NOT EXISTS pending_email VARCHAR(100) NULL;\nALTER TABLE IF EXISTS users ADD COLUMN IF NOT EXISTS password_changed_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP;\n\nALTER TABLE IF EXISTS pets ADD COLUMN IF NOT EXISTS gender VARCHAR(10) DEFAULT 'Unknown';\nALTER TABLE IF EXISTS pets ADD COLUMN IF NOT EXISTS weight_kg DECIMAL(5,2) DEFAULT 0.00;\nALTER TABLE IF EXISTS pets ADD COLUMN IF NOT EXISTS allergies TEXT DEFAULT 'None reported';\nALTER TABLE IF EXISTS pets ADD COLUMN IF NOT EXISTS special_notes TEXT DEFAULT NULL;\n\nALTER TABLE IF EXISTS reservations ADD COLUMN IF NOT EXISTS triage_notes TEXT;\n\nALTER TABLE IF EXISTS inventory ADD COLUMN IF NOT EXISTS supplier VARCHAR(100) DEFAULT 'VetMed Supplies Co.';\nALTER TABLE IF EXISTS inventory ADD COLUMN IF NOT EXISTS last_restocked TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP;\nALTER TABLE IF EXISTS inventory ADD COLUMN IF NOT EXISTS last_updated TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP;\n\n-- ------------------------------------------------------------------------------\n-- 2. CREATE AUXILIARY / MISSING TABLES IF NOT ALREADY EXISTING\n-- ------------------------------------------------------------------------------\nCREATE TABLE IF NOT EXISTS units (\n    unit_id SERIAL PRIMARY KEY,\n    name VARCHAR(100) NOT NULL,\n    type VARCHAR(50) NOT NULL,\n    base_rate DECIMAL(10, 2) NOT NULL DEFAULT 500.00,\n    capacity INT DEFAULT 1,\n    status VARCHAR(20) DEFAULT 'Available',\n    description TEXT\n);\n\n-- Compatibility table for legacy foreign key constraints (reservations_unit_id_fkey -> boarding_units)\nCREATE TABLE IF NOT EXISTS boarding_units (\n    unit_id SERIAL PRIMARY KEY,\n    unit_name VARCHAR(100) NOT NULL,\n    unit_type VARCHAR(50) NOT NULL,\n    status VARCHAR(20) DEFAULT 'available'\n);\n\n\nCREATE TABLE IF NOT EXISTS medical_records (\n    record_id SERIAL PRIMARY KEY,\n    pet_id INT NOT NULL REFERENCES pets(pet_id) ON DELETE CASCADE,\n    vet_id INT NOT NULL REFERENCES users(user_id) ON DELETE RESTRICT,\n    reservation_id INT NULL,\n    weight_kg DECIMAL(5, 2),\n    temperature DECIMAL(4, 2),\n    subjective TEXT NOT NULL,\n    objective TEXT NOT NULL,\n    assessment TEXT NOT NULL,\n    plan TEXT NOT NULL,\n    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP\n);\n\nCREATE TABLE IF NOT EXISTS invoices (\n    invoice_id SERIAL PRIMARY KEY,\n    reservation_id INT NULL,\n    user_id INT NOT NULL REFERENCES users(user_id) ON DELETE RESTRICT,\n    service_fee DECIMAL(10, 2) NOT NULL DEFAULT 0.00,\n    supplies_fee DECIMAL(10, 2) NOT NULL DEFAULT 0.00,\n    discount_amount DECIMAL(10, 2) NOT NULL DEFAULT 0.00,\n    total_amount DECIMAL(10, 2) NOT NULL,\n    status VARCHAR(20) NOT NULL DEFAULT 'Unpaid',\n    payment_method VARCHAR(50) DEFAULT 'Cash/Online',\n    issued_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,\n    paid_at TIMESTAMP WITH TIME ZONE NULL\n);\n\nCREATE TABLE IF NOT EXISTS staff_requests (\n    request_id SERIAL PRIMARY KEY,\n    requester_id INT NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,\n    request_type VARCHAR(50) NOT NULL,\n    target_date VARCHAR(50),\n    amount DECIMAL(10, 2) DEFAULT 0.00,\n    reason TEXT NOT NULL,\n    status VARCHAR(20) NOT NULL DEFAULT 'Pending',\n    reviewed_by INT NULL REFERENCES users(user_id),\n    reviewed_at TIMESTAMP WITH TIME ZONE NULL,\n    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP\n);\n\nCREATE TABLE IF NOT EXISTS log_trails (\n    log_id SERIAL PRIMARY KEY,\n    user_id INT NULL REFERENCES users(user_id) ON DELETE SET NULL,\n    username VARCHAR(50) NOT NULL DEFAULT 'System',\n    action VARCHAR(100) NOT NULL,\n    module VARCHAR(50) NOT NULL DEFAULT 'Security',\n    details TEXT,\n    ip_address VARCHAR(45) DEFAULT '127.0.0.1',\n    user_agent TEXT,\n    status VARCHAR(20) DEFAULT 'Success',\n    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP\n);\n\nCREATE TABLE IF NOT EXISTS system_backups (\n    backup_id SERIAL PRIMARY KEY,\n    filename VARCHAR(150) NOT NULL,\n    backup_type VARCHAR(30) NOT NULL DEFAULT 'Full Snapshot',\n    record_count INT DEFAULT 0,\n    created_by INT NULL REFERENCES users(user_id),\n    snapshot_data JSONB,\n    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP\n);\n\n-- ------------------------------------------------------------------------------\n-- 3. SAFE SEED / UPDATE ESSENTIAL CLINIC DATA\n-- ------------------------------------------------------------------------------\n-- Ensure Demo Accounts have active state and correct SHA-256 hash for 'Password123!'\nINSERT INTO users (user_id, username, email, password, full_name, role) VALUES\n(1, 'admin', 'admin@petstay.clinic', 'a109e36947ad56de1dca1cc49f0ef8ac9ad9a7b1aa0df41fb3c4cb73c1ff01ea', 'Dr. Sarah Jenkins (Chief Administrator)', 'admin'),\n(2, 'staff', 'staff@petstay.clinic', 'a109e36947ad56de1dca1cc49f0ef8ac9ad9a7b1aa0df41fb3c4cb73c1ff01ea', 'Dr. Mark Ramos (Resident Veterinarian)', 'employee'),\n(3, 'johndoe', 'johndoe@gmail.com', 'a109e36947ad56de1dca1cc49f0ef8ac9ad9a7b1aa0df41fb3c4cb73c1ff01ea', 'John Doe (Pet Parent)', 'owner')\nON CONFLICT (user_id) DO UPDATE SET \n    password = EXCLUDED.password, \n    failed_attempts = 0, \n    lockout_until = NULL;\n\n-- Populate clinic units if empty\nINSERT INTO units (unit_id, name, type, base_rate, capacity, status, description) VALUES\n(1, 'Presidential Canine Suite A1', 'Boarding Suite', 1200.00, 1, 'Available', 'Climate-controlled suite with webcam and orthopedic bedding.'),\n(2, 'Feline Penthouse B2', 'Boarding Suite', 850.00, 1, 'Available', 'Multi-tier play tower with calming pheromone diffuser.'),\n(3, 'Clinical Examination Room 1', 'Consultation', 600.00, 1, 'Available', 'Routine wellness checkups and triage diagnostics.'),\n(4, 'Immunization & Wellness Bay', 'Consultation', 450.00, 1, 'Available', 'Core vaccinations, anti-parasitic & microchipping.'),\n(5, 'Surgical & Sterile Suite', 'Surgical', 2500.00, 1, 'Available', 'Full sterile operating theatre for soft-tissue and dental procedures.')\nON CONFLICT (unit_id) DO NOTHING;\n\n-- Sync boarding_units for installations where reservations references boarding_units\nINSERT INTO boarding_units (unit_id, unit_name, unit_type, status) VALUES\n(1, 'Presidential Canine Suite A1', 'Dog', 'available'),\n(2, 'Feline Penthouse B2', 'Cat', 'available'),\n(3, 'Consultation Room 1', 'Medical', 'available'),\n(4, 'Vaccination Bay 1', 'Medical', 'available'),\n(5, 'Surgical Suite 1', 'Surgery', 'available')\nON CONFLICT (unit_id) DO UPDATE SET\n    unit_name = EXCLUDED.unit_name,\n    unit_type = EXCLUDED.unit_type;\n\n\n-- Populate inventory items (using only columns that now exist)\nINSERT INTO inventory (item_id, item_name, category, quantity, reorder_level, unit_price, supplier) VALUES\n(1, 'Rabies Inactivated Vaccine 10ml', 'Vaccine', 14, 10, 450.00, 'Zoetis Biologics'),\n(2, 'DHPP 5-in-1 Canine Vaccine', 'Vaccine', 8, 12, 650.00, 'Boehringer Ingelheim'),\n(3, 'Amoxicillin + Clavulanic Acid 250mg', 'Medication', 45, 20, 32.50, 'VetPharma Asia'),\n(4, 'Meloxicam 1.5mg/ml Oral Suspension', 'Medication', 6, 8, 780.00, 'Dechra Vet'),\n(5, 'Sterile Surgical Glove Pairs (Size 7.5)', 'Consumable', 80, 25, 45.00, 'MedTech Global'),\n(6, 'Royal Canin Gastrointestinal 2kg', 'Food/Diet', 18, 5, 1450.00, 'Royal Canin PH')\nON CONFLICT (item_id) DO UPDATE SET\n    quantity = EXCLUDED.quantity,\n    unit_price = EXCLUDED.unit_price;\n",
+    diagrams: {
+        usecase: "flowchart LR\n    %% Actors\n    subgraph Actors[\"System Actors\"]\n        Owner((\"Pet Owner\\n(Client)\"))\n        Staff((\"Clinic Staff\\n(Vet / Tech)\"))\n        Admin((\"Clinic Admin\\n(Chief Administrator)\"))\n        Gateway[\"External Payment Gateway\\n(GCash / Maya / Card)\"]\n        Carrier[\"SMS / Email Carrier\\n(Simulated OTP Engine)\"]\n    end\n\n    %% Use Cases\n    subgraph UC_Auth[\"Authentication & Security Module\"]\n        UC1([\"Register / Login\"])\n        UC2([\"OTP Verification & Cooldown\"])\n        UC3([\"Manage Password & Strength Check\"])\n        UC4([\"Session Management & Inactivity Watchdog\"])\n    end\n\n    subgraph UC_Owner[\"Owner Self-Service Module\"]\n        UC5([\"Manage Pet Directory\"])\n        UC6([\"Book 8-Hour Shift Appointment\"])\n        UC7([\"View Clinical History & Prescriptions\"])\n        UC8([\"Pay Invoices & Settle Bills\"])\n        UC9([\"Print Official Receipt\"])\n    end\n\n    subgraph UC_Staff[\"Clinical Operations Module\"]\n        UC10([\"Triage & Active Patient Queue\"])\n        UC11([\"Record Clinical SOAP Notes & Vitals\"])\n        UC12([\"Manage Pharmacy & Inventory\"])\n        UC13([\"Discharge Patient & Generate Bill\"])\n        UC14([\"Submit Shift Swap & Fee Waiver\"])\n    end\n\n    subgraph UC_Admin[\"System Governance & Auditing Module\"]\n        UC15([\"User CRUD & Role Assignment\"])\n        UC16([\"Review & Approve Staff Requests\"])\n        UC17([\"Monitor Clinic Analytics & Charts\"])\n        UC18([\"Inspect Security Audit Trail\"])\n        UC19([\"Backup & Restore Database\"])\n    end\n\n    %% Actor Relationships\n    Owner --> UC1\n    Owner --> UC2\n    Owner --> UC3\n    Owner --> UC4\n    Owner --> UC5\n    Owner --> UC6\n    Owner --> UC7\n    Owner --> UC8\n    Owner --> UC9\n\n    Staff --> UC1\n    Staff --> UC3\n    Staff --> UC4\n    Staff --> UC10\n    Staff --> UC11\n    Staff --> UC12\n    Staff --> UC13\n    Staff --> UC14\n\n    Admin --> UC1\n    Admin --> UC3\n    Admin --> UC4\n    Admin --> UC12\n    Admin --> UC15\n    Admin --> UC16\n    Admin --> UC17\n    Admin --> UC18\n    Admin --> UC19\n\n    %% External Systems\n    UC8 -.-> Gateway\n    UC2 -.-> Carrier\n    UC13 --> UC8",
+        swimlane: "flowchart TD\n    subgraph Pool_PetStay[\"PetStay Clinic End-to-End Operational Lifecycle\"]\n        \n        subgraph Lane_Owner[\"Pet Owner Lane\"]\n            O_Start([\"Start: Owner Logs In\"])\n            O_Book[\"Select Pet & Schedule 8-Hour Shift Slot\\n(08:00 AM - 05:00 PM)\"]\n            O_Wait[\"Wait for Clinic Day Arrival\"]\n            O_Pay[\"Receive Discharge Bill & Settle via GCash/Maya/Card\"]\n            O_Rcpt[\"Download / Print Official Receipt\"]\n            O_End([\"End: Patient Returned Home\"])\n        end\n\n        subgraph Lane_Staff[\"Clinic Staff / Veterinarian Lane\"]\n            S_Queue[\"Review Clinic Queue & Admit Patient\"]\n            S_Exam[\"Perform Clinical Physical Examination\"]\n            S_SOAP[\"Record SOAP Note:\\n(Subjective, Objective, Assessment, Plan)\"]\n            S_Inv[\"Dispense Medications & Deduct Inventory\"]\n            S_Discharge[\"Initiate Patient Discharge & Issue Invoice\"]\n        end\n\n        subgraph Lane_System[\"PetStay System / Gateway Lane\"]\n            Sys_Validate[\"Validate 8-Hour Shift & Enforce Operating Rules\"]\n            Sys_CreateApt[\"Create Reservation (Status: Pending -> Approved)\"]\n            Sys_UpdateInv[\"Update Pharmacy Stock & Low Reorder Thresholds\"]\n            Sys_GenInvc[\"Calculate Total Bill & Generate #INV-XXXXX\"]\n            Sys_ProcessPay[\"Process Transaction & Update Invoice to PAID\"]\n            Sys_Log[\"Append Immutable Security Event to Log Trail\"]\n        end\n\n        subgraph Lane_Admin[\"Clinic Administrator Lane\"]\n            A_Monitor[\"Monitor Real-time Clinic Analytics & Capacity\"]\n            A_Review[\"Review Audit Trails & Approve Staff HR Requests\"]\n        end\n    end\n\n    %% Flow transitions across swimlanes\n    O_Start --> O_Book\n    O_Book --> Sys_Validate\n    Sys_Validate --> Sys_CreateApt\n    Sys_CreateApt --> O_Wait\n    O_Wait --> S_Queue\n    S_Queue --> S_Exam\n    S_Exam --> S_SOAP\n    S_SOAP --> S_Inv\n    S_Inv --> Sys_UpdateInv\n    Sys_UpdateInv --> S_Discharge\n    S_Discharge --> Sys_GenInvc\n    Sys_GenInvc --> O_Pay\n    O_Pay --> Sys_ProcessPay\n    Sys_ProcessPay --> Sys_Log\n    Sys_ProcessPay --> O_Rcpt\n    O_Rcpt --> O_End\n\n    Sys_Log -.-> A_Review\n    Sys_UpdateInv -.-> A_Monitor",
+        erd: "erDiagram\n    USERS ||--o{ PETS : owns\n    USERS ||--o{ RESERVATIONS : books\n    USERS ||--o{ MEDICAL_RECORDS : prescribes\n    USERS ||--o{ INVOICES : billed_to\n    USERS ||--o{ STAFF_REQUESTS : submits\n    USERS ||--o{ LOG_TRAILS : triggers\n    USERS ||--o{ SYSTEM_BACKUPS : generates\n\n    PETS ||--o{ RESERVATIONS : admitted_in\n    PETS ||--o{ MEDICAL_RECORDS : receives\n\n    UNITS ||--o{ RESERVATIONS : allocated_to\n    BOARDING_UNITS ||--o{ RESERVATIONS : legacy_references\n\n    RESERVATIONS ||--o| MEDICAL_RECORDS : documents\n    RESERVATIONS ||--o| INVOICES : billed_for\n\n    USERS {\n        int user_id PK\n        varchar username UK\n        varchar email UK\n        varchar password\n        varchar password_hash\n        varchar full_name\n        varchar role\n        varchar status\n        boolean is_locked\n        int failed_attempts\n        timestamp lockout_until\n        int lockout_tier\n        varchar recovery_otp\n        timestamp otp_expires_at\n        timestamp created_at\n    }\n\n    PETS {\n        int pet_id PK\n        int owner_id FK\n        varchar pet_name\n        varchar species\n        varchar breed\n        int age\n        varchar gender\n        decimal weight_kg\n        text allergies\n        text special_notes\n        timestamp created_at\n    }\n\n    UNITS {\n        int unit_id PK\n        varchar name\n        varchar type\n        decimal base_rate\n        int capacity\n        varchar status\n        text description\n    }\n\n    BOARDING_UNITS {\n        int unit_id PK\n        varchar unit_name\n        varchar unit_type\n        varchar status\n    }\n\n    RESERVATIONS {\n        int reservation_id PK\n        int user_id FK\n        int pet_id FK\n        int unit_id FK\n        timestamp check_in_date\n        timestamp check_out_date\n        varchar status\n        text triage_notes\n        timestamp created_at\n    }\n\n    MEDICAL_RECORDS {\n        int record_id PK\n        int pet_id FK\n        int vet_id FK\n        int reservation_id FK\n        decimal weight_kg\n        decimal temperature\n        text subjective\n        text objective\n        text assessment\n        text plan\n        timestamp created_at\n    }\n\n    INVENTORY {\n        int item_id PK\n        varchar item_name\n        varchar category\n        int quantity\n        int reorder_level\n        decimal unit_price\n        varchar supplier\n        timestamp last_restocked\n        timestamp last_updated\n    }\n\n    INVOICES {\n        int invoice_id PK\n        int reservation_id FK\n        int user_id FK\n        decimal service_fee\n        decimal supplies_fee\n        decimal discount_amount\n        decimal total_amount\n        varchar status\n        varchar payment_method\n        timestamp issued_at\n        timestamp paid_at\n    }\n\n    STAFF_REQUESTS {\n        int request_id PK\n        int requester_id FK\n        varchar request_type\n        varchar target_date\n        decimal amount\n        text reason\n        varchar status\n        int reviewed_by FK\n        timestamp created_at\n    }\n\n    LOG_TRAILS {\n        int log_id PK\n        int user_id FK\n        varchar username\n        varchar action\n        varchar module\n        text details\n        varchar ip_address\n        varchar status\n        timestamp created_at\n    }\n\n    SYSTEM_BACKUPS {\n        int backup_id PK\n        varchar filename\n        varchar backup_type\n        int record_count\n        int created_by FK\n        jsonb snapshot_data\n        timestamp created_at\n    }",
+        flowchart: "flowchart TD\n    Start([User Initiates Action]) --> CheckAuth{Is User Authenticated?}\n\n    %% Authentication Sub-Branch\n    CheckAuth -- No --> InputCreds[/Input Username & Password/]\n    InputCreds --> CheckLockout{Is Account Locked?}\n    CheckLockout -- Yes --> ShowLockout[Display Countdown Timer Banner] --> Terminate([Wait for Lockout Expiry])\n    CheckLockout -- No --> NeedCaptcha{Failed Attempts >= 3?}\n    NeedCaptcha -- Yes --> VerifyCaptcha{Is CAPTCHA Valid?}\n    VerifyCaptcha -- No --> IncFail[Increment Failed Counter & Lockout Tier] --> Terminate\n    VerifyCaptcha -- Yes --> VerifyHash\n    NeedCaptcha -- No --> VerifyHash{Does SHA-256 Hash Match?}\n    VerifyHash -- No --> IncFail\n    VerifyHash -- Yes --> ResetFail[Reset Failed Attempts & Lockout Tiers]\n    ResetFail --> StartWatchdog[Start 15-Minute Session Watchdog]\n    StartWatchdog --> CheckRole{Inspect User Role}\n\n    %% Role-Based Routing\n    CheckAuth -- Yes --> CheckRole\n    CheckRole -- \"Role = Owner\" --> OwnerPortal[/Load Owner Portal Shell/]\n    CheckRole -- \"Role = Staff\" --> StaffPortal[/Load Staff Clinic Workspace/]\n    CheckRole -- \"Role = Admin\" --> AdminPortal[/Load Desktop Enterprise Suite/]\n\n    %% Owner Flow\n    OwnerPortal --> OwnerAction{Select Action}\n    OwnerAction -- \"Book Appointment\" --> PickSlot[/Select Pet, Date, and Shift Slot/]\n    PickSlot --> ValidateShift{Is Slot within 8:00 AM - 5:00 PM\\nand Mon - Sat?}\n    ValidateShift -- No --> ShiftError[Show Operating Hours Warning] --> PickSlot\n    ValidateShift -- Yes --> SaveBooking[(Insert into Reservations)] --> BookingDone[Show Confirmation Alert]\n\n    OwnerAction -- \"Pay Invoices\" --> ViewInvoices[(Fetch Unpaid Invoices)]\n    ViewInvoices --> SelectChannel[/Choose GCash, Maya, or Card/]\n    SelectChannel --> ProcessPay[(Update Invoice Status to Paid)]\n    ProcessPay --> AppendLog1[(Append to Log Trails)]\n    AppendLog1 --> TriggerReceipt[Render Official Printable Receipt]\n\n    %% Staff Flow\n    StaffPortal --> StaffAction{Select Action}\n    StaffAction -- \"Patient Triage\" --> SelectPatient[(Fetch Admitted Patients)]\n    SelectPatient --> WriteSOAP[/Record Vitals & SOAP Notes/]\n    WriteSOAP --> SaveSOAP[(Insert into Medical Records)]\n    SaveSOAP --> DischargePatient{Discharge Patient?}\n    DischargePatient -- Yes --> IssueInvoice[(Insert Invoice & Mark Reservation Completed)]\n\n    StaffAction -- \"Pharmacy\" --> AdjustInv[(Adjust Stock Quantities)]\n    AdjustInv --> CheckLowStock{Quantity <= Reorder Level?}\n    CheckLowStock -- Yes --> ShowStockAlert[Trigger Low Stock Alert Badge]\n\n    %% Admin Flow\n    AdminPortal --> AdminAction{Select Action}\n    AdminAction -- \"User CRUD\" --> ManageUsers[(Search, Toggle Lock, or Update Roles)]\n    AdminAction -- \"Audit Logs\" --> ViewAudit[(Query and Filter Immutable Log Trails)]\n    AdminAction -- \"Backup & Recovery\" --> CreateBackup[(Generate JSON Snapshot & Download)]\n\n    %% Universal Termination\n    BookingDone --> End([Session Active / Idle])\n    IssueInvoice --> End\n    TriggerReceipt --> End\n    ShowStockAlert --> End\n    CreateBackup --> End",
+        network: "flowchart TB\n    subgraph Tier_Clients[\"Presentation Tier (Client Devices & Workstations)\"]\n        Client_Mobile[\"Pet Owner Smartphone\\n(iOS / Android Web Browser)\\nPort 443 HTTPS\"]\n        Client_Clinic[\"Staff Tablet & Clinic Frontdesk\\n(Veterinary Triage Station)\\nPort 443 HTTPS\"]\n        Client_Admin[\"Administrator Desktop PC\\n(Executive Management Suite)\\nPort 443 HTTPS\"]\n    end\n\n    subgraph Tier_Boundary[\"Network Perimeter & Edge Security\"]\n        DNS[\"Authoritative DNS Resolution\\n(Cloudflare / Domain Registry)\"]\n        WAF[\"Web Application Firewall & SSL Termination\\n(TLS 1.3 / Anti-DDoS / Rate Limiter)\"]\n    end\n\n    subgraph Tier_Web[\"Application & Static Web Hosting Tier\"]\n        WebServer[\"Apache Web Server / XAMPP\\n(Document Root: c:\\\\xampp\\\\htdocs\\\\petstay)\\nServes index.html, JS Engines, Assets\\nPort 80 HTTP / 443 HTTPS\"]\n    end\n\n    subgraph Tier_Backend[\"Cloud Data & Integration Tier (Supabase BaaS Cluster)\"]\n        API_Gateway[\"PostgREST API Gateway\\n(Auto-generated REST Endpoints)\\nJWT Authentication & Header Validation\\nPort 443 HTTPS\"]\n        \n        subgraph DB_Cluster[\"PostgreSQL 15 Relational Cluster\"]\n            DB_Master[(\"PostgreSQL Master Database\\nTables: users, pets, reservations,\\nmedical_records, inventory, invoices,\\nstaff_requests, log_trails\")]\n            DB_Storage[\"Encrypted Blob Storage\\n(System Snapshots & Backups)\"]\n        end\n    end\n\n    subgraph Tier_External[\"External Services Tier (Third-Party Integrations)\"]\n        Payment_GCash[\"GCash / Maya Payment Gateway\\n(Simulated Merchant Settlement)\\nPort 443 HTTPS API\"]\n        Carrier_SMS[\"SMS / SMTP Telecom Gateway\\n(Carrier OTP Token Dispatch)\\nPort 443 HTTPS API\"]\n        CDN_Assets[\"Global Edge CDN\\n(Tailwind CSS, FontAwesome, Chart.js)\\nPort 443 HTTPS\"]\n    end\n\n    %% Network Connections\n    Client_Mobile -->|HTTPS / TLS 1.3| DNS\n    Client_Clinic -->|HTTPS / TLS 1.3| DNS\n    Client_Admin -->|HTTPS / TLS 1.3| DNS\n\n    DNS --> WAF\n    WAF --> WebServer\n    WebServer --> CDN_Assets\n\n    Client_Mobile -.->|Direct REST API Calls / Bearer Token| API_Gateway\n    Client_Clinic -.->|Direct REST API Calls / Bearer Token| API_Gateway\n    Client_Admin -.->|Direct REST API Calls / Bearer Token| API_Gateway\n\n    API_Gateway -->|Encrypted Internal Connection| DB_Master\n    DB_Master --> DB_Storage\n\n    Client_Mobile -.->|Payment Reference Verification| Payment_GCash\n    API_Gateway -.->|Dispatch OTP Token| Carrier_SMS"
+    }
+};
+
+let currentSiaDiagram = 'usecase';
+let currentSiaZoom = 1;
+let siaPanState = { isPanning: false, startX: 0, startY: 0, scrollLeft: 0, scrollTop: 0 };
+
+async function loadArchitectureView() {
+    const container = document.getElementById('dynamicDashboardContent');
+    container.innerHTML = '<div class="flex justify-center py-20 text-emerald-500"><i class="fa-solid fa-circle-notch fa-spin text-3xl"></i></div>';
+
+    currentSiaDiagram = 'usecase';
+    currentSiaZoom = 1;
+
+    const html = `
+        <div class="h-full flex flex-col space-y-4">
+            <!-- SIA Header & Actions -->
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 bg-white p-5 rounded-3xl shadow-card border border-slate-100">
+                <div>
+                    <div class="flex items-center space-x-2.5 mb-1">
+                        <div class="w-9 h-9 rounded-xl bg-emerald-50 border border-emerald-100 text-emerald-600 flex items-center justify-center text-lg shadow-sm">
+                            <i class="fa-solid fa-sitemap"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-black text-slate-900 tracking-tight">System Integration & Architecture (SIA)</h2>
+                            <p class="text-xs text-slate-500">Enterprise Architectural Blueprints, UML/BPMN Modeling, ERD & Infrastructure Topology</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                    <a href="PetStay_SIA_Architectural_Blueprints.pptx" download="PetStay_SIA_Architectural_Blueprints.pptx" class="interactive-btn text-xs font-bold px-3.5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-sm flex items-center gap-1.5 transition">
+                        <i class="fa-solid fa-file-powerpoint text-slate-950"></i> Download SIA Defense PPTX
+                    </a>
+                    <button onclick="downloadSiaMarkdown()" class="interactive-btn text-xs font-bold px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white shadow-sm flex items-center gap-1.5 transition">
+                        <i class="fa-solid fa-file-arrow-down text-emerald-400"></i> Download Architectural Docs (MD)
+                    </button>
+                    <button onclick="copySiaSql()" class="interactive-btn text-xs font-bold px-3.5 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 shadow-sm flex items-center gap-1.5 transition">
+                        <i class="fa-solid fa-copy"></i> Copy SQL Schema
+                    </button>
+                </div>
+            </div>
+
+            <!-- Architectural Navigation Tabs -->
+            <div class="bg-white p-2.5 rounded-2xl shadow-card border border-slate-100 flex flex-wrap gap-1.5">
+                <button onclick="switchSiaTab('usecase')" id="siaTab_usecase" class="sia-pill-tab interactive-btn text-xs font-bold px-3.5 py-2 rounded-xl transition flex items-center gap-2 bg-emerald-500 text-white shadow-sm">
+                    <i class="fa-solid fa-users-viewfinder"></i><span>1. Use Case Diagram</span>
+                </button>
+                <button onclick="switchSiaTab('swimlane')" id="siaTab_swimlane" class="sia-pill-tab interactive-btn text-xs font-bold px-3.5 py-2 rounded-xl transition flex items-center gap-2 text-slate-600 hover:bg-slate-100">
+                    <i class="fa-solid fa-water"></i><span>2. Swimlane Process Flow</span>
+                </button>
+                <button onclick="switchSiaTab('erd')" id="siaTab_erd" class="sia-pill-tab interactive-btn text-xs font-bold px-3.5 py-2 rounded-xl transition flex items-center gap-2 text-slate-600 hover:bg-slate-100">
+                    <i class="fa-solid fa-diagram-project"></i><span>3. Entity Relationship (ERD)</span>
+                </button>
+                <button onclick="switchSiaTab('flowchart')" id="siaTab_flowchart" class="sia-pill-tab interactive-btn text-xs font-bold px-3.5 py-2 rounded-xl transition flex items-center gap-2 text-slate-600 hover:bg-slate-100">
+                    <i class="fa-solid fa-shuffle"></i><span>4. System Flowchart</span>
+                </button>
+                <button onclick="switchSiaTab('network')" id="siaTab_network" class="sia-pill-tab interactive-btn text-xs font-bold px-3.5 py-2 rounded-xl transition flex items-center gap-2 text-slate-600 hover:bg-slate-100">
+                    <i class="fa-solid fa-network-wired"></i><span>5. Network Topology</span>
+                </button>
+                <button onclick="switchSiaTab('schema')" id="siaTab_schema" class="sia-pill-tab interactive-btn text-xs font-bold px-3.5 py-2 rounded-xl transition flex items-center gap-2 text-slate-600 hover:bg-slate-100">
+                    <i class="fa-solid fa-database"></i><span>6. Database Schema & SQL</span>
+                </button>
+            </div>
+
+            <!-- Viewport Container & Floating Controls -->
+            <div class="bg-white rounded-3xl shadow-card border border-slate-100 flex-grow flex flex-col overflow-hidden min-h-[560px] relative">
+                <!-- Toolbar with Title & Zoom controls -->
+                <div class="p-4 border-b border-slate-100 bg-slate-50/70 flex justify-between items-center shrink-0">
+                    <div>
+                        <h3 id="siaViewTitle" class="font-black text-sm text-slate-900 flex items-center gap-2">
+                            <i class="fa-solid fa-circle-dot text-emerald-500 text-xs"></i>
+                            <span>1. UML Use Case Diagram</span>
+                        </h3>
+                        <p id="siaViewDesc" class="text-[11px] text-slate-500 mt-0.5">Identifies Pet Owner, Clinic Staff, and Clinic Admin functional interactions</p>
+                    </div>
+                    <div id="siaZoomControls" class="flex items-center space-x-1.5">
+                        <button onclick="adjustSiaZoom(-0.15)" class="interactive-btn text-slate-600 hover:text-slate-900 bg-white border border-slate-200 px-2.5 py-1.5 rounded-lg text-xs font-bold shadow-sm" title="Zoom Out"><i class="fa-solid fa-magnifying-glass-minus"></i></button>
+                        <span id="siaZoomLabel" class="text-xs font-mono font-bold text-slate-600 px-2">100%</span>
+                        <button onclick="adjustSiaZoom(0.15)" class="interactive-btn text-slate-600 hover:text-slate-900 bg-white border border-slate-200 px-2.5 py-1.5 rounded-lg text-xs font-bold shadow-sm" title="Zoom In"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
+                        <button onclick="resetSiaZoom()" class="interactive-btn text-slate-600 hover:text-slate-900 bg-white border border-slate-200 px-2.5 py-1.5 rounded-lg text-xs font-bold shadow-sm" title="Reset Zoom"><i class="fa-solid fa-arrows-rotate mr-1"></i>Reset</button>
+                        <button onclick="toggleSiaFullscreen()" class="interactive-btn text-slate-600 hover:text-slate-900 bg-white border border-slate-200 px-2.5 py-1.5 rounded-lg text-xs font-bold shadow-sm" title="Fullscreen"><i class="fa-solid fa-expand"></i></button>
+                    </div>
+                </div>
+
+                <!-- Canvas Viewport -->
+                <div id="siaCanvasContainer" class="flex-grow overflow-auto p-6 bg-slate-900/95 flex items-center justify-center custom-scrollbar relative select-none cursor-grab">
+                    <div id="siaDiagramWrapper" class="transition-transform duration-200 origin-top flex items-center justify-center w-full min-h-full">
+                        <!-- Diagram rendered here -->
+                    </div>
+                    <div id="siaPanHint" class="absolute bottom-3 left-3 bg-slate-900/90 text-slate-300 border border-slate-700/80 px-3 py-1.5 rounded-full text-[10px] font-bold tracking-wide pointer-events-none shadow-lg flex items-center gap-1.5 backdrop-blur-sm z-10">
+                        <span>💡</span>
+                        <span>Click & drag to pan • Mouse wheel or + / - to zoom</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    container.innerHTML = html;
+    setupSiaCanvasInteractions();
+    await renderSiaDiagram('usecase');
+}
+
+
+function setupSiaCanvasInteractions() {
+    const container = document.getElementById('siaCanvasContainer');
+    if (!container) return;
+
+    container.onwheel = (e) => {
+        if (currentSiaDiagram === 'schema') return;
+        e.preventDefault();
+        const delta = e.deltaY < 0 ? 0.15 : -0.15;
+        adjustSiaZoom(delta);
+    };
+
+    container.onmousedown = (e) => {
+        if (e.target.closest('button') || e.target.closest('pre') || e.target.closest('code')) return;
+        siaPanState.isPanning = true;
+        siaPanState.startX = e.pageX - container.offsetLeft;
+        siaPanState.startY = e.pageY - container.offsetTop;
+        siaPanState.scrollLeft = container.scrollLeft;
+        siaPanState.scrollTop = container.scrollTop;
+        container.classList.remove('cursor-grab');
+        container.classList.add('cursor-grabbing');
+    };
+
+    container.onmouseleave = () => {
+        siaPanState.isPanning = false;
+        container.classList.remove('cursor-grabbing');
+        container.classList.add('cursor-grab');
+    };
+
+    container.onmouseup = () => {
+        siaPanState.isPanning = false;
+        container.classList.remove('cursor-grabbing');
+        container.classList.add('cursor-grab');
+    };
+
+    container.onmousemove = (e) => {
+        if (!siaPanState.isPanning) return;
+        e.preventDefault();
+        const x = e.pageX - container.offsetLeft;
+        const y = e.pageY - container.offsetTop;
+        const walkX = (x - siaPanState.startX) * 1.2;
+        const walkY = (y - siaPanState.startY) * 1.2;
+        container.scrollLeft = siaPanState.scrollLeft - walkX;
+        container.scrollTop = siaPanState.scrollTop - walkY;
+    };
+}
+
+const SIA_META = {
+    usecase: {
+        title: '1. UML Use Case Diagram (System Actors & Functional Boundaries)',
+        desc: 'Identifies the three primary human actors (Pet Owner, Clinic Staff, Clinic Administrator) and external third-party services (Payment Gateway, SMS Carrier).'
+    },
+    swimlane: {
+        title: '2. BPMN Swimlane Process Flow (Operational Lifecycle)',
+        desc: 'Chronological cross-functional workflow dividing responsibilities across Pet Owner, Clinic Staff, PetStay Core System, and Clinic Administrator.'
+    },
+    erd: {
+        title: '3. Entity Relationship Diagram (ERD & Database Relational Model)',
+        desc: 'PostgreSQL relational structure showing 10 tables (users, pets, reservations, units, medical_records, inventory, invoices, staff_requests, log_trails, system_backups).'
+    },
+    flowchart: {
+        title: '4. System Flowchart (Operational Logic & Decision Branching)',
+        desc: 'Operational algorithms including authentication, progressive lockout tiers, CAPTCHA challenges, shift validation, and payment settlement.'
+    },
+    network: {
+        title: '5. Distributed Network Topology & Multi-Tier Flow',
+        desc: 'Distributed multi-tier enterprise architecture separating Presentation Tier, Edge Security Perimeter, Application Tier, Supabase Cloud Cluster, and External Gateways.'
+    },
+    schema: {
+        title: '6. PostgreSQL Database Schema & Migration SQL',
+        desc: 'Direct executable SQL schema with safe DDL definitions, constraints, indexes, audit trail tables, and seed records for petstay_schema.sql.'
+    }
+};
+
+async function switchSiaTab(tabKey) {
+    currentSiaDiagram = tabKey;
+    currentSiaZoom = 1;
+    updateSiaZoomUI();
+
+    document.querySelectorAll('.sia-pill-tab').forEach(b => {
+        b.classList.remove('bg-emerald-500', 'text-white', 'shadow-sm');
+        b.classList.add('text-slate-600', 'hover:bg-slate-100');
+    });
+
+    const activeBtn = document.getElementById('siaTab_' + tabKey);
+    if (activeBtn) {
+        activeBtn.classList.remove('text-slate-600', 'hover:bg-slate-100');
+        activeBtn.classList.add('bg-emerald-500', 'text-white', 'shadow-sm');
+    }
+
+    const meta = SIA_META[tabKey] || {};
+    const titleEl = document.getElementById('siaViewTitle');
+    const descEl = document.getElementById('siaViewDesc');
+    const zoomControls = document.getElementById('siaZoomControls');
+    const panHint = document.getElementById('siaPanHint');
+
+    if (titleEl) titleEl.innerHTML = `<i class="fa-solid fa-circle-dot text-emerald-500 text-xs"></i> <span>${meta.title || ''}</span>`;
+    if (descEl) descEl.innerText = meta.desc || '';
+
+    if (tabKey === 'schema') {
+        if (zoomControls) zoomControls.classList.add('hidden');
+        if (panHint) panHint.classList.add('hidden');
+    } else {
+        if (zoomControls) zoomControls.classList.remove('hidden');
+        if (panHint) panHint.classList.remove('hidden');
+    }
+
+    await renderSiaDiagram(tabKey);
+}
+
+async function renderSiaDiagram(tabKey) {
+    const wrapper = document.getElementById('siaDiagramWrapper');
+    if (!wrapper) return;
+
+    if (tabKey === 'schema') {
+        wrapper.innerHTML = `
+            <div class="w-full max-w-5xl bg-slate-900 rounded-2xl p-6 shadow-2xl border border-slate-800 text-left text-white my-auto">
+                <div class="flex justify-between items-center pb-4 mb-4 border-b border-slate-800">
+                    <div class="flex items-center space-x-2.5">
+                        <i class="fa-solid fa-database text-emerald-400 text-lg"></i>
+                        <div>
+                            <div class="font-black text-sm text-white">petstay_schema.sql</div>
+                            <div class="text-[10px] text-slate-400">PostgreSQL DDL & Idempotent Migration Script</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <button onclick="copySiaSql()" class="interactive-btn text-xs bg-slate-800 hover:bg-slate-700 text-emerald-400 px-3 py-1.5 rounded-lg border border-slate-700 font-bold transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-copy"></i> Copy SQL
+                        </button>
+                        <button onclick="downloadSiaSqlFile()" class="interactive-btn text-xs bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-1.5 rounded-lg font-bold shadow-md transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-download"></i> Download .sql
+                        </button>
+                    </div>
+                </div>
+                <pre class="font-mono text-xs text-emerald-300 overflow-x-auto max-h-[600px] custom-scrollbar p-4 bg-slate-950/80 rounded-xl leading-relaxed select-all"><code>${escapeHtml(PETSTAY_SIA_DOCS.sql)}</code></pre>
+            </div>
+        `;
+        return;
+    }
+
+    const code = PETSTAY_SIA_DOCS.diagrams[tabKey];
+    if (!code) {
+        wrapper.innerHTML = '<p class="text-center text-slate-400 p-10 font-bold">Diagram source not found.</p>';
+        return;
+    }
+
+    wrapper.innerHTML = '<div class="py-20 text-emerald-500 flex flex-col items-center justify-center"><i class="fa-solid fa-circle-notch fa-spin text-3xl mb-3"></i><span class="text-xs font-bold text-slate-500">Rendering architecture model...</span></div>';
+
+    try {
+        if (!window.mermaid) {
+            throw new Error('Mermaid renderer library not yet loaded. Please check your network connection.');
+        }
+
+        const renderId = 'mermaid_' + tabKey + '_' + Date.now();
+        const { svg } = await window.mermaid.render(renderId, code);
+        wrapper.innerHTML = `<div class="w-full flex items-center justify-center py-4 px-2 overflow-x-auto bg-slate-900/60 rounded-2xl p-4 border border-slate-800">${svg}</div>`;
+
+        // Format SVG to be flexible and crisp
+        const svgEl = wrapper.querySelector('svg');
+        if (svgEl) {
+            svgEl.style.maxWidth = '100%';
+            svgEl.style.height = 'auto';
+            svgEl.style.minHeight = '480px';
+            svgEl.style.maxHeight = '80vh';
+            svgEl.style.display = 'block';
+            svgEl.style.margin = 'auto';
+        }
+    } catch(err) {
+        console.error('Mermaid render error:', err);
+        wrapper.innerHTML = `
+            <div class="p-8 bg-rose-50 border border-rose-200 rounded-2xl max-w-xl text-left">
+                <div class="flex items-center space-x-2 text-rose-700 font-bold mb-2">
+                    <i class="fa-solid fa-triangle-exclamation text-lg"></i>
+                    <span>Diagram Render Error</span>
+                </div>
+                <p class="text-xs text-rose-600 mb-4">${err.message}</p>
+                <div class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Raw Diagram Source:</div>
+                <pre class="text-[11px] font-mono bg-white p-3 rounded-xl border border-rose-100 overflow-x-auto text-slate-800 max-h-48"><code>${escapeHtml(code)}</code></pre>
+            </div>
+        `;
+    }
+}
+
+function adjustSiaZoom(delta) {
+    currentSiaZoom = Math.min(Math.max(0.4, currentSiaZoom + delta), 2.5);
+    updateSiaZoomUI();
+}
+
+function resetSiaZoom() {
+    currentSiaZoom = 1;
+    updateSiaZoomUI();
+}
+
+function updateSiaZoomUI() {
+    const label = document.getElementById('siaZoomLabel');
+    const wrapper = document.getElementById('siaDiagramWrapper');
+    if (label) label.innerText = Math.round(currentSiaZoom * 100) + '%';
+    if (wrapper) {
+        wrapper.style.transform = `scale(${currentSiaZoom})`;
+    }
+}
+
+function toggleSiaFullscreen() {
+    const container = document.getElementById('siaCanvasContainer');
+    if (!container) return;
+    if (!document.fullscreenElement) {
+        container.requestFullscreen().catch(err => showAlert('Fullscreen mode unavailable: ' + err.message));
+    } else {
+        document.exitFullscreen();
+    }
+}
+
+function downloadSiaMarkdown() {
+    try {
+        const blob = new Blob([PETSTAY_SIA_DOCS.markdown], { type: 'text/markdown;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'SYSTEM_INTEGRATION_AND_ARCHITECTURE.md';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showAlert('Architectural documentation markdown downloaded!', 'success');
+    } catch(err) {
+        showAlert('Download failed: ' + err.message);
+    }
+}
+
+function downloadSiaSqlFile() {
+    try {
+        const blob = new Blob([PETSTAY_SIA_DOCS.sql], { type: 'application/sql;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'petstay_schema.sql';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showAlert('PostgreSQL schema script downloaded!', 'success');
+    } catch(err) {
+        showAlert('Download failed: ' + err.message);
+    }
+}
+
+function copySiaSql() {
+    try {
+        navigator.clipboard.writeText(PETSTAY_SIA_DOCS.sql);
+        showAlert('SQL schema copied to clipboard!', 'success');
+    } catch(e) {
+        showAlert('Failed to copy to clipboard.');
+    }
+}
+
+function escapeHtml(str) {
+    if (!str) return '';
+    return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+</script>
 
     <!-- PRINTABLE OFFICIAL RECEIPT MODAL -->
         <div id="receiptModal" class="hidden absolute inset-0 z-50 pointer-events-none">
